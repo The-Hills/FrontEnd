@@ -17,7 +17,6 @@ import {
 function App() {
   return (
     <View style={styles.container}>
-      <Icon name="image" size={30} color="#ffffff" />
       <Text style={styles.text}>Pikid</Text>
     </View>
   );
