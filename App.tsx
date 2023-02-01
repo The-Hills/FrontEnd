@@ -14,15 +14,17 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Register from './src/screens/auth/register';
+
 function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Pikid</Text>
+      <Icon name='codepen' size={30}/>
+      <Register/>
     </View>
   );
 }
-
-export default App;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -30,7 +32,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontFamily: 'Poppins-ExtraBold',
+    fontFamily: 'Poppins-Bold',
     fontSize: 40,
   },
 });
+export default App;
+
