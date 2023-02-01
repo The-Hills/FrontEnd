@@ -14,6 +14,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Button from './src/components/general/Button';
 function App() {
   return (
     <View style={styles.container}>
@@ -33,4 +34,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-ExtraBold',
     fontSize: 40,
   },
+
 });
