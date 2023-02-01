@@ -14,10 +14,14 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Register from './src/screens/auth/register';
+import Login from './src/screens/auth/login';
 function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Pikid</Text>
+      {/* <Register></Register> */}
+      <Login></Login>
     </View>
   );
 }
