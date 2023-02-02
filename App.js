@@ -15,12 +15,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Button from './src/components/general/Button';
+import Input from './src/components/general/Input';
 function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Pikid</Text>
-    </View>
-  );
+  return <></>;
 }
 
 export default App;
@@ -29,10 +26,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   text: {
     fontFamily: 'Poppins-ExtraBold',
     fontSize: 40,
   },
-
 });

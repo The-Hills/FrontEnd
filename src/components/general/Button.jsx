@@ -3,7 +3,7 @@ import {ButtonColors} from '../../../assets/theme/ButtonColor';
 import {ButtonSizes} from '../../../assets/theme/ButtonSize';
 import {Width} from '../../../assets/ScreenDimensions';
 import {Height} from '../../../assets/ScreenDimensions';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 const TYPES = ['primary', 'secondary', 'hollow'];
 const SIZES = ['small', 'medium', 'large'];
 
@@ -41,9 +41,12 @@ const Button = ({onPress, type, lable, style, size}) => {
         : '#ffffff',
   };
   return (
-    <View style={[btnStyle, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[btnStyle, style]}
+      activeOpacity={0.8}
+      onPress={onPress}>
       <Text style={lableStyle}>{lable}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
