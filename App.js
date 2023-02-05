@@ -14,16 +14,15 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Button from './src/components/general/Button';
+import Input from './src/components/general/Input';
 import Register from './src/screens/auth/register';
-import Login from './src/screens/auth/login';
 function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Pikid</Text>
-      {/* <Register></Register> */}
-      <Login></Login>
-    </View>
-  );
+  return <>
+  {/* <Button text="Vu"></Button> */}
+  <Register></Register>
+  
+  </>;
 }
 
 export default App;
@@ -32,6 +31,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   text: {
     fontFamily: 'Poppins-ExtraBold',
