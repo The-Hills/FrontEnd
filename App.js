@@ -19,7 +19,7 @@ import Input from './src/components/general/Input';
 import LogoPkid from './src/components/general/LogoPkid';
 import Avatar from './src/components/general/Avatar';
 import Navigation from './src/navigation/main/Navigation';
-import SplashSceen from './src/screens/Intro/SplashSceen';
+
 
 function App() {
   return <Navigation />;

@@ -2,11 +2,13 @@ import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Width} from '../../../assets/ScreenDimensions';
 import {Colors} from '../../../assets/theme/colors';
+import StatusBarAr from '../../../assets/theme/StatusBar';
 import Button from '../../components/general/Button';
 import {GeneralStyle} from '../../styles/generalStyles';
 const Onboarnding = ({navigation}) => {
   return (
     <View style={GeneralStyle.container}>
+      <StatusBarAr bg={Colors.while} />
       <View style={styles.aaa}>
         <View style={styles.img}>
           <Image
@@ -24,7 +26,10 @@ const Onboarnding = ({navigation}) => {
         </View>
       </View>
       <View style={styles.btn}>
-        <Button lable="Get Started" onPress={() => navigation.navigate('BottomTabs')} />
+        <Button
+          lable="Get Started"
+          onPress={() => navigation.navigate('Register')}
+        />
       </View>
     </View>
   );

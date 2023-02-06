@@ -10,11 +10,13 @@ export const GeneralStyle = StyleSheet.create({
     // display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: Colors.while
   },
   title: {
     fontFamily: FontFamily.Bold,
     fontSize: Sizes.title,
     color: Colors.black,
+    // lineHeight: 30,
   },
   text: {
     fontFamily: FontFamily.Regular,

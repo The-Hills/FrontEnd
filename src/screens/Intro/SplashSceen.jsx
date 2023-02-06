@@ -4,6 +4,7 @@ import LogoPkid from '../../components/general/LogoPkid';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Sizes} from '../../../assets/theme/fontSize';
+import StatusBarAr from '../../../assets/theme/StatusBar';
 
 const SplashSceen = ({navigation}) => {
   setTimeout(() => {
@@ -11,6 +12,7 @@ const SplashSceen = ({navigation}) => {
   }, 3000);
   return (
     <View style={styles.container}>
+      <StatusBarAr bg={Colors.main}/>
       <LogoPkid
         style={{
           width: 290,
