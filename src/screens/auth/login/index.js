@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
 import Button from '../../../components/general/Button';
-// import {Image} from 'react-native/Libraries/Image/Image';
 
 const Login = () => {
   return (
@@ -19,7 +18,7 @@ const Login = () => {
 
             <Text style={styles.PhoneTile}>Phone</Text>
             <TextInput
-              keyboardType="Phone"
+              // keyboardType="Phone"
               placeholder="Phone"
               placeholderTextColor="black"
               style={styles.input}
@@ -36,8 +35,17 @@ const Login = () => {
             </View>
           </View>
 
-          <Button lable="Sign up" style={styles.buttonSignUp}></Button>
+          <Button
+            lable="Sign up"
+            style={styles.buttonSignUp}
+            color="hollow"></Button>
           <Button lable="Sign in" style={styles.buttonSignIn}></Button>
+
+          <View style={styles.linkSignUp}>
+            <Text style={styles.line}></Text>
+            <Text style={styles.text}>Or Sign up with</Text>
+            <Text style={styles.line}></Text>
+          </View>
         </View>
       </View>
     </>
@@ -101,5 +109,20 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     top: 30,
+    marginBottom:60,
+    // bottom:30,
   },
+  linkSignUp:{
+// direction:
+  },
+  line:{
+   width:50,
+   height:1,
+   backgroundColor:"black"
+
+  },
+  text: {
+    // verticalAlign:"bottom",
+    textAlign: 'center'
+  }
 });

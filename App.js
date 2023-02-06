@@ -17,10 +17,11 @@ import {
 import Button from './src/components/general/Button';
 import Input from './src/components/general/Input';
 import Register from './src/screens/auth/register';
+import Login from './src/screens/auth/login';
 function App() {
   return <>
   {/* <Button text="Vu"></Button> */}
-  <Register></Register>
+  <Login></Login>
   
   </>;
 }
