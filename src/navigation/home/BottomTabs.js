@@ -9,6 +9,7 @@ import UserHomeScreen from '../../screens/home/UserHomeScreen';
 import { Colors } from '../../../assets/theme/colors';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
+import Login from '../../screens/auth/login';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
@@ -27,8 +28,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="UserHomeScreen"
-        component={UserHomeScreen}
+        name="Login"
+        component={Login}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,

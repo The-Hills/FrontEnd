@@ -14,6 +14,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+
 import Button from './src/components/general/Button';
 import Input from './src/components/general/Input';
 import LogoPkid from './src/components/general/LogoPkid';
@@ -24,8 +25,8 @@ import Login from './src/screens/auth/login';
 
 function App() {
   return(
-  // <Navigation />
-  <Login></Login>
+  <Navigation />
+  // <Login></Login>
   
   );
 }
