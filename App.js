@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+
 import {
   SafeAreaView,
   View,
@@ -16,14 +16,18 @@ import {
 } from 'react-native';
 import Button from './src/components/general/Button';
 import Input from './src/components/general/Input';
-import Register from './src/screens/auth/register';
+import LogoPkid from './src/components/general/LogoPkid';
+import Avatar from './src/components/general/Avatar';
+import Navigation from './src/navigation/main/Navigation';
+import SplashSceen from './src/screens/Intro/SplashSceen';
 import Login from './src/screens/auth/login';
+
 function App() {
-  return <>
-  {/* <Button text="Vu"></Button> */}
+  return(
+  // <Navigation />
   <Login></Login>
   
-  </>;
+  );
 }
 
 export default App;
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#4BB7D6',
   },
   text: {
     fontFamily: 'Poppins-ExtraBold',

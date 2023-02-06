@@ -1,36 +1,21 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TextInput} from 'react-native';
 import Button from '../../../components/general/Button';
+import Input from '../../../components/general/Input';
+import LogoPkid from '../../../components/general/LogoPkid';
 
 const Login = () => {
   return (
     <>
       <View style={styles.ContainerRegister}>
-        <Image
-          source={{
-            uri: 'https://pbs.twimg.com/profile_images/486929358120964097/gNLINY67_400x400.png',
-          }}
-          style={{width: 200, height: 200}}></Image>
+        {/* <LogoPkid></LogoPkid> */}
 
         <View style={styles.FormRegister}>
           <View style={styles.content}>
             <Text style={styles.titleText}>Hi, Welcome To</Text>
-
-            <Text style={styles.PhoneTile}>Phone</Text>
-            <TextInput
-              // keyboardType="Phone"
-              placeholder="Phone"
-              placeholderTextColor="black"
-              style={styles.input}
-            />
+            <Input lable="Phone" value="Phone"></Input>
             <View style={styles.cardInput}>
-              <Text style={styles.PasswordTile}>Password</Text>
-              <TextInput
-                placeholder={'**********'}
-                secureTextEntry={true}
-                placeholderTextColor="black"
-                style={styles.input}
-              />
+              <Input lable="Password" value="Password"></Input>
               <Text style={styles.forgotPass}>Forgot Password</Text>
             </View>
           </View>
@@ -38,13 +23,13 @@ const Login = () => {
           <Button
             lable="Sign up"
             style={styles.buttonSignUp}
-            color="hollow"></Button>
+            type="hollow"></Button>
           <Button lable="Sign in" style={styles.buttonSignIn}></Button>
 
           <View style={styles.linkSignUp}>
-            <Text style={styles.line}></Text>
+            {/* <Text style={styles.line}></Text> */}
             <Text style={styles.text}>Or Sign up with</Text>
-            <Text style={styles.line}></Text>
+            {/* <Text style={styles.line}></Text> */}
           </View>
         </View>
       </View>
@@ -109,20 +94,19 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginRight: 25,
     top: 30,
-    marginBottom:60,
+    marginBottom: 60,
     // bottom:30,
   },
-  linkSignUp:{
-// direction:
+  linkSignUp: {
+    // direction:
   },
-  line:{
-   width:50,
-   height:1,
-   backgroundColor:"black"
-
+  line: {
+    width: 50,
+    height: 1,
+    backgroundColor: 'black',
   },
   text: {
     // verticalAlign:"bottom",
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
