@@ -67,16 +67,18 @@ export default Input;
 const styles = StyleSheet.create({
   container: {
     width: Width - 60,
-    marginBottom: 20
+    marginBottom: 15,
   },
   lable: {},
   title: {
     color: Colors.black,
     fontSize: Sizes.text,
     fontFamily: FontFamily.Bold,
+    lineHeight: 20,
   },
   textinput: {
     width: '80%',
+    // height: 50,
     fontSize: Sizes.text,
     fontFamily: FontFamily.Medium,
     color: Colors.gray,
@@ -93,5 +95,6 @@ const styles = StyleSheet.create({
     color: Colors.red,
     fontSize: Sizes.small,
     marginTop: 5,
+    lineHeight: 15,
   },
 });

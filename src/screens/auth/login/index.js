@@ -11,7 +11,7 @@ const Login = (props) => {
   return (
     <>
       <View style={styles.ContainerRegister}>
-        <LogoPkid style={{ height: 80}}></LogoPkid>
+        <LogoPkid style={{ height: 80,top:30,}}></LogoPkid>
         <View style={styles.FormRegister}>
           <View style={styles.content}>
             <Text style={styles.titleText}></Text>
@@ -85,6 +85,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   // textAlign:'center',
   // alignItems:'center',
+  alignSelf:"center",
+  alignContent:"center",
     top:20,
 
   },
