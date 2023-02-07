@@ -7,6 +7,7 @@ import SplashSceen from '../../screens/Intro/SplashSceen';
 import Onboarnding from '../../screens/Intro/Onboarnding';
 import UserHomeScreen from '../../screens/home/UserHomeScreen';
 import BottomTabs from '../home/BottomTabs';
+import Register from '../../screens/auth/register';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -20,6 +21,8 @@ const Navigation = () => {
         <Stack.Screen name="DriverHomeScreen" component={DriverHomeScreen} />
         <Stack.Screen name="Onboarnding" component={Onboarnding} />
         <Stack.Screen name="SplashSceen" component={SplashSceen} />
+        <Stack.Screen name="Register" component={Register} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
