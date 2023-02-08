@@ -20,15 +20,18 @@ import Input from './src/components/general/Input';
 import LogoPkid from './src/components/general/LogoPkid';
 import Avatar from './src/components/general/Avatar';
 import Navigation from './src/navigation/main/Navigation';
+import SplashSC from './src/screens/vu/Onboarnding2';
+import Onboarnding3 from './src/screens/vu/Onboarnding3';
+import PointScreen from './src/screens/vu/PointScreen';
 
 function App() {
   return(
-  <Navigation />
+  // <Navigation />
   // <Login></Login>
+ <PointScreen/> 
   
   );
-}
-
+};
 export default App;
 const styles = StyleSheet.create({
   container: {

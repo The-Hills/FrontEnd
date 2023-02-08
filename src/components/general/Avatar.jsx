@@ -17,7 +17,7 @@ import React from 'react';
 const Avatar = ({source, style}) => {
   return (
     <View style={[styles.container, style]}>
-      <Image style={styles.img} source={source} />
+      <Image style={styles.img}  source={source}/>
     </View>
   );
 };
