@@ -19,10 +19,21 @@ import Input from './src/components/general/Input';
 import LogoPkid from './src/components/general/LogoPkid';
 import Avatar from './src/components/general/Avatar';
 import Navigation from './src/navigation/main/Navigation';
-
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+const queryClient = new QueryClient();
 
 function App() {
-  return <Navigation />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Navigation />
+    </QueryClientProvider>
+  );
 }
 
 export default App;

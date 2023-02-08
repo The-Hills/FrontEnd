@@ -31,7 +31,7 @@ const Input = ({
             borderBottomColor: error
               ? Colors.red
               : isFocused
-              ? Colors.black
+              ? Colors.main
               : Colors.black,
           },
         ]}>

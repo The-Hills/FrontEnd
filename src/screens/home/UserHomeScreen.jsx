@@ -1,12 +1,15 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
 import {GeneralStyle} from '../../styles/generalStyles';
 import {Colors} from '../../../assets/theme/colors';
-
+import React, {useContext} from 'react';
+import {AuthContext} from '../../hooks/auth/AuthContext';
+import Button from '../../components/general/Button';
 const UserHomeScreen = () => {
+  const {userInfo, logout} = useContext(AuthContext);
   return (
     <View style={GeneralStyle.container}>
-      <Text style={[GeneralStyle.text, styles.text]}>UserHomeScreen</Text>
+      <Text style={[GeneralStyle.text, styles.text]}>Hello {userInfo.use.name}</Text>
+      <Button lable='LogOut' onPress={logout}/>
     </View>
   );
 };
