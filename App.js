@@ -23,12 +23,14 @@ import Navigation from './src/navigation/main/Navigation';
 import SplashSC from './src/screens/vu/Onboarnding2';
 import Onboarnding3 from './src/screens/vu/Onboarnding3';
 import PointScreen from './src/screens/vu/PointScreen';
+import Profile from './src/screens/vu/Profile';
 
 function App() {
   return(
   // <Navigation />
   // <Login></Login>
- <PointScreen/> 
+//  <PointScreen/> 
+<Profile></Profile>
   
   );
 };

@@ -28,13 +28,12 @@ const PointScreen = ({navigation}) => {
 
       <View style={styles.aaa}>
         <View style={styles.img}>
-          <Image
-            style={[GeneralStyle.img]}
+          <Avatar
+            style={styles.img}
             source={require('../../../assets/images/Group49.png')}
           />
         </View>
-        <View style={styles.content}>
-          <View>
+        <View  style={styles.content}>
             <Text style={[styles.title]}>
               Lionel Ronado <Text>(</Text>{' '}
               <Icon name="star-half-outline" size={20} color="#FBBC04"></Icon>{' '}
@@ -69,11 +68,8 @@ const PointScreen = ({navigation}) => {
                 color="#FBBC04"></Icon>
             </View>
             <Button style={styles.btn} lable="Submit" />
-            {/* <Icon name=""></Icon> */}
           </View>
-        </View>
       </View>
-      {/* <View bg={Colors.while}></View> */}
     </View>
   );
 };
@@ -97,14 +93,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.while,
     borderRadius: 20,
     paddingBottom: 30,
-    // paddingLeft: 40,
-    // paddingRight: 40,
     width: 300,
   },
-  content: {},
   img: {
     height: 100,
-    resizeMode: 'contain',
     position: 'relative',
     top: -50,
   },
@@ -130,12 +122,9 @@ const styles = StyleSheet.create({
   },
   star: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
     color: 'yellow',
     bottom: 25,
-  },
-  iconStar: {
-    width: 50,
   },
 });
