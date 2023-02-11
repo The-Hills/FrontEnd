@@ -12,16 +12,17 @@ import {Sizes} from '../../../../assets/theme/fontSize';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
+import Loader from '../../../components/loader/Loader';
 const Register = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
-    email: '',
-    fullname: '',
-    phone: '',
-    password: '',
+    email: null,
+    fullName: null,
+    password: null,
+    password_confirmation: null,
   });
   const [errors, setErrors] = React.useState({});
-  const {register} = useContext(AuthContext);
-  const validate = () => {
+  const {isLoading, register} = useContext(AuthContext);
+  const validate = async () => {
     Keyboard.dismiss();
     let isValid = true;
 
@@ -33,13 +34,13 @@ const Register = ({navigation}) => {
       isValid = false;
     }
 
-    if (!inputs.fullname) {
-      handleError('Please input fullname', 'fullname');
+    if (!inputs.fullName) {
+      handleError('Please input fullname', 'fullName');
       isValid = false;
     }
 
-    if (!inputs.phone) {
-      handleError('Please input phone number', 'phone');
+    if (!inputs.password_confirmation) {
+      handleError('Please input phone number', 'password_confirmation');
       isValid = false;
     }
 
@@ -51,7 +52,9 @@ const Register = ({navigation}) => {
       isValid = false;
     }
     if (isValid) {
-      register(inputs);
+      console.log(inputs);
+      const res = await register(inputs);
+      console.log('result: ', res);
     }
   };
 
@@ -63,7 +66,8 @@ const Register = ({navigation}) => {
   };
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
-      <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
+      <Loader visible={isLoading} />
+      <StatusBar backgroundColor={Colors.main}  barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
         <View style={styles.header}>
           <LogoPkid
@@ -84,19 +88,11 @@ const Register = ({navigation}) => {
               error={errors.email}
             />
             <Input
-              onChangeText={text => handleOnchange(text, 'fullname')}
-              onFocus={() => handleError(null, 'fullname')}
+              onChangeText={text => handleOnchange(text, 'fullName')}
+              onFocus={() => handleError(null, 'fullName')}
               lable="Full name"
               placeholder="Enter your name"
-              error={errors.fullname}
-            />
-            <Input
-              onChangeText={text => handleOnchange(text, 'phone')}
-              onFocus={() => handleError(null, 'phone')}
-              keyboardType="numeric"
-              lable="Phone number"
-              placeholder="Enter your phone numbber"
-              error={errors.phone}
+              error={errors.fullName}
             />
             <Input
               onChangeText={text => handleOnchange(text, 'password')}
@@ -107,6 +103,15 @@ const Register = ({navigation}) => {
               error={errors.password}
             />
           </View>
+          <Input
+            onChangeText={text => handleOnchange(text, 'password_confirmation')}
+            onFocus={() => handleError(null, 'password_confirmation')}
+            keyboardType="numeric"
+            lable="Confirm password"
+            placeholder="Enter your phone numbber"
+            error={errors.password_confirmation}
+            password
+          />
           <View
             style={{
               flex: 1,

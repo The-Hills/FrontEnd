@@ -8,7 +8,7 @@ const UserHomeScreen = () => {
   const {userInfo, logout} = useContext(AuthContext);
   return (
     <View style={GeneralStyle.container}>
-      <Text style={[GeneralStyle.text, styles.text]}>Hello {userInfo.use.name}</Text>
+      <Text style={[GeneralStyle.text, styles.text]}>Hello</Text>
       <Button lable='LogOut' onPress={logout}/>
     </View>
   );

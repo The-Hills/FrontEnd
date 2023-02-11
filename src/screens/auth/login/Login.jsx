@@ -11,10 +11,11 @@ import {Sizes} from '../../../../assets/theme/fontSize';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
+import Loader from '../../../components/loader/Loader';
 const Login = ({navigation}) => {
   const [inputs, setInputs] = React.useState({email: '', password: ''});
   const [errors, setErrors] = useState({});
-  const {login} = useContext(AuthContext);
+  const {isLoading, login} = useContext(AuthContext);
 
   const validate = async () => {
     Keyboard.dismiss();
@@ -24,11 +25,13 @@ const Login = ({navigation}) => {
       isValid = false;
     }
     if (!inputs.password) {
-      handleError('Please input password', 'password');
+      handleError('Please input password', 'p assword');
       isValid = false;
     }
     if (isValid) {
-      login(inputs);
+      console.log(inputs);
+      const res = await login(inputs);
+      console.log('result: ', res);
     }
   };
 
@@ -40,6 +43,7 @@ const Login = ({navigation}) => {
   };
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
+      <Loader visible={isLoading} />
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
         <View style={styles.header}>

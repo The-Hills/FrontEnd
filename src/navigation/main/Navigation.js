@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
@@ -13,21 +13,33 @@ import {AuthContext, AuthProvider} from '../../hooks/auth/AuthContext';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
+  const {userInfo} = useContext(AuthContext);
+  const [initialRouteName, setInitialRouteName] = React.useState('');
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      authUser();
+    }, 2000);
+  }, []);
+
+  const authUser = async () => {
+    userInfo.accessToken ? setInitialRouteName('BottomTabs') : setInitialRouteName('SplashSceen')
+  };
+
   return (
-    <AuthProvider>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="SplashSceen"
+          initialRouteName={SplashSceen}
           screenOptions={{headerShown: false}}>
+          <Stack.Screen name="SplashSceen" component={SplashSceen} />
           <Stack.Screen name="BottomTabs" component={BottomTabs} />
           <Stack.Screen name="DriverHomeScreen" component={DriverHomeScreen} />
           <Stack.Screen name="Onboarnding" component={Onboarnding} />
-          <Stack.Screen name="SplashSceen" component={SplashSceen} />
           <Stack.Screen name="Register" component={Register} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </NavigationContainer>
-    </AuthProvider>
+    
   );
 };
 
