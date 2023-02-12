@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+
 import {
   SafeAreaView,
   View,
@@ -14,22 +14,22 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Register from './src/screens/auth/register';
+import Button from './src/components/general/Button';
+import Input from './src/components/general/Input';
+import LogoPkid from './src/components/general/LogoPkid';
+import Avatar from './src/components/general/Avatar';
+import Navigation from './src/navigation/main/Navigation';
+
 
 function App() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Pikid</Text>
-      <Icon name='codepen' size={30}/>
-      <Register/>
-    </View>
-  );
+  return <Navigation />;
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#4BB7D6',
   },
   text: {
     fontFamily: 'Poppins-Bold',
