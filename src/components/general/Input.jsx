@@ -33,6 +33,7 @@ const Input = ({
               : isFocused
               ? Colors.black
               : Colors.black,
+              
           },
         ]}>
         <TextInput
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
   },
   textinput: {
     width: '80%',
-    // height: 50,
     fontSize: Sizes.text,
     fontFamily: FontFamily.Medium,
     color: Colors.gray,
