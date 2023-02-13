@@ -1,4 +1,4 @@
-import {Keyboard, StyleSheet, Text, View, StatusBar} from 'react-native';
+import {Keyboard, StyleSheet, Text, View, StatusBar, Alert} from 'react-native';
 import React, {useContext, useState} from 'react';
 import {GeneralStyle} from '../../../styles/generalStyles';
 import {Colors} from '../../../../assets/theme/colors';
@@ -16,9 +16,9 @@ import Loader from '../../../components/loader/Loader';
 const Register = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
     email: null,
-    fullName: null,
+    name: null,
     password: null,
-    password_confirmation: null,
+    phone: null,
   });
   const [errors, setErrors] = React.useState({});
   const {isLoading, register} = useContext(AuthContext);
@@ -34,13 +34,13 @@ const Register = ({navigation}) => {
       isValid = false;
     }
 
-    if (!inputs.fullName) {
-      handleError('Please input fullname', 'fullName');
+    if (!inputs.name) {
+      handleError('Please input name', 'name');
       isValid = false;
     }
 
-    if (!inputs.password_confirmation) {
-      handleError('Please input phone number', 'password_confirmation');
+    if (!inputs.phone) {
+      handleError('Please input phone number', 'phone');
       isValid = false;
     }
 
@@ -54,7 +54,10 @@ const Register = ({navigation}) => {
     if (isValid) {
       console.log(inputs);
       const res = await register(inputs);
-      console.log('result: ', res);
+      if (res.data.message === 'Successfully') {
+        navigation.navigate('Login');
+      }
+      console.log('result: ', res.data);
     }
   };
 
@@ -67,7 +70,7 @@ const Register = ({navigation}) => {
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
       <Loader visible={isLoading} />
-      <StatusBar backgroundColor={Colors.main}  barStyle="light-content" />
+      <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
         <View style={styles.header}>
           <LogoPkid
@@ -88,11 +91,11 @@ const Register = ({navigation}) => {
               error={errors.email}
             />
             <Input
-              onChangeText={text => handleOnchange(text, 'fullName')}
-              onFocus={() => handleError(null, 'fullName')}
+              onChangeText={text => handleOnchange(text, 'name')}
+              onFocus={() => handleError(null, 'name')}
               lable="Full name"
               placeholder="Enter your name"
-              error={errors.fullName}
+              error={errors.name}
             />
             <Input
               onChangeText={text => handleOnchange(text, 'password')}
@@ -104,13 +107,12 @@ const Register = ({navigation}) => {
             />
           </View>
           <Input
-            onChangeText={text => handleOnchange(text, 'password_confirmation')}
-            onFocus={() => handleError(null, 'password_confirmation')}
+            onChangeText={text => handleOnchange(text, 'phone')}
+            onFocus={() => handleError(null, 'phone')}
             keyboardType="numeric"
-            lable="Confirm password"
+            lable="Phone"
             placeholder="Enter your phone numbber"
-            error={errors.password_confirmation}
-            password
+            error={errors.phone}
           />
           <View
             style={{

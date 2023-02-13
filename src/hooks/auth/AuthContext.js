@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {createContext, useEffect, useState} from 'react';
-import {BASE_URL} from '../../API/auth';
+import {URL} from '../../API/auth';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthContext = createContext();
@@ -8,19 +8,14 @@ export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const register = async ({
-    fullName,
-    email,
-    password,
-    password_confirmation,
-  }) => {
+  const register = async ({name, email, password, phone}) => {
     setIsLoading(true);
     return axios
-      .post(`${BASE_URL}/account/register`, {
+      .post(`${URL}auth/register`, {
         email,
-        fullName,
+        name,
         password,
-        password_confirmation,
+        phone,
       })
       .then(res => {
         let userInfo = res.data;
@@ -40,18 +35,20 @@ export const AuthProvider = ({children}) => {
   const login = async ({email, password}) => {
     setIsLoading(true);
     return axios
-      .post(`${BASE_URL}/auth/login`, {
+      .post(`${URL}auth/login`, {
         email,
         password,
       })
       .then(res => {
         let userInfo = res.data;
         setUserInfo(userInfo);
-        AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        AsyncStorage.setItem(
+          'userInfo',
+          JSON.stringify({userInfo, loggedIn: true}),
+        );
         setIsLoading(false);
       })
       .catch(e => {
-
         console.log(`login error ${e}`);
         setIsLoading(false);
       });
@@ -61,7 +58,7 @@ export const AuthProvider = ({children}) => {
     setIsLoading(true);
     axios
       .post(
-        `${BASE_URL}/auth/logout`,
+        `${URL}/auth/logout`,
         {},
         {
           headers: {Authorization: `Bearer ${userInfo.accessToken}`},
@@ -72,6 +69,7 @@ export const AuthProvider = ({children}) => {
         AsyncStorage.removeItem('userInfo');
         setUserInfo({});
         setIsLoading(false);
+        navigation.navigate('Login');
       })
       .catch(e => {
         console.log(`logout error ${e}`);
@@ -79,22 +77,6 @@ export const AuthProvider = ({children}) => {
       });
   };
 
-  const isLoggedIn = async () => {
-    try {
-      let userInfo = await AsyncStorage.getItem('userInfo');
-      userInfo = JSON.parse(userInfo);
-
-      if (userInfo) {
-        setUserInfo(userInfo);
-      }
-    } catch (e) {
-      console.log(`is logged in error ${e}`);
-    }
-  };
-
-  useEffect(() => {
-    isLoggedIn();
-  }, []);
   return (
     <AuthContext.Provider
       value={{

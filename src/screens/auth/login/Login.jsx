@@ -29,8 +29,10 @@ const Login = ({navigation}) => {
       isValid = false;
     }
     if (isValid) {
-      console.log(inputs);
       const res = await login(inputs);
+      // if (res.data.message === 'Successfully') {
+      //   navigation.navigate('BottomTabs');
+      // }
       console.log('result: ', res);
     }
   };
