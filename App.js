@@ -20,12 +20,23 @@ import Input from './src/components/general/Input';
 import LogoPkid from './src/components/general/LogoPkid';
 import Avatar from './src/components/general/Avatar';
 import Navigation from './src/navigation/main/Navigation';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { AuthProvider } from './src/hooks/auth/AuthContext';
+const queryClient = new QueryClient();
 
 function App() {
-  return(
-  <Navigation />
-  // <Login></Login>
-  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Navigation />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

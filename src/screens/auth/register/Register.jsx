@@ -1,5 +1,5 @@
-import {Keyboard, StyleSheet, Text, View, StatusBar} from 'react-native';
-import React from 'react';
+import {Keyboard, StyleSheet, Text, View, StatusBar, Alert} from 'react-native';
+import React, {useContext, useState} from 'react';
 import {GeneralStyle} from '../../../styles/generalStyles';
 import {Colors} from '../../../../assets/theme/colors';
 import LogoPkid from '../../../components/general/LogoPkid';
@@ -9,12 +9,67 @@ import Input from '../../../components/general/Input';
 import Button from '../../../components/general/Button';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {Sizes} from '../../../../assets/theme/fontSize';
-import axios from 'axios';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {AuthContext} from '../../../hooks/auth/AuthContext';
+import Loader from '../../../components/loader/Loader';
 const Register = ({navigation}) => {
+  const [inputs, setInputs] = React.useState({
+    email: null,
+    name: null,
+    password: null,
+    phone: null,
+  });
+  const [errors, setErrors] = React.useState({});
+  const {isLoading, register} = useContext(AuthContext);
+  const validate = async () => {
+    Keyboard.dismiss();
+    let isValid = true;
+
+    if (!inputs.email) {
+      handleError('Please input email', 'email');
+      isValid = false;
+    } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
+      handleError('Please input a valid email', 'email');
+      isValid = false;
+    }
+
+    if (!inputs.name) {
+      handleError('Please input name', 'name');
+      isValid = false;
+    }
+
+    if (!inputs.phone) {
+      handleError('Please input phone number', 'phone');
+      isValid = false;
+    }
+
+    if (!inputs.password) {
+      handleError('Please input password', 'password');
+      isValid = false;
+    } else if (inputs.password.length < 5) {
+      handleError('Min password length of 5', 'password');
+      isValid = false;
+    }
+    if (isValid) {
+      console.log(inputs);
+      const res = await register(inputs);
+      if (res.data.message === 'Successfully') {
+        navigation.navigate('Login');
+      }
+      console.log('result: ', res.data);
+    }
+  };
+
+  const handleOnchange = (text, input) => {
+    setInputs(prevState => ({...prevState, [input]: text}));
+  };
+  const handleError = (error, input) => {
+    setErrors(prevState => ({...prevState, [input]: error}));
+  };
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
+      <Loader visible={isLoading} />
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
         <View style={styles.header}>
@@ -26,42 +81,50 @@ const Register = ({navigation}) => {
           />
         </View>
         <View style={styles.content}>
-          <Title Title="Register" text="Sign up to Continue" />
+          <Title Title="Register" text="Register to Continue" />
           <View style={styles.form}>
             <Input
+              onChangeText={text => handleOnchange(text, 'email')}
+              onFocus={() => handleError(null, 'email')}
               lable="Email"
               placeholder="user@gmail.com"
-              error="dasdasdasd"
+              error={errors.email}
             />
             <Input
+              onChangeText={text => handleOnchange(text, 'name')}
+              onFocus={() => handleError(null, 'name')}
+              lable="Full name"
+              placeholder="Enter your name"
+              error={errors.name}
+            />
+            <Input
+              onChangeText={text => handleOnchange(text, 'password')}
+              onFocus={() => handleError(null, 'password')}
               lable="Password"
               placeholder="************"
               password
-              error="dasdasdasd"
-            />
-            <Input
-              lable="Full name"
-              placeholder="Enter your name"
-              error="dasdasdasd"
-            />
-            <Input
-              keyboardType="numeric"
-              lable="Phone number"
-              placeholder="Enter your phone numbber"
-              error="dasdasdasd"
+              error={errors.password}
             />
           </View>
+          <Input
+            onChangeText={text => handleOnchange(text, 'phone')}
+            onFocus={() => handleError(null, 'phone')}
+            keyboardType="numeric"
+            lable="Phone"
+            placeholder="Enter your phone numbber"
+            error={errors.phone}
+          />
           <View
             style={{
               flex: 1,
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <Button lable="Register" />
+            <Button lable="Register" onPress={validate} />
             <Text
               onPress={() => navigation.navigate('Login')}
               style={[styles.text]}>
-              Already have account? Login
+              Already have account? Sign In
             </Text>
           </View>
         </View>

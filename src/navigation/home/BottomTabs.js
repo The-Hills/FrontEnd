@@ -6,7 +6,7 @@ import UserProfile from '../../screens/profile/UserProfile';
 import Icon from 'react-native-vector-icons/Feather';
 import SplashSceen from '../../screens/Intro/SplashSceen';
 import UserHomeScreen from '../../screens/home/UserHomeScreen';
-import { Colors } from '../../../assets/theme/colors';
+import {Colors} from '../../../assets/theme/colors';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
 import Login from '../../screens/auth/login';
@@ -18,6 +18,7 @@ const BottomTabs = () => {
       initialRouteName="UserHomeScreen"
       screenOptions={{
         tabBarShowLabel: false,
+        tabBarStyle: styles.tabarStyle,
       }}>
       <Tab.Screen
         name="UserProfile"
@@ -40,7 +41,9 @@ const BottomTabs = () => {
         component={Hangout}
         options={{
           headerShown: false,
-          tabBarIcon: () => <Icon name="message-circle" size={24} color={Colors.black} />,
+          tabBarIcon: () => (
+            <Icon name="message-circle" size={24} color={Colors.black} />
+          ),
         }}
       />
       <Tab.Screen
@@ -56,3 +59,25 @@ const BottomTabs = () => {
 };
 
 export default BottomTabs;
+const styles = StyleSheet.create({
+  container: {},
+  tabarStyle: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+    height: 50,
+    borderRadius: 10,
+    borderWidth: 0,
+    shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.23,
+shadowRadius: 2.62,
+
+elevation: 4,
+    // backgroundColor: 'red',
+  },
+});
