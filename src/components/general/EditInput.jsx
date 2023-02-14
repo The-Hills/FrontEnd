@@ -1,6 +1,5 @@
 import React from 'react';
 import {Width} from '../../../assets/ScreenDimensions';
-import {Height} from '../../../assets/ScreenDimensions';
 import {Colors} from '../../../assets/theme/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
