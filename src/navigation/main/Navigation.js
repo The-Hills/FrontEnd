@@ -21,7 +21,8 @@ const Navigation = () => {
 
   const authUser = async () => {
     try {
-      let userData = await AsyncStorage.getItem('userData');
+      let userData = await AsyncStorage.getItem('userInfo');
+      console.log('userLogined', userData);
       if (userData) {
         userData = JSON.parse(userData);
         if (userData.loggedIn) {
@@ -43,8 +44,8 @@ const Navigation = () => {
         <></>
       ) : (
         <Stack.Navigator
-          // initialRouteName={initialRouteName}
-          initialRouteName="BottomTabs"
+          initialRouteName={initialRouteName}
+          // initialRouteName="BottomTabs"
           screenOptions={{headerShown: false}}>
           <Stack.Screen name="BottomTabs" component={BottomTabs} />
           <Stack.Screen name="Register" component={Register} />

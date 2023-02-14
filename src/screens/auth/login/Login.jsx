@@ -15,7 +15,7 @@ import Loader from '../../../components/loader/Loader';
 const Login = ({navigation}) => {
   const [inputs, setInputs] = React.useState({email: '', password: ''});
   const [errors, setErrors] = useState({});
-  const {isLoading, login} = useContext(AuthContext);
+  const {userInfo, isLoading, login} = useContext(AuthContext);
 
   const validate = async () => {
     Keyboard.dismiss();
@@ -30,10 +30,10 @@ const Login = ({navigation}) => {
     }
     if (isValid) {
       const res = await login(inputs);
-      // if (res.data.message === 'Successfully') {
-      //   navigation.navigate('BottomTabs');
-      // }
-      console.log('result: ', res);
+      if (userInfo.message === 'Successfully') {
+        navigation.navigate('BottomTabs');
+      }
+      // console.log('result: ', res.data);
     }
   };
 

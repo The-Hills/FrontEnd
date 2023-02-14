@@ -42,6 +42,7 @@ export const AuthProvider = ({children}) => {
       .then(res => {
         let userInfo = res.data;
         setUserInfo(userInfo);
+        console.log('user info after Login',  userInfo);
         AsyncStorage.setItem(
           'userInfo',
           JSON.stringify({userInfo, loggedIn: true}),
@@ -49,19 +50,19 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       })
       .catch(e => {
-        console.log(`login error ${e}`);
-        setIsLoading(false);
-      });
+          console.log(`login error ${e}`);
+          setIsLoading(false);
+        });
   };
 
   const logout = () => {
     setIsLoading(true);
     axios
       .post(
-        `${URL}/auth/logout`,
+        `${URL}auth/logout`,
         {},
         {
-          headers: {Authorization: `Bearer ${userInfo.accessToken}`},
+          headers: {Authorization: `Bearer ${userInfo.token}`},
         },
       )
       .then(res => {
