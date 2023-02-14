@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
+// import ImagePicker from 'react-native-image-crop-picker';
 import axios from 'axios';
 import { Colors } from '../../../assets/theme/colors';
 import Icon from 'react-native-vector-icons/Feather';
