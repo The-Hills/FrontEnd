@@ -29,7 +29,7 @@ import SavedLocations from '../../components/userScreen/SavedLocations';
 const UserHomeScreen = () => {
   return (
     <View style={GeneralStyle.container}>
-      <StatusBarAr bg={Colors.main} />
+      <StatusBarAr bg={Colors.main}/>
       <View style={styles.top}>
         <View style={styles.bg}>
           <Image

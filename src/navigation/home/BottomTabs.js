@@ -2,13 +2,14 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import UserProfile from '../../screens/profile/UserProfile';
 import Icon from 'react-native-vector-icons/Feather';
 import SplashSceen from '../../screens/Intro/SplashSceen';
 import UserHomeScreen from '../../screens/home/UserHomeScreen';
 import {Colors} from '../../../assets/theme/colors';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
+import UserProfile from '../../screens/profile/general/UserProfile';
+import ProfileStack from '../user/ProfileStack';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
@@ -20,8 +21,8 @@ const BottomTabs = () => {
         tabBarStyle: styles.tabarStyle,
       }}>
       <Tab.Screen
-        name="UserProfile"
-        component={UserProfile}
+        name="ProfileStack"
+        component={ProfileStack}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="user" size={24} color={Colors.black} />,
@@ -68,15 +69,15 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     borderWidth: 0,
-    shadowColor: "#000",
-shadowOffset: {
-	width: 0,
-	height: 2,
-},
-shadowOpacity: 0.23,
-shadowRadius: 2.62,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
 
-elevation: 4,
+    elevation: 4,
     // backgroundColor: 'red',
   },
 });

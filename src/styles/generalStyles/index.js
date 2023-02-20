@@ -10,7 +10,7 @@ export const GeneralStyle = StyleSheet.create({
     // display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.while
+    backgroundColor: Colors.while,
   },
   title: {
     fontFamily: FontFamily.Bold,
@@ -26,5 +26,16 @@ export const GeneralStyle = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 2,
   },
 });

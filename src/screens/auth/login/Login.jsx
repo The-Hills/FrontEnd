@@ -12,10 +12,10 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
-const Login = ({navigation}) => {
+const Login = () => {
   const [inputs, setInputs] = React.useState({email: '', password: ''});
   const [errors, setErrors] = useState({});
-  const {userInfo, isLoading, login} = useContext(AuthContext);
+  const {userInfo, isLoading, login,authUser} = useContext(AuthContext);
 
   const validate = async () => {
     Keyboard.dismiss();
@@ -25,15 +25,12 @@ const Login = ({navigation}) => {
       isValid = false;
     }
     if (!inputs.password) {
-      handleError('Please input password', 'p assword');
+      handleError('Please input password', 'password');
       isValid = false;
     }
     if (isValid) {
-      const res = await login(inputs);
-      if (userInfo.message === 'Successfully') {
-        navigation.navigate('BottomTabs');
-      }
-      // console.log('result: ', res.data);
+      login(inputs);
+
     }
   };
 

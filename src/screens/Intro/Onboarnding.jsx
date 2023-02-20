@@ -28,7 +28,7 @@ const Onboarnding = ({navigation}) => {
       <View style={styles.btn}>
         <Button
           lable="Get Started"
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.navigate('Login')}
         />
       </View>
     </View>

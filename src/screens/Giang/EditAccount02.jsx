@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
     },
     nameChild: {
         size: Sizes.title,
-        fontFamily: FontFamily.Bold
+        fontFamily: FontFamily.Bold,
+        color: Colors.black
     },
     idChild: {
         size: Sizes.title

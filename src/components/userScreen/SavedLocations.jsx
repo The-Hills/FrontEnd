@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'column',  
     justifyContent: 'center',
+    backgroundColor: Colors.while,
+
   },
   img: {
     width: 74,

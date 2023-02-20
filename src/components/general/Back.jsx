@@ -8,23 +8,31 @@ const Back = ({onPress, style}) => {
   const btnStyle = {
     height: 39,
     width: 39,
-    position: 'absolute',
     backgroundColor: '#ffffff',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#232323',
     top: 20,
-    right: '55%'
+    right: '55%',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
   };
-  
+
   return (
     <TouchableOpacity
       style={[btnStyle, style]}
       activeOpacity={0.8}
       onPress={onPress}>
-        <Icon name='chevron-left' size={20} color="#232323"/>
+      <Icon name="chevron-left" size={20} color="#232323" />
     </TouchableOpacity>
   );
 };

@@ -11,7 +11,7 @@ import Avatar from '../../components/general/Avatar';
 import {GeneralStyle} from '../../styles/generalStyles';
 import Title from '../../components/auth/Title';
 
-const EditAccount = ({ navigation }) => {
+const EditAccount = () => {
     return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
         <View style={styles.container}>
