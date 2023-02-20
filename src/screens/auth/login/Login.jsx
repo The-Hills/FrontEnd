@@ -12,16 +12,19 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
-const Login = () => {
+const Login = ({navigation}) => {
   const [inputs, setInputs] = React.useState({email: '', password: ''});
   const [errors, setErrors] = useState({});
-  const {userInfo, isLoading, login,authUser} = useContext(AuthContext);
+  const {userInfo, isLoading, login, authUser} = useContext(AuthContext);
 
   const validate = async () => {
     Keyboard.dismiss();
     let isValid = true;
     if (!inputs.email) {
       handleError('Please input email', 'email');
+      isValid = false;
+    } else if (!inputs.email.match(/\S+@\S+\.\S+/)) {
+      handleError('Please input a valid email', 'email');
       isValid = false;
     }
     if (!inputs.password) {
@@ -30,7 +33,6 @@ const Login = () => {
     }
     if (isValid) {
       login(inputs);
-
     }
   };
 

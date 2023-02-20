@@ -37,6 +37,9 @@ const Register = ({navigation}) => {
     if (!inputs.name) {
       handleError('Please input name', 'name');
       isValid = false;
+    } else if (!inputs.name.match(/^[A-Za-z ]+$/ )) {
+      handleError('Full name is string', 'FullName');
+      isValid = false;
     }
 
     if (!inputs.phone) {
@@ -47,17 +50,23 @@ const Register = ({navigation}) => {
     if (!inputs.password) {
       handleError('Please input password', 'password');
       isValid = false;
-    } else if (inputs.password.length < 5) {
-      handleError('Min password length of 5', 'password');
+    } else if (
+      !inputs.password.match(
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,50}$/,
+      )
+    ) {
+      handleError(
+        'Use 8 or more characters with a mix of letters, numbers & symbol',
+        'password',
+      );
       isValid = false;
     }
     if (isValid) {
-      console.log(inputs);
+      // console.log(inputs);
       const res = await register(inputs);
       if (res.data.message === 'Successfully') {
         navigation.navigate('Login');
       }
-      console.log('result: ', res.data);
     }
   };
 

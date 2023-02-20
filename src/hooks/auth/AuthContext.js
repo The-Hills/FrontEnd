@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) => {
       })
       .then(res => {
         let userInfo = res.data;
-        console.log(userInfo);
+        // console.log(userInfo);
         setUserInfo(userInfo);
         setIsLoading(false);
         return res;
