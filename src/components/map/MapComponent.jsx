@@ -81,13 +81,11 @@ const LVLocation = {
 export default function MapComponent() {
   return (
     <View style={styles.container}>
-      {/*Render our MapView*/}
       <MapView
-        // zoomEnabled={true}
-        // zoomControlEnabled={true}
         style={styles.map}
+        showsUserLocation={true}
+        followsUserLocation={true}
         customMapStyle={customStyle}
-        //specify our coordinates.
         initialRegion={LVLocation}>
         <Marker coordinate={LVLocation}>
           <Image

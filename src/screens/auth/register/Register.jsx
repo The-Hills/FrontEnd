@@ -68,7 +68,7 @@ const Register = ({navigation}) => {
         navigation.navigate('Login');
       }
     }
-  };
+  };  
 
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));

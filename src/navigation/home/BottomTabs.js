@@ -11,6 +11,7 @@ import Notification from '../../screens/notification/Notification';
 import UserProfile from '../../screens/profile/general/UserProfile';
 import ProfileStack from '../user/ProfileStack';
 import MapComponent from '../../components/map/MapComponent';
+import BottomSheet from '../../components/BottomSheet/BottomSheet';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
@@ -58,6 +59,14 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Map"
         component={MapComponent}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,
+        }}
+      />
+      <Tab.Screen
+        name="bts"
+        component={BottomSheet}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,
