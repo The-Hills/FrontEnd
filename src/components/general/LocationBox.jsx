@@ -18,6 +18,11 @@ import {Colors} from '../../../assets/theme/colors';
 import {Width} from '../../../assets/ScreenDimensions';
 import {GeneralStyle} from '../../styles/generalStyles';
 import {FontFamily} from '../../../assets/theme/fontFamily';
+import {
+  GooglePlaceDetail,
+  GooglePlacesAutocomplete,
+} from 'react-native-google-places-autocomplete';
+import {PLACES_API_KEY} from '../../../assets/APIKey';
 const TYPES = ['base', 'none'];
 const LocationBox = ({
   style,
@@ -29,13 +34,14 @@ const LocationBox = ({
   value,
   placeholder,
   iconSend,
+  BGcolor,
   onFocus = () => {},
   ...props
 }) => {
   const boxType = TYPES.includes(type) ? type : 'base';
   return (
     <TouchableOpacity
-    onPress={onPress}
+      onPress={onPress}
       style={[
         styles.container,
         {backgroundColor: boxType === 'base' ? Colors.blue2 : Colors.while},
@@ -44,13 +50,24 @@ const LocationBox = ({
       <View style={styles.icon}>
         <Icon name={iconName} size={24} color={Colors.black} />
       </View>
-      <TextInput
-        style={[styles.input]}
-        value={value}
-        onChangeText={onChangeText}
-        placeholderTextColor={Colors.black}
+      <GooglePlacesAutocomplete
         placeholder={placeholder}
-        {...props}
+        textInputProps={{
+          placeholderTextColor: Colors.black,
+        }}
+        styles={{textInput: {backgroundColor: {BGcolor}}}}
+        fetchDetails={true}
+        onFail={error => console.log(error)}
+        onNotFound={() => console.log('no results')}
+        listEmptyComponent={() => (
+          <View style={{flex: 1}}>
+            <Text>No results were found</Text>
+          </View>
+        )}
+        query={{
+          key: PLACES_API_KEY,
+          language: 'en',
+        }}
       />
       <Icon name={iconSend} size={24} color={Colors.black} />
     </TouchableOpacity>

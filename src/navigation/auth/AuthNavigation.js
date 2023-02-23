@@ -1,11 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SplashSceen from '../../screens/Intro/SplashSceen';
+import Onboarnding from '../../screens/Intro/Onboarnding';
+import Login from '../../screens/auth/login/Login';
+import Register from '../../screens/auth/register/Register';
+const Stack = createNativeStackNavigator();
 
 const AuthNavigation = () => {
   return (
-    <View>
-      <Text>authNavigation</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Group screenOptions={{headerShown: false}}>
+        <Stack.Screen name="SplashSceen" component={SplashSceen} />
+        <Stack.Screen name="Onboarnding" component={Onboarnding} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+      </Stack.Group>
+    </Stack.Navigator>
   )
 }
 

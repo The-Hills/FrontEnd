@@ -30,7 +30,7 @@ import Navigation from '../../navigation/main/Navigation';
 const UserHomeScreen = ({navigation}) => {
   return (
     <View style={GeneralStyle.container}>
-      <StatusBarAr bg={Colors.main}/>
+      <StatusBarAr bg={Colors.main} />
       <View style={styles.top}>
         <View style={styles.bg}>
           <Image
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: Colors.while,
-    marginBottom: 50
+    marginBottom: 50,
   },
   box: {
     marginTop: 20,

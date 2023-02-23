@@ -9,17 +9,16 @@ import {Colors} from '../../../assets/theme/colors';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
 import UserProfile from '../../screens/profile/general/UserProfile';
-import ProfileStack from '../user/ProfileStack';
 import MapComponent from '../../components/map/MapComponent';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 import ChooseLocation from '../../screens/other/ChooseLocation';
-import MapStack from '../user/MapStack';
+
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="MapStack"
+      initialRouteName="UserHomeScreen"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: styles.tabarStyle,
@@ -33,8 +32,8 @@ const BottomTabs = () => {
         }}
       />
       <Tab.Screen
-        name="MapStack"
-        component={MapStack}
+        name="UserHomeScreen"
+        component={UserHomeScreen}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,

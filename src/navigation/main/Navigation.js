@@ -14,8 +14,9 @@ import {AuthContext, AuthProvider} from '../../hooks/auth/AuthContext';
 import UserProfile from '../../screens/profile/general/UserProfile';
 import Loader from '../../components/loader/Loader';
 import Kidprofile from '../../screens/profile/kid/Kidprofile';
-import UserStack from '../user/UserStack';
 import DriverStack from '../driver/DriverStack';
+import MainStack from '../user/MainStack';
+import AuthNavigation from '../auth/AuthNavigation';
 
 const Navigation = () => {
   const {userInfo} = useContext(AuthContext);
@@ -23,9 +24,8 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      {/* <BottomTabs /> */}
-      {/* <UserStack /> */}
-      {userInfo.loggedIn ? <BottomTabs /> : <UserStack />}
+      <MainStack />
+      {/* {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>} */}
     </NavigationContainer>
   );
 };

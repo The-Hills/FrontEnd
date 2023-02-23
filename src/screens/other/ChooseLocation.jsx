@@ -1,4 +1,18 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {
+  SafeAreaView,
+  View,
+  StatusBar,
+  Text,
+  TextInput,
+  FlatList,
+  Dimensions,
+  StyleSheet,
+  Image,
+  Pressable,
+  SectionList,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import MapComponent from '../../components/map/MapComponent';
 import {Height, Width} from '../../../assets/ScreenDimensions';
@@ -6,7 +20,9 @@ import {Modalize} from 'react-native-modalize';
 import {Colors} from '../../../assets/theme/colors';
 import LocationBox from '../../components/general/LocationBox';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-const ChooseLocation = () => {
+import Button from '../../components/general/Button';
+import Back from '../../components/general/Back';
+const ChooseLocation = ({navigation: {goBack}}) => {
   useEffect(() => {
     onOpen();
   });
@@ -19,38 +35,27 @@ const ChooseLocation = () => {
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent />
+        <Back style={styles.back} onPress={() => goBack()} />
       </View>
-      <Modalize ref={modalizeRef} withOverlay={false} adjustToContentHeight>
-        <View style={{height: 800, paddingHorizontal: 20,backgroundColor:'red'}}>
-          {/* <View style={styles.LocationBox}>
-            <LocationBox
-              style={styles.box}
-              iconName="map-pin"
-              placeholder="Current location"
-              type="base"
-              iconSend="arrow-right"
-            />
-            <LocationBox
-              style={styles.box}
-              type="none"
-              iconName="send"
-              placeholder="Where to?"
-              iconSend="arrow-right"
-            />
-          </View> */}
-          <GooglePlacesAutocomplete
-            placeholder="Search"
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
-            }}
-            query={{
-              key: 'AIzaSyCnijHwZerVApB9pAIRRCm_8gjMzReprJE',
-              language: 'en',
-            }}
-          />
-        </View>
-      </Modalize>
+      <View style={styles.searchContainer}>
+        
+        <LocationBox
+          iconName="map-pin"
+          placeholder="Current location"
+          type="base"
+          iconSend="arrow-right"
+          BGcolor={Colors.blue1}
+        />
+        <LocationBox
+          style={styles.box}
+          type="none"
+          iconName="send"
+          placeholder="Where to?"
+          iconSend="arrow-right"
+          BGcolor={Colors.blue1}
+        />
+        <Button style={styles.btn} lable="Confirm address" />
+      </View>
     </View>
   );
 };
@@ -66,5 +71,36 @@ const styles = StyleSheet.create({
     height: Height,
     width: Width,
     backgroundColor: Colors.while,
+  },
+  input: {
+    color: Colors.black,
+  },
+  searchContainer: {
+    position: 'absolute',
+    paddingTop: 50,
+    gap: 20,
+    bottom: 0,
+    // top: 0,
+    width: '100%',
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    backgroundColor: 'white',
+    shadowColor: 'black',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    elevation: 4,
+    padding: 8,
+    borderTopRightRadius: 30,
+    borderTopLeftRadius: 30,
+  },
+  btn: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  back: {
+    // position: 'absolute',
+    left: 20,
+    top: 20,
   },
 });
