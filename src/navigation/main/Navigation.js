@@ -3,9 +3,7 @@ import React, {useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
-import SplashSceen from '../../screens/Intro/SplashSceen';
-import Onboarnding from '../../screens/Intro/Onboarnding';
-import UserHomeScreen from '../../screens/home/UserHomeScreen';
+
 import BottomTabs from '../home/BottomTabs';
 import Register from '../../screens/auth/register/Register';
 import Login from '../../screens/auth/login/Login';
