@@ -14,6 +14,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
 const Register = ({navigation}) => {
+  const {userInfo} = useContext(AuthContext);
   const [inputs, setInputs] = React.useState({
     email: null,
     name: null,
@@ -63,8 +64,8 @@ const Register = ({navigation}) => {
     }
     if (isValid) {
       // console.log(inputs);
-      const res = await register(inputs);
-      if (res.data.message === 'Successfully') {
+      register(inputs);
+      if (userInfo.message === 'Successfully') {
         navigation.navigate('Login');
       }
     }
