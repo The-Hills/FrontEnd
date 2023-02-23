@@ -15,7 +15,7 @@ const BottomSheet = () => {
         <Text>Open the modal</Text>
       </TouchableOpacity>
 
-      <Modalize adjustToContentHeight ref={modalizeRef}>
+      <Modalize overlayStyle={{backgroundColor:'red'}} withOverlay={true} adjustToContentHeight ref={modalizeRef}>
         <View style={{height: 600}}>
           <Text style={{color: 'black'}}>Bottomsdasdasdsahfgvjzhxdvgjdhgd</Text>
         </View>

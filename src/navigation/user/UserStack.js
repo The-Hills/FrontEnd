@@ -6,6 +6,7 @@ import Login from '../../screens/auth/login/Login';
 import Register from '../../screens/auth/register/Register';
 import Onboarnding from '../../screens/Intro/Onboarnding';
 import Kidprofile from '../../screens/profile/kid/Kidprofile';
+import ChooseLocation from '../../screens/other/ChooseLocation';
 const Stack = createNativeStackNavigator();
 const UserStack = () => {
   return (
@@ -14,7 +15,7 @@ const UserStack = () => {
         <Stack.Screen name="SplashSceen" component={SplashSceen} />
         <Stack.Screen name="Onboarnding" component={Onboarnding} />
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register}/>
+        <Stack.Screen name="Register" component={Register} />
       </Stack.Group>
     </Stack.Navigator>
   );

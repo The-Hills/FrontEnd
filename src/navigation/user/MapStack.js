@@ -4,19 +4,19 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Kidprofile from '../../screens/profile/kid/Kidprofile';
 import UserProfile from '../../screens/profile/general/UserProfile';
 import Login from '../../screens/auth/login/Login';
-import BottomTabs from '../home/BottomTabs';
+import UserHomeScreen from '../../screens/home/UserHomeScreen';
+import ChooseLocation from '../../screens/other/ChooseLocation';
 const Stack = createNativeStackNavigator();
-const ProfileStack = () => {
+
+const MapStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="bottomtabs" component={BottomTabs} />
-      <Stack.Screen name="UserProfile" component={UserProfile} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Kidprofile" component={Kidprofile} />
+      <Stack.Screen name="UserHomeScreen" component={UserHomeScreen} />
+      <Stack.Screen name="ChooseLocation" component={ChooseLocation} />
     </Stack.Navigator>
   );
 };
 
-export default ProfileStack;
+export default MapStack;
 
 const styles = StyleSheet.create({});

@@ -26,7 +26,8 @@ import {Sizes} from '../../../assets/theme/fontSize';
 import {ButtonColors} from '../../../assets/theme/ButtonColor';
 import Vehicle from '../../components/userScreen/Vehicle';
 import SavedLocations from '../../components/userScreen/SavedLocations';
-const UserHomeScreen = () => {
+import Navigation from '../../navigation/main/Navigation';
+const UserHomeScreen = ({navigation}) => {
   return (
     <View style={GeneralStyle.container}>
       <StatusBarAr bg={Colors.main}/>
@@ -51,6 +52,7 @@ const UserHomeScreen = () => {
         <ScrollView>
           <View style={styles.LocationBox}>
             <LocationBox
+              onPress={() => navigation.navigate('ChooseLocation')}
               style={styles.box}
               iconName="map-pin"
               placeholder="Current location"

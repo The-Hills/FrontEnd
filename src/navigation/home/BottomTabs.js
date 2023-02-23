@@ -12,27 +12,29 @@ import UserProfile from '../../screens/profile/general/UserProfile';
 import ProfileStack from '../user/ProfileStack';
 import MapComponent from '../../components/map/MapComponent';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
+import ChooseLocation from '../../screens/other/ChooseLocation';
+import MapStack from '../user/MapStack';
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="UserHomeScreen"
+      initialRouteName="MapStack"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: styles.tabarStyle,
       }}>
       <Tab.Screen
-        name="ProfileStack"
-        component={ProfileStack}
+        name="Profile"
+        component={UserProfile}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="user" size={24} color={Colors.black} />,
         }}
       />
       <Tab.Screen
-        name="UserHomeScreen"
-        component={UserHomeScreen}
+        name="MapStack"
+        component={MapStack}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,
@@ -51,22 +53,6 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Notification"
         component={Notification}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,
-        }}
-      />
-      <Tab.Screen
-        name="Map"
-        component={MapComponent}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,
-        }}
-      />
-      <Tab.Screen
-        name="bts"
-        component={BottomSheet}
         options={{
           headerShown: false,
           tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,

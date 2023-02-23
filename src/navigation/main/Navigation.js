@@ -23,8 +23,9 @@ const Navigation = () => {
 
   return (
     <NavigationContainer>
-      <BottomTabs />
-      {/* {userInfo.loggedIn ? <BottomTabs /> : <UserStack />} */}
+      {/* <BottomTabs /> */}
+      {/* <UserStack /> */}
+      {userInfo.loggedIn ? <BottomTabs /> : <UserStack />}
     </NavigationContainer>
   );
 };

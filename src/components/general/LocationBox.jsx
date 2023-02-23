@@ -22,7 +22,7 @@ const TYPES = ['base', 'none'];
 const LocationBox = ({
   style,
   iconName,
-  opPress,
+  onPress,
   type,
   onChangeText,
   lable,
@@ -35,6 +35,7 @@ const LocationBox = ({
   const boxType = TYPES.includes(type) ? type : 'base';
   return (
     <TouchableOpacity
+    onPress={onPress}
       style={[
         styles.container,
         {backgroundColor: boxType === 'base' ? Colors.blue2 : Colors.while},

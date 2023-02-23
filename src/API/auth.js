@@ -1,7 +1,7 @@
 import axios from 'axios';
 export const BASE_URL = 'http://13.231.114.148/api';
 
-export const URL = 'http://ec2-54-95-102-134.ap-northeast-1.compute.amazonaws.com/api/';
+export const URL = 'http://localhost:3000/api/';
 
 export const authApi = axios.create({
   BASE_URL: BASE_URL,
