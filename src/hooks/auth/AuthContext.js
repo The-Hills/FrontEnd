@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {createContext, useEffect, useState} from 'react';
-import {URL} from '../../API/auth';
+import {registerUser, URL} from '../../API/auth';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthContext = createContext();
@@ -11,17 +11,29 @@ export const AuthProvider = ({children}) => {
 
   const register = async ({name, email, password, phone}) => {
     setIsLoading(true);
+    // return registerUser({name, email, password, phone});
+    // .then(res => {
+    //   console.log(res);
+    //   setUserInfo(res.data);
+    //   setIsLoading(false);
+    //   return res;
+    // })
+    // .catch(e => {
+    //   console.log(`register error ${e}`);
+    //   setIsLoading(false);
+    // });
     return axios
-      .post(`${URL}auth/register`, {
-        email,
-        name,
-        password,
-        phone,
-      })
+      .post(
+        `http://ec2-54-95-102-134.ap-northeast-1.compute.amazonaws.com/api/auth/register`,
+        {
+          email,
+          name,
+          password,
+          phone,
+        },
+      )
       .then(res => {
-        let userInfo = res.data;
-        // console.log(userInfo);
-        setUserInfo(userInfo);
+        setUserInfo(res.data);
         setIsLoading(false);
         return res;
       })
@@ -39,8 +51,8 @@ export const AuthProvider = ({children}) => {
         password,
       })
       .then(res => {
-        let userInfo = res.data;
-        setUserInfo(userInfo);
+        console.log('res => ', res);
+        setUserInfo(res?.data);
         console.log('user info after Login', userInfo);
         AsyncStorage.setItem(
           'userInfo',

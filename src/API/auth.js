@@ -1,14 +1,22 @@
-import axios from 'axios';
-export const BASE_URL = 'http://13.231.114.148/api';
+import axiosRequest from './index';
 
-export const URL = 'http://ec2-54-95-102-134.ap-northeast-1.compute.amazonaws.com/api/';
+const config = {
+  headers: {
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Headers':
+      'Origin, X-Requested-With, Content-Type, Accept',
+    'Content-Type': 'Accept',
+  },
+};
 
-export const authApi = axios.create({
-  BASE_URL: BASE_URL,
-});
+export const registerUser = async data => {
+  const url = 'auth/register';
+  return await axiosRequest.post(url, data, config);
+};
 
-export const signUp = async (email, password, fullName, phoneNumber) => {
-  const response = await authApi.post('');
-  return response.data;
+export const loginUser = async data => {
+  const url = 'auth/login';
+
+  return await axiosRequest.post(url, data);
 };
 

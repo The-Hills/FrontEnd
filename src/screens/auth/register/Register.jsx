@@ -13,6 +13,7 @@ import {Sizes} from '../../../../assets/theme/fontSize';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
+import {registerUser} from './../../../API/auth';
 const Register = ({navigation}) => {
   const [inputs, setInputs] = React.useState({
     email: null,
@@ -21,10 +22,9 @@ const Register = ({navigation}) => {
     phone: null,
   });
   const [errors, setErrors] = React.useState({});
-  const {isLoading, register} = useContext(AuthContext);
-  const validate = async () => {
-    Keyboard.dismiss();
-    let isValid = true;
+  const {isLoading} = useContext(AuthContext);
+  const validate = () => {
+    var isValid = true;
 
     if (!inputs.email) {
       handleError('Please input email', 'email');
@@ -37,7 +37,7 @@ const Register = ({navigation}) => {
     if (!inputs.name) {
       handleError('Please input name', 'name');
       isValid = false;
-    } else if (!inputs.name.match(/^[A-Za-z ]+$/ )) {
+    } else if (!inputs.name.match(/^[A-Za-z ]+$/)) {
       handleError('Full name is string', 'FullName');
       isValid = false;
     }
@@ -61,15 +61,20 @@ const Register = ({navigation}) => {
       );
       isValid = false;
     }
-    if (isValid) {
-      // console.log(inputs);
-      const res = await register(inputs);
+    return isValid;
+  };
+  const register = async () => {
+    const isValidated = validate();
+    if (isValidated) {
+      console.log('valid');
+      console.log(inputs);
+      const res = await registerUser(inputs);
+      console.log('res: ', res.data);
       if (res.data.message === 'Successfully') {
         navigation.navigate('Login');
       }
     }
   };
-
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));
   };
@@ -129,7 +134,7 @@ const Register = ({navigation}) => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <Button lable="Register" onPress={validate} />
+            <Button lable="Register" onPress={register} />
             <Text
               onPress={() => navigation.navigate('Login')}
               style={[styles.text]}>
