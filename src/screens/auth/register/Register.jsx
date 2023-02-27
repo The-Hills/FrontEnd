@@ -64,17 +64,24 @@ const Register = ({navigation}) => {
     return isValid;
   };
   const register = async () => {
+    console.log('vooo1', inputs);
     const isValidated = validate();
+    console.log('💩: register -> isValidated', isValidated);
     if (isValidated) {
       console.log('valid');
       console.log(inputs);
-      const res = await registerUser(inputs);
-      console.log('res: ', res.data);
+      try {
+        const res = await registerUser(inputs);
+        console.log('res: ', res.data);
+      } catch (error) {
+        console.log('💩: register -> error', error);
+      }
       if (res.data.message === 'Successfully') {
         navigation.navigate('Login');
       }
     }
   };
+
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));
   };
@@ -82,7 +89,7 @@ const Register = ({navigation}) => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
   return (
-    <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
+    <KeyboardAwareScrollView>
       <Loader visible={isLoading} />
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>

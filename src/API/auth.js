@@ -2,10 +2,10 @@ import axiosRequest from './index';
 
 const config = {
   headers: {
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Allow-Headers':
-      'Origin, X-Requested-With, Content-Type, Accept',
-    'Content-Type': 'Accept',
+    // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    // 'Access-Control-Allow-Headers':
+    //   'Origin, X-Requested-With, Content-Type, Accept',
+    // 'Content-Type': 'Accept',
   },
 };
 
@@ -19,4 +19,3 @@ export const loginUser = async data => {
 
   return await axiosRequest.post(url, data);
 };
-
