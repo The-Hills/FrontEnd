@@ -17,6 +17,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import MapComponent from '../../components/map/MapComponent';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Modalize} from 'react-native-modalize';
+import Modal from 'react-native-modal';
 import {Colors} from '../../../assets/theme/colors';
 import LocationBox from '../../components/general/LocationBox';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
@@ -27,11 +28,13 @@ import MapViewDirections from 'react-native-maps-directions';
 import {PLACES_API_KEY} from '../../../assets/APIKey';
 import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
+import {FontFamily} from '../../../assets/theme/fontFamily';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(true);
   const [Sellect, setSellect] = useState('none');
   const mapRef = useRef(null);
 
@@ -262,6 +265,100 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           />
         </View>
       </Modalize>
+      <Modal isVisible={isModalVisible}
+      onSwipeComplete={() => setModalVisible(false)}
+      swipeDirection="right">
+        <View style={styles.modal}>
+          <View
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              height: '100%',
+              // gap: 30,
+              paddingVertical: 30,
+
+              // width: '100%',
+            }}>
+            <View style={styles.modalContent}>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Avatar
+                  source={{
+                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                  }}
+                  style={{
+                    borderWidth: 0.5,
+                    width: 70,
+                    height: 70,
+                  }}
+                />
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontFamily: FontFamily.SemiBold,
+                  }}>
+                  Dog
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Avatar
+                  source={{
+                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                  }}
+                  style={{
+                    borderWidth: 0.5,
+                    width: 70,
+                    height: 70,
+                  }}
+                />
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontFamily: FontFamily.SemiBold,
+                  }}>
+                  Dog
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Avatar
+                  source={{
+                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                  }}
+                  style={{
+                    borderWidth: 0.5,
+                    width: 70,
+                    height: 70,
+                  }}
+                />
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontFamily: FontFamily.SemiBold,
+                  }}>
+                  Dog
+                </Text>
+              </View>
+            </View>
+            <Button style={{width: Width - 90}} lable="Submit" />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -269,6 +366,20 @@ const ChooseLocation = ({navigation: {goBack}}) => {
 export default ChooseLocation;
 
 const styles = StyleSheet.create({
+  modalContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: 30,
+  },
+  modal: {
+    backgroundColor: Colors.while,
+    height: 250,
+    borderRadius: 30,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   vehicles: {
     display: 'flex',
     flexDirection: 'row',
