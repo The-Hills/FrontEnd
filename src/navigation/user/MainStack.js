@@ -16,7 +16,7 @@ const MainStack = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Group>
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
-        <Stack.Screen name="UserHomeScreen" component={UserHomeScreen} />
+        {/* <Stack.Screen name="UserHomeScreen" component={UserHomeScreen} /> */}
         <Stack.Screen
           options={{tabBarStyle: {display: 'none'}}}
           name="ChooseLocation"

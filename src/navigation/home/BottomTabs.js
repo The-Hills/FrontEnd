@@ -13,7 +13,6 @@ import MapComponent from '../../components/map/MapComponent';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 import ChooseLocation from '../../screens/other/ChooseLocation';
 
-
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (

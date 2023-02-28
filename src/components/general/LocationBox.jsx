@@ -26,16 +26,19 @@ import {PLACES_API_KEY} from '../../../assets/APIKey';
 const TYPES = ['base', 'none'];
 const LocationBox = ({
   style,
+  styles1,
   iconName,
   onPress,
   type,
   onChangeText,
   lable,
+  marginTop,
   value,
   placeholder,
   iconSend,
   BGcolor,
-  onFocus = () => {},
+  onFocus,
+  onPlaceSelected,
   ...props
 }) => {
   const boxType = TYPES.includes(type) ? type : 'base';
@@ -52,10 +55,34 @@ const LocationBox = ({
       </View>
       <GooglePlacesAutocomplete
         placeholder={placeholder}
+        onPress={(data, details = null) => {
+          onPlaceSelected(details);
+        }}
+        listViewDisplayed="auto"
+        renderRow={results => (
+          <View
+            style={{
+              width: Width,
+              display: 'flex',
+              flexDirection: 'row',
+              gap: 20,
+              alignItems: 'center',
+            }}>
+            <Icon name="map-pin" size={23} color={Colors.black} />
+            <View style={{display: 'flex', flexDirection: 'column'}}>
+              <Text
+                style={{color: Colors.black, fontFamily: FontFamily.SemiBold}}>
+                {results.structured_formatting.main_text}
+              </Text>
+              <Text style={{color: Colors.black}}>{results.description}</Text>
+            </View>
+          </View>
+        )}
         textInputProps={{
+          onFocus,
           placeholderTextColor: Colors.black,
         }}
-        styles={{textInput: {backgroundColor: {BGcolor}}}}
+        styles={styles1}
         fetchDetails={true}
         onFail={error => console.log(error)}
         onNotFound={() => console.log('no results')}
@@ -83,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    height: 50,
+    // height: 50,
     backgroundColor: Colors.blue2,
     borderRadius: 10,
     shadowColor: '#000',

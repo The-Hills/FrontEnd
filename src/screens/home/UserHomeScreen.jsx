@@ -52,14 +52,22 @@ const UserHomeScreen = ({navigation}) => {
         <ScrollView>
           <View style={styles.LocationBox}>
             <LocationBox
+              onFocus={() => navigation.navigate('ChooseLocation')}
               onPress={() => navigation.navigate('ChooseLocation')}
               style={styles.box}
               iconName="map-pin"
-              placeholder="Current location"
+              placeholder="Kid's location"
               type="base"
               iconSend="arrow-right"
+              styles1={{
+                textInput: {
+                  backgroundColor: Colors.blue2,
+                },
+              }}
             />
             <LocationBox
+              onFocus={() => navigation.navigate('ChooseLocation')}
+              onPress={() => navigation.navigate('ChooseLocation')}
               style={styles.box}
               type="none"
               iconName="send"

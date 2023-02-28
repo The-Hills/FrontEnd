@@ -16,7 +16,6 @@ export const GeneralStyle = StyleSheet.create({
     fontFamily: FontFamily.Bold,
     fontSize: Sizes.title,
     color: Colors.black,
-    // lineHeight: 30,
   },
   text: {
     fontFamily: FontFamily.Regular,

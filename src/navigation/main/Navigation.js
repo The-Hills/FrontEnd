@@ -20,12 +20,9 @@ import AuthNavigation from '../auth/AuthNavigation';
 
 const Navigation = () => {
   const {userInfo} = useContext(AuthContext);
-  console.log('Data day', userInfo);
-
   return (
     <NavigationContainer>
-      <MainStack />
-      {/* {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>} */}
+      {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>}
     </NavigationContainer>
   );
 };

@@ -1,6 +1,9 @@
-import React from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import MapView from 'react-native-maps';
 import {Marker} from 'react-native-maps';
+import {Callout} from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+
 import {
   SafeAreaView,
   View,
@@ -15,62 +18,10 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-const customStyle = [
-  {
-    featureType: 'all',
-    elementType: 'labels.text',
-    stylers: [
-      {
-        color: '#878787',
-      },
-    ],
-  },
-  {
-    featureType: 'all',
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'landscape',
-    elementType: 'all',
-    stylers: [
-      {
-        color: '#f9f5ed',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'all',
-    stylers: [
-      {
-        color: '#f5f5f5',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [
-      {
-        color: '#c9c9c9',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'all',
-    stylers: [
-      {
-        color: '#aee0f4',
-      },
-    ],
-  },
-];
+import {customStyle} from '../../styles/generalStyles/mapStyle';
+import MapViewDirections from 'react-native-maps-directions';
+import {PLACES_API_KEY} from '../../../assets/APIKey';
+
 const LVLocation = {
   latitude: 16.061362,
   longitude: 108.222391,
@@ -78,24 +29,74 @@ const LVLocation = {
   longitudeDelta: 0.01,
 };
 
-export default function MapComponent() {
+export default React.forwardRef((props, mapRef) => {
+  // const origin = {latitude: 16.0596459, longitude: 108.2397195};
+  // const destination = {latitude: 16.0713037, longitude: 108.2155362};
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+  console.log("mapRef: ", mapRef);
+  const currentLocationRef = useRef(null);
+  useEffect(() => {
+    Geolocation.getCurrentPosition(position => {
+      setCurrentLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
+  useEffect(() => {
+    const region = {
+      ...currentLocation,
+      latitudeDelta: 0.0123,
+      longitudeDelta: 0.01,
+    };
+    mapRef?.current?.animateToRegion(region, 1000);
+  }, [currentLocation]);
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={styles.map}
         showsUserLocation={true}
         followsUserLocation={true}
-        customMapStyle={customStyle}
-        initialRegion={LVLocation}>
-        <Marker coordinate={LVLocation}>
+        initialRegion={{
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+        customMapStyle={customStyle}> 
+          {props.children}
+        {/* <Marker coordinate={LVLocation}>
           <Image
-            source={require('../../../assets/images/car2.png')}
+            source={require('../../../assets/images/piker.png')}
             style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
+          <Callout>
+            <Text>Nguyễn Tăng Bảo Ngọc</Text>
+          </Callout>
         </Marker>
+        <Marker coordinate={origin}>
+          <Image
+            source={require('../../../assets/images/school.png')}
+            style={{height: 100, width: 50, resizeMode: 'contain'}}></Image>
+          <Callout>
+            <Text>Nguyễn Tăng Bảo Ngọc</Text>
+          </Callout>
+        </Marker> */}
+        {/* <MapViewDirections
+          origin={origin}
+          destination={LVLocation}
+          apikey={PLACES_API_KEY}
+          strokeWidth={3}
+          strokeColor="hotpink"
+        /> */}
       </MapView>
     </View>
   );
-}
+}) 
+
 //create our styling code:
 const styles = StyleSheet.create({
   container: {

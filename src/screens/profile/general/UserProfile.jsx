@@ -212,13 +212,13 @@ const styles = StyleSheet.create({
     top: 30,
   },
   nameChild: {
-    size: Sizes.name,
+    fontSize: Sizes.text,
     fontFamily: FontFamily.Bold,
     color: Colors.black,
     textAlign: 'center',
   },
   idChild: {
-    size: Sizes.title,
+    fontSize: Sizes.text,
     color: Colors.black,
     textAlign: 'center',
   },

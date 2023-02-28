@@ -38,7 +38,7 @@ const Register = ({navigation}) => {
     if (!inputs.name) {
       handleError('Please input name', 'name');
       isValid = false;
-    } else if (!inputs.name.match(/^[A-Za-z ]+$/ )) {
+    } else if (!inputs.name.match(/^[A-Za-z ]+$/)) {
       handleError('Full name is string', 'FullName');
       isValid = false;
     }
@@ -63,12 +63,13 @@ const Register = ({navigation}) => {
       isValid = false;
     }
     if (isValid) {
-       register(inputs);
-      if (userInfo.message === 'Successfully') {
+      const res = await register(inputs);
+      console.log(res);
+      if (res.data.message === 'Successfully') {
         navigation.navigate('Login');
       }
     }
-  };  
+  };
 
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));

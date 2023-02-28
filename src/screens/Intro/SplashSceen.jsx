@@ -1,18 +1,24 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import LogoPkid from '../../components/general/LogoPkid';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Sizes} from '../../../assets/theme/fontSize';
 import StatusBarAr from '../../../assets/theme/StatusBar';
+import {AuthContext} from '../../hooks/auth/AuthContext';
 
 const SplashSceen = ({navigation}) => {
-  setTimeout(() => {
-    navigation.replace('Onboarnding');
-  }, 3000);
+  const {userInfo} = useContext(AuthContext);
+  useEffect(() => {
+    if (!userInfo.loggedIn) {
+      setTimeout(() => {
+        navigation.replace('Onboarnding');
+      }, 3000);
+    }
+  });
   return (
     <View style={styles.container}>
-      <StatusBarAr bg={Colors.main}/>
+      <StatusBarAr bg={Colors.main} />
       <LogoPkid
         style={{
           width: 290,

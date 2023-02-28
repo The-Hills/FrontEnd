@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import {StyleSheet, Text, View} from 'react-native';
+import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashSceen from '../../screens/Intro/SplashSceen';
 import Onboarnding from '../../screens/Intro/Onboarnding';
@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 
 const AuthNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="SplashSceen">
       <Stack.Group screenOptions={{headerShown: false}}>
         <Stack.Screen name="SplashSceen" component={SplashSceen} />
         <Stack.Screen name="Onboarnding" component={Onboarnding} />
@@ -17,9 +17,9 @@ const AuthNavigation = () => {
         <Stack.Screen name="Register" component={Register} />
       </Stack.Group>
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default AuthNavigation
+export default AuthNavigation;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
