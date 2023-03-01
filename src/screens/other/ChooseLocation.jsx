@@ -13,32 +13,52 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {Children, useEffect, useRef, useState} from 'react';
 import MapComponent from '../../components/map/MapComponent';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Modalize} from 'react-native-modalize';
 import Modal from 'react-native-modal';
 import {Colors} from '../../../assets/theme/colors';
 import LocationBox from '../../components/general/LocationBox';
-import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import Button from '../../components/general/Button';
 import Back from '../../components/general/Back';
-import {MapMarker, Marker} from 'react-native-maps';
+import {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {PLACES_API_KEY} from '../../../assets/APIKey';
 import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 
+const childrenList = [
+  {
+    id: '1',
+    name: 'Huy',
+  },
+  {
+    id: '2',
+    name: 'Vư',
+  },
+  {
+    id: '3',
+    name: 'Giang',
+  },
+];
+
 const ChooseLocation = ({navigation: {goBack}}) => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
-  const [isModalVisible, setModalVisible] = useState(true);
+  const [isModalVisible, setModalVisible] = useState(false);
   const [Sellect, setSellect] = useState('none');
+  const [selectedChild, setSelectedChild] = useState(childrenList[0].id);
+
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
+
+  const isSelectedChild = id => {
+    return id === selectedChild;
+  };
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
@@ -228,30 +248,44 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           <View style={{display: Sellect}}>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <View style={{height: 60, flexDirection: 'row', gap: 10}}>
-                <Avatar
-                  source={{
-                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
-                  }}
-                  style={{
-                    borderWidth: 0.5,
-                    width: 60,
-                    height: 60,
-                  }}
-                />
-                <View style={{height: '100%', flexDirection: 'column', gap: 5}}>
-                  <Image
-                    style={{
-                      borderWidth: 0.5,
-                      width: 40,
-                      height: 40,
-                    }}
-                    source={require('../../../assets/images/image13.png')}
-                  />
-                  <Text style={{color: Colors.black}}>ID: 3456678</Text>
-                </View>
-              </View>
-              <Button type="hollow" size="small" lable="Change" />
+              {childrenList
+                .filter(child => child.id == selectedChild)
+                .map(child => (
+                  <View
+                    key={child.id}
+                    style={{height: 60, flexDirection: 'row', gap: 10}}>
+                    <Avatar
+                      source={{
+                        uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                      }}
+                      style={{
+                        borderWidth: 0.5,
+                        width: 60,
+                        height: 60,
+                      }}
+                    />
+                    <View
+                      style={{height: '100%', flexDirection: 'column', gap: 5}}>
+                      <Image
+                        style={{
+                          borderWidth: 0.5,
+                          width: 40,
+                          height: 40,
+                        }}
+                        source={require('../../../assets/images/image13.png')}
+                      />
+                      <Text style={{color: Colors.black}}>ID: {child.id} {child.name}</Text>
+                    </View>
+                  </View>
+                ))}
+              <Button
+                onPress={() => {
+                  setModalVisible(!isModalVisible);
+                }}
+                type="hollow"
+                size="small"
+                lable="Change"
+              />
             </View>
             <View style={styles.vehicles}>
               <Vehicle url={require('../../../assets/images/moto2.png')} />
@@ -265,9 +299,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           />
         </View>
       </Modalize>
-      <Modal isVisible={isModalVisible}
-      onSwipeComplete={() => setModalVisible(false)}
-      swipeDirection="right">
+      <Modal
+        isVisible={isModalVisible}
+        onSwipeComplete={() => setModalVisible(false)}
+        swipeDirection="right">
         <View style={styles.modal}>
           <View
             style={{
@@ -282,78 +317,42 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               // width: '100%',
             }}>
             <View style={styles.modalContent}>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Avatar
-                  source={{
-                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
-                  }}
-                  style={{
-                    borderWidth: 0.5,
-                    width: 70,
-                    height: 70,
-                  }}
-                />
-                <Text
-                  style={{
-                    color: Colors.black,
-                    fontFamily: FontFamily.SemiBold,
+              {childrenList.map(child => (
+                <TouchableOpacity
+                  key={child.id}
+                  style={[
+                    {
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: 5,
+                    },
+                  ]}
+                  onPress={() => {
+                    setSelectedChild(child.id);
                   }}>
-                  Dog
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Avatar
-                  source={{
-                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
-                  }}
-                  style={{
-                    borderWidth: 0.5,
-                    width: 70,
-                    height: 70,
-                  }}
-                />
-                <Text
-                  style={{
-                    color: Colors.black,
-                    fontFamily: FontFamily.SemiBold,
-                  }}>
-                  Dog
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Avatar
-                  source={{
-                    uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
-                  }}
-                  style={{
-                    borderWidth: 0.5,
-                    width: 70,
-                    height: 70,
-                  }}
-                />
-                <Text
-                  style={{
-                    color: Colors.black,
-                    fontFamily: FontFamily.SemiBold,
-                  }}>
-                  Dog
-                </Text>
-              </View>
+                  <Avatar
+                    source={{
+                      uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                    }}
+                    style={[
+                      {
+                        borderWidth: 0.5,
+                        width: 70,
+                        height: 70,
+                      },
+                      isSelectedChild(child.id) && styles.active,
+                    ]}
+                  />
+                  <Text
+                    style={{
+                      color: Colors.black,
+                      fontFamily: FontFamily.SemiBold,
+                    }}>
+                    {child.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
             </View>
             <Button style={{width: Width - 90}} lable="Submit" />
           </View>
@@ -427,5 +426,9 @@ const styles = StyleSheet.create({
     // position: 'absolute',
     left: 20,
     top: 20,
+  },
+  active: {
+    borderColor: Colors.blue2,
+    borderWidth: 3,
   },
 });

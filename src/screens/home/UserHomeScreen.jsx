@@ -1,32 +1,14 @@
-import {
-  SafeAreaView,
-  View,
-  StatusBar,
-  Text,
-  TextInput,
-  FlatList,
-  Dimensions,
-  StyleSheet,
-  Image,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {GeneralStyle} from '../../styles/generalStyles';
 import {Colors} from '../../../assets/theme/colors';
-import React, {useContext} from 'react';
-import {AuthContext} from '../../hooks/auth/AuthContext';
-import Button from '../../components/general/Button';
-import {Height, Width} from '../../../assets/ScreenDimensions';
+import {Width} from '../../../assets/ScreenDimensions';
 import LogoPkid from '../../components/general/LogoPkid';
 import StatusBarAr from '../../../assets/theme/StatusBar';
 import LocationBox from '../../components/general/LocationBox';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-import {Sizes} from '../../../assets/theme/fontSize';
-import {ButtonColors} from '../../../assets/theme/ButtonColor';
 import Vehicle from '../../components/userScreen/Vehicle';
 import SavedLocations from '../../components/userScreen/SavedLocations';
-import Navigation from '../../navigation/main/Navigation';
+
 const UserHomeScreen = ({navigation}) => {
   return (
     <View style={GeneralStyle.container}>
@@ -90,7 +72,6 @@ const UserHomeScreen = ({navigation}) => {
               <SavedLocations url={require('../../../assets/images/hp.png')} />
             </View>
           </ScrollView>
-
           <View style={styles.vehicle}>
             <Text style={styles.title}>Select vehicle type</Text>
             <View style={styles.vehicles}>

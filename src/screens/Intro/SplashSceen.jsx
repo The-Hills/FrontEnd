@@ -11,11 +11,12 @@ const SplashSceen = ({navigation}) => {
   const {userInfo} = useContext(AuthContext);
   useEffect(() => {
     if (!userInfo.loggedIn) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         navigation.replace('Onboarnding');
       }, 3000);
+      return () => clearTimeout(timer)
     }
-  });
+  }, []);
   return (
     <View style={styles.container}>
       <StatusBarAr bg={Colors.main} />

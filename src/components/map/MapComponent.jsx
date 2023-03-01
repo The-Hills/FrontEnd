@@ -36,8 +36,8 @@ export default React.forwardRef((props, mapRef) => {
     latitude: 0,
     longitude: 0,
   });
-  console.log("mapRef: ", mapRef);
-  const currentLocationRef = useRef(null);
+  // console.log("mapRef: ", mapRef);
+  // const currentLocationRef = useRef(null);
   useEffect(() => {
     Geolocation.getCurrentPosition(position => {
       setCurrentLocation({
@@ -69,29 +69,6 @@ export default React.forwardRef((props, mapRef) => {
         }}
         customMapStyle={customStyle}> 
           {props.children}
-        {/* <Marker coordinate={LVLocation}>
-          <Image
-            source={require('../../../assets/images/piker.png')}
-            style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
-          <Callout>
-            <Text>Nguyễn Tăng Bảo Ngọc</Text>
-          </Callout>
-        </Marker>
-        <Marker coordinate={origin}>
-          <Image
-            source={require('../../../assets/images/school.png')}
-            style={{height: 100, width: 50, resizeMode: 'contain'}}></Image>
-          <Callout>
-            <Text>Nguyễn Tăng Bảo Ngọc</Text>
-          </Callout>
-        </Marker> */}
-        {/* <MapViewDirections
-          origin={origin}
-          destination={LVLocation}
-          apikey={PLACES_API_KEY}
-          strokeWidth={3}
-          strokeColor="hotpink"
-        /> */}
       </MapView>
     </View>
   );

@@ -17,11 +17,19 @@ const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      initialRouteName="UserHomeScreen"
+      // initialRouteName="UserHomeScreen"
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: styles.tabarStyle,
       }}>
+        <Tab.Screen
+        name="UserHomeScreen"
+        component={UserHomeScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,
+        }}
+      />
       <Tab.Screen
         name="Profile"
         component={UserProfile}
@@ -30,14 +38,7 @@ const BottomTabs = () => {
           tabBarIcon: () => <Icon name="user" size={24} color={Colors.black} />,
         }}
       />
-      <Tab.Screen
-        name="UserHomeScreen"
-        component={UserHomeScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,
-        }}
-      />
+      
       <Tab.Screen
         name="Hangout"
         component={Hangout}
