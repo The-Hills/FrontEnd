@@ -40,7 +40,12 @@ const Kidprofile = ({navigation: {goBack}}) => {
           <Icon name="edit" size={17} color="#282828" />
         </View>
         <View style={styles.infor}>
-          <View style={{display: 'flex', justifyContent: 'center',alignItems:'center'}}>
+          <View
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <Text style={styles.nameChild}>Tom</Text>
             <Text style={styles.idChild}>ID: 3255151</Text>
             <Image
@@ -132,13 +137,13 @@ const styles = StyleSheet.create({
     top: 30,
   },
   nameChild: {
-    size: Sizes.name,
+    fontSize: Sizes.name,
     fontFamily: FontFamily.Bold,
     color: Colors.black,
     textAlign: 'center',
   },
   idChild: {
-    size: Sizes.title,
+    fontSize: Sizes.title,
     color: Colors.black,
     textAlign: 'center',
   },

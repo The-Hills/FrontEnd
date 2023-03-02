@@ -28,21 +28,8 @@ import {PLACES_API_KEY} from '../../../assets/APIKey';
 import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-
-const childrenList = [
-  {
-    id: '1',
-    name: 'Huy',
-  },
-  {
-    id: '2',
-    name: 'Vư',
-  },
-  {
-    id: '3',
-    name: 'Giang',
-  },
-];
+import {carsAround, childrenList, VehiclesType} from '../../../assets/data';
+import VehicleType from '../../components/booking/Vehicle';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   const [origin, setOrigin] = useState(null);
@@ -70,6 +57,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       mapRef.current?.animateCamera(camera, {duration: 1000});
     }
   };
+  useEffect(() => {
+    traceRoute();
+  });
   const traceRoute = () => {
     if (origin && destination) {
       setShowDirections(true);
@@ -101,12 +91,33 @@ const ChooseLocation = ({navigation: {goBack}}) => {
             </Marker>
           )}
           {destination && <Marker coordinate={destination} />}
+          {carsAround.map((car, index) => (
+            <Marker coordinate={car.location} key={index}>
+              {car.vehicleType == 'Car' ? (
+                <Image
+                  source={require('../../../assets/images/car.png')}
+                  style={{
+                    height: 80,
+                    width: 40,
+                    resizeMode: 'contain',
+                  }}></Image>
+              ) : (
+                <Image
+                  source={require('../../../assets/images/moto.png')}
+                  style={{
+                    height: 80,
+                    width: 40,
+                    resizeMode: 'contain',
+                  }}></Image>
+              )}
+            </Marker>
+          ))}
           {showDirections && origin && destination && (
             <MapViewDirections
               origin={origin}
               destination={destination}
               apikey={PLACES_API_KEY}
-              strokeWidth={4}
+              strokeWidth={5}
               strokeColor="hotpink"
               onReady={result => {
                 console.log(`Distance: ${result.distance} km`);
@@ -116,18 +127,16 @@ const ChooseLocation = ({navigation: {goBack}}) => {
         </MapComponent>
         <Back style={styles.back} onPress={() => goBack()} />
       </View>
-
       <Modalize
         disableScrollIfPossible={true}
         keyboardAvoidingOffset={300}
-        alwaysOpen={250}
+        alwaysOpen={200}
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
-        <View style={[styles.searchContainer, {height: 700}]}>
+        <View style={[styles.searchContainer, {height: 400}]}>
           <LocationBox
             onPlaceSelected={details => {
-              console.log(details);
               onPlaceSelected(details, 'origin');
             }}
             onFocus={() => {
@@ -274,7 +283,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                         }}
                         source={require('../../../assets/images/image13.png')}
                       />
-                      <Text style={{color: Colors.black}}>ID: {child.id} {child.name}</Text>
+                      <Text style={{color: Colors.black}}>
+                        ID: {child.id} {child.name}
+                      </Text>
                     </View>
                   </View>
                 ))}
@@ -287,17 +298,17 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                 lable="Change"
               />
             </View>
-            <View style={styles.vehicles}>
-              <Vehicle url={require('../../../assets/images/moto2.png')} />
-              <Vehicle url={require('../../../assets/images/car2.png')} />
-            </View>
+            <Button style={[styles.btn]} lable="Confirm address" />
           </View>
-          <Button
-            onPress={() => traceRoute()}
-            style={[styles.btn]}
-            lable="Confirm address"
-          />
         </View>
+        {/* <View style={[styles.searchContainer, {height: 400}]}>
+          <View style={{marginBottom: 20}}>
+            {VehiclesType.map((item, index) => (
+              <VehicleType key={index} name={item.name} />
+            ))}
+          </View>
+          <Button lable="Find Driver" />
+        </View> */}
       </Modalize>
       <Modal
         isVisible={isModalVisible}

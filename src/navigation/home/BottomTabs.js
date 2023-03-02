@@ -17,35 +17,51 @@ const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
   return (
     <Tab.Navigator
-      // initialRouteName="UserHomeScreen"
+      initialRouteName="UserHomeScreen"
       screenOptions={{
+        tabBarInactiveTintColor: 'gray',
         tabBarShowLabel: false,
         tabBarStyle: styles.tabarStyle,
       }}>
-        <Tab.Screen
-        name="UserHomeScreen"
-        component={UserHomeScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: () => <Icon name="home" size={24} color={Colors.black} />,
-        }}
-      />
       <Tab.Screen
         name="Profile"
         component={UserProfile}
         options={{
           headerShown: false,
-          tabBarIcon: () => <Icon name="user" size={24} color={Colors.black} />,
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="user"
+              size={focused ? 30 : 24}
+              color={focused ? Colors.main : Colors.black}
+            />
+          ),
         }}
       />
-      
+      <Tab.Screen
+        name="UserHomeScreen"
+        component={UserHomeScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="home"
+              size={focused ? 30 : 24}
+              color={focused ? Colors.main : Colors.black}
+            />
+          ),
+        }}
+      />
       <Tab.Screen
         name="Hangout"
         component={Hangout}
         options={{
           headerShown: false,
-          tabBarIcon: () => (
-            <Icon name="message-circle" size={24} color={Colors.black} />
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="message-circle"
+              size={focused ? 30 : 24}
+              color={focused ? Colors.main : Colors.black}
+            />
           ),
         }}
       />
@@ -54,7 +70,13 @@ const BottomTabs = () => {
         component={Notification}
         options={{
           headerShown: false,
-          tabBarIcon: () => <Icon name="bell" size={24} color={Colors.black} />,
+          tabBarIcon: ({focused}) => (
+            <Icon
+              name="bell"
+              size={focused ? 30 : 24}
+              color={focused ? Colors.main : Colors.black}
+            />
+          ),
         }}
       />
     </Tab.Navigator>

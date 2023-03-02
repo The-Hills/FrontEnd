@@ -9,7 +9,8 @@ const Navigation = () => {
   const {userInfo} = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>}
+      <MainStack />
+      {/* {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>} */}
     </NavigationContainer>
   );
 };
