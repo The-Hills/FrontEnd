@@ -17,9 +17,9 @@ import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Width} from '../../../assets/ScreenDimensions';
 
-const VehicleType = ({name, price}) => {
+const VehicleType = ({name, price, onPress,style}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress}  style={[styles.container,style]}>
       <View style={styles.left}>
         {name == 'Car' ? (
           <Image
@@ -45,7 +45,7 @@ const VehicleType = ({name, price}) => {
           5-7 min
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

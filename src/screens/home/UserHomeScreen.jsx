@@ -43,6 +43,8 @@ const UserHomeScreen = ({navigation}) => {
               iconSend="arrow-right"
               styles1={{
                 textInput: {
+                  height: 50,
+                  marginBottom: 0,
                   backgroundColor: Colors.blue2,
                 },
               }}
@@ -51,6 +53,13 @@ const UserHomeScreen = ({navigation}) => {
               onFocus={() => navigation.navigate('ChooseLocation')}
               onPress={() => navigation.navigate('ChooseLocation')}
               style={styles.box}
+              styles1={{
+                textInput: {
+                  height: 50,
+                  marginBottom: 0,
+                  backgroundColor: Colors.while,
+                },
+              }}
               type="none"
               iconName="send"
               placeholder="Where to?"

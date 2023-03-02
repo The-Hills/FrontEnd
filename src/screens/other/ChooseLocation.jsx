@@ -38,6 +38,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [Sellect, setSellect] = useState('none');
   const [selectedChild, setSelectedChild] = useState(childrenList[0].id);
+  const [selectedVehicle, setSelectedVehicle] = useState();
+
+  const [shouldShow, setShouldShow] = useState(1);
 
   const mapRef = useRef(null);
 
@@ -45,6 +48,13 @@ const ChooseLocation = ({navigation: {goBack}}) => {
 
   const isSelectedChild = id => {
     return id === selectedChild;
+  };
+  // const switchBottomSheet = id => {
+  //   return id === shouldShow;
+  // };
+
+  const isSelectedVehicle = id => {
+    return id === selectedVehicle;
   };
   const onOpen = async () => {
     modalizeRef.current?.open('top');
@@ -130,185 +140,216 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       <Modalize
         disableScrollIfPossible={true}
         keyboardAvoidingOffset={300}
-        alwaysOpen={200}
+        alwaysOpen={320}
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
-        <View style={[styles.searchContainer, {height: 400}]}>
-          <LocationBox
-            onPlaceSelected={details => {
-              onPlaceSelected(details, 'origin');
-            }}
-            onFocus={() => {
-              onOpen();
-            }}
-            iconName="map-pin"
-            placeholder="Kid's location"
-            type="base"
-            iconSend="arrow-right"
-            styles1={{
-              container: {
-                flex: 1,
-              },
-              textInputContainer: {
-                flexDirection: 'row',
-              },
-              textInput: {
-                backgroundColor: Colors.blue2,
-                height: '100%',
-                borderRadius: 5,
-                paddingVertical: 5,
-                paddingHorizontal: 10,
-                fontSize: 15,
-                flex: 1,
-                color: Colors.black,
-              },
-              powered: {
-                display: 'none',
-              },
-              listView: {
-                position: 'absolute',
-                width: Width,
-                paddingHorizontal: 30,
-                left: -65,
-                zIndex: 300,
-                top: 220,
-              },
-              row: {
-                backgroundColor: Colors.while,
-                height: 50,
-                flexDirection: 'row',
-              },
-              separator: {
-                height: 0.5,
-                backgroundColor: '#c8c7cc',
-              },
-              description: {
-                color: Colors.black,
-              },
-              loader: {
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                height: 20,
-              },
-            }}
-          />
-          <LocationBox
-            onPlaceSelected={details => {
-              onPlaceSelected(details, 'destination');
-            }}
-            onFocus={() => {
-              onOpen();
-            }}
-            style={styles.box}
-            type="none"
-            iconName="send"
-            BGcolor={Colors.while}
-            placeholder="Where to?"
-            iconSend="arrow-right"
-            marginTop={50}
-            styles1={{
-              container: {
-                flex: 1,
-              },
-              textInputContainer: {
-                flexDirection: 'row',
-              },
-              textInput: {
-                backgroundColor: Colors.while,
-                height: '100%',
-                borderRadius: 5,
-                paddingVertical: 5,
-                paddingHorizontal: 10,
-                fontSize: 15,
-                flex: 1,
-                color: Colors.black,
-              },
-              powered: {
-                display: 'none',
-              },
-              listView: {
-                position: 'absolute',
-                width: Width,
-                paddingHorizontal: 30,
-                left: -65,
-                zIndex: 200,
-                top: 150,
-              },
-              row: {
-                backgroundColor: Colors.while,
-                height: 50,
-                flexDirection: 'row',
-              },
-              separator: {
-                height: 0.5,
-                backgroundColor: '#c8c7cc',
-              },
-              description: {
-                color: Colors.black,
-              },
-              loader: {
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                height: 20,
-              },
-            }}
-          />
-          <View style={{display: Sellect}}>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              {childrenList
-                .filter(child => child.id == selectedChild)
-                .map(child => (
-                  <View
-                    key={child.id}
-                    style={{height: 60, flexDirection: 'row', gap: 10}}>
-                    <Avatar
-                      source={{
-                        uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
-                      }}
-                      style={{
-                        borderWidth: 0.5,
-                        width: 60,
-                        height: 60,
-                      }}
-                    />
+        {shouldShow == 1 ? (
+          <View style={[styles.searchContainer, {height: 700}]}>
+            <LocationBox
+              onPlaceSelected={details => {
+                onPlaceSelected(details, 'origin');
+              }}
+              onFocus={() => {
+                onOpen();
+              }}
+              iconName="map-pin"
+              placeholder="Kid's location"
+              type="base"
+              iconSend="arrow-right"
+              styles1={{
+                container: {
+                  flex: 1,
+                  height: 50,
+                  alignItems: 'center',
+                },
+                textInputContainer: {
+                  flexDirection: 'row',
+                },
+                textInput: {
+                  backgroundColor: Colors.blue2,
+                  height: 50,
+                  borderRadius: 5,
+                  paddingVertical: 5,
+                  marginBottom: 0,
+                  paddingHorizontal: 10,
+                  fontSize: 15,
+                  flex: 1,
+                  color: Colors.black,
+                },
+                powered: {
+                  display: 'none',
+                },
+                listView: {
+                  position: 'absolute',
+                  width: Width,
+                  paddingHorizontal: 30,
+                  left: -65,
+                  zIndex: 300,
+                  top: 130,
+                },
+                row: {
+                  backgroundColor: Colors.while,
+                  height: 50,
+                  flexDirection: 'row',
+                },
+                separator: {
+                  height: 0.5,
+                  backgroundColor: '#c8c7cc',
+                },
+                description: {
+                  color: Colors.black,
+                },
+                loader: {
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  height: 20,
+                },
+              }}
+            />
+            <LocationBox
+              onPlaceSelected={details => {
+                onPlaceSelected(details, 'destination');
+              }}
+              onFocus={() => {
+                onOpen();
+              }}
+              style={styles.box}
+              type="none"
+              iconName="send"
+              BGcolor={Colors.while}
+              placeholder="Where to?"
+              iconSend="arrow-right"
+              marginTop={50}
+              styles1={{
+                container: {
+                  flex: 1,
+                  height: 50,
+                },
+                textInputContainer: {
+                  flexDirection: 'row',
+                },
+                textInput: {
+                  backgroundColor: Colors.while,
+                  height: '100%',
+                  borderRadius: 5,
+                  height: 50,
+                  marginBottom: 0,
+                  paddingVertical: 5,
+                  paddingHorizontal: 10,
+                  fontSize: 15,
+                  flex: 1,
+                  color: Colors.black,
+                },
+                powered: {
+                  display: 'none',
+                },
+                listView: {
+                  position: 'absolute',
+                  width: Width,
+                  paddingHorizontal: 30,
+                  left: -65,
+                  zIndex: 200,
+                  top: 65,
+                },
+                row: {
+                  backgroundColor: Colors.while,
+                  height: 50,
+                  flexDirection: 'row',
+                },
+                separator: {
+                  height: 0.5,
+                  backgroundColor: '#c8c7cc',
+                },
+                description: {
+                  color: Colors.black,
+                },
+                loader: {
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  height: 20,
+                },
+              }}
+            />
+            <View style={{display: Sellect}}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                {childrenList
+                  .filter(child => child.id == selectedChild)
+                  .map(child => (
                     <View
-                      style={{height: '100%', flexDirection: 'column', gap: 5}}>
-                      <Image
+                      key={child.id}
+                      style={{height: 60, flexDirection: 'row', gap: 10}}>
+                      <Avatar
+                        source={{
+                          uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                        }}
                         style={{
                           borderWidth: 0.5,
-                          width: 40,
-                          height: 40,
+                          width: 60,
+                          height: 60,
                         }}
-                        source={require('../../../assets/images/image13.png')}
                       />
-                      <Text style={{color: Colors.black}}>
-                        ID: {child.id} {child.name}
-                      </Text>
+                      <View
+                        style={{
+                          height: '100%',
+                          flexDirection: 'column',
+                          gap: 5,
+                        }}>
+                        <Image
+                          style={{
+                            borderWidth: 0.5,
+                            width: 40,
+                            height: 40,
+                          }}
+                          source={require('../../../assets/images/image13.png')}
+                        />
+                        <Text style={{color: Colors.black}}>
+                          ID: {child.id} {child.name}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                ))}
+                  ))}
+                <Button
+                  onPress={() => {
+                    setModalVisible(!isModalVisible);
+                  }}
+                  type="hollow"
+                  size="small"
+                  lable="Change"
+                />
+              </View>
               <Button
                 onPress={() => {
-                  setModalVisible(!isModalVisible);
+                  setShouldShow(2);
                 }}
-                type="hollow"
-                size="small"
-                lable="Change"
+                style={[styles.btn]}
+                lable="Confirm address"
               />
             </View>
-            <Button style={[styles.btn]} lable="Confirm address" />
           </View>
-        </View>
-        {/* <View style={[styles.searchContainer, {height: 400}]}>
-          <View style={{marginBottom: 20}}>
-            {VehiclesType.map((item, index) => (
-              <VehicleType key={index} name={item.name} />
-            ))}
+        ) : shouldShow == 2 ? (
+          <View style={[styles.searchContainer, {height: 300}]}>
+            <View style={{marginBottom: 20}}>
+              {VehiclesType.map((item, index) => (
+                <VehicleType
+                  onPress={() => {
+                    setSelectedVehicle(index);
+                  }}
+                  key={index}
+                  name={item.name}
+                  style={isSelectedVehicle(index) && styles.activeVehicle}
+                />
+              ))}
+            </View>
+            <Button
+              onPress={() => {
+                setShouldShow(3);
+              }}
+              lable="Next"
+            />
           </View>
-          <Button lable="Find Driver" />
-        </View> */}
+        ) : null}
       </Modalize>
       <Modal
         isVisible={isModalVisible}
@@ -365,7 +406,13 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                 </TouchableOpacity>
               ))}
             </View>
-            <Button style={{width: Width - 90}} lable="Submit" />
+            <Button
+              onPress={() => {
+                setModalVisible(!isModalVisible);
+              }}
+              style={{width: Width - 90}}
+              lable="Submit"
+            />
           </View>
         </View>
       </Modal>
@@ -376,6 +423,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
 export default ChooseLocation;
 
 const styles = StyleSheet.create({
+  activeVehicle: {
+    borderBottomColor: Colors.main,
+    borderBottomWidth: 1.5,
+  },
   modalContent: {
     display: 'flex',
     flexDirection: 'row',

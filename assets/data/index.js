@@ -22,8 +22,8 @@ export const carsAround = [
 ];
 
 export const VehiclesType = [
-  {name: 'Bike', price: 20000},
-  {name: 'Car', price: 20000},
+  {name: 'Bike', price: 20000, id: '1'},
+  {name: 'Car', price: 20000, id: '2'},
 ];
 export const childrenList = [
   {
