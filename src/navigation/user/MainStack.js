@@ -7,6 +7,7 @@ import Login from '../../screens/auth/login/Login';
 import UserHomeScreen from '../../screens/home/UserHomeScreen';
 import ChooseLocation from '../../screens/other/ChooseLocation';
 import BottomTabs from '../home/BottomTabs';
+import AccountRole from '../../screens/auth/AccountRole';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
@@ -16,7 +17,7 @@ const MainStack = () => {
       screenOptions={{headerShown: false}}>
       <Stack.Group>
         <Stack.Screen name="BottomTabs" component={BottomTabs} />
-        {/* <Stack.Screen name="UserHomeScreen" component={UserHomeScreen} /> */}
+        <Stack.Screen name='AccountRole' component={AccountRole}/>
         <Stack.Screen
           options={{tabBarStyle: {display: 'none'}}}
           name="ChooseLocation"

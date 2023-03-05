@@ -27,6 +27,7 @@ export const GeneralStyle = StyleSheet.create({
     resizeMode: 'contain',
   },
   shadow: {
+
     shadowColor: '#000',
     shadowOffset: {
       width: 1,

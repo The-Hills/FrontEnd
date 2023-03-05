@@ -25,15 +25,18 @@ import Back from '../../components/general/Back';
 import {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import {PLACES_API_KEY} from '../../../assets/APIKey';
-import Vehicle from '../../components/userScreen/Vehicle';
+// import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import {carsAround, childrenList, VehiclesType} from '../../../assets/data';
 import VehicleType from '../../components/booking/Vehicle';
+import Confirm from '../../components/booking/Confirm';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
+  const [pickDetail, setPickDetail] = useState(null);
+  const [dropDetail, setDropDetail] = useState(null);
   const [showDirections, setShowDirections] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [Sellect, setSellect] = useState('none');
@@ -49,9 +52,6 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const isSelectedChild = id => {
     return id === selectedChild;
   };
-  // const switchBottomSheet = id => {
-  //   return id === shouldShow;
-  // };
 
   const isSelectedVehicle = id => {
     return id === selectedVehicle;
@@ -77,15 +77,26 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     }
   };
 
+  const CheckSellectVehicleTye = () => {
+    if (selectedVehicle != null) {
+      setShouldShow(3);
+    }
+  };
+
   const onPlaceSelected = (details, flag) => {
     const position = {
       latitude: details?.geometry.location.lat,
       longitude: details?.geometry.location.lng,
     };
+    // const address = {
+    //   addressName: details?.address_components
+    // }
     if (flag === 'origin') {
       setOrigin(position);
+      setPickDetail(details);
     } else {
       setDestination(position);
+      setDropDetail(details);
     }
     moveTo(position);
   };
@@ -329,7 +340,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
             </View>
           </View>
         ) : shouldShow == 2 ? (
-          <View style={[styles.searchContainer, {height: 300}]}>
+          <View style={[styles.searchContainer, {height: 600}]}>
             <View style={{marginBottom: 20}}>
               {VehiclesType.map((item, index) => (
                 <VehicleType
@@ -342,11 +353,13 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                 />
               ))}
             </View>
-            <Button
-              onPress={() => {
-                setShouldShow(3);
-              }}
-              lable="Next"
+            <Button onPress={() => CheckSellectVehicleTye()} lable="Next" />
+          </View>
+        ) : shouldShow == 3 ? (
+          <View style={[styles.searchContainer, {height: 500}]}>
+            <Confirm
+              pickLoation={pickDetail.formatted_address}
+              dropOff={dropDetail.formatted_address}
             />
           </View>
         ) : null}

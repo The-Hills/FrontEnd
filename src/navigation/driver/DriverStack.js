@@ -6,16 +6,18 @@ import Login from '../../screens/auth/login/Login';
 import Register from '../../screens/auth/register/Register';
 import Kidprofile from '../../screens/profile/kid/Kidprofile';
 import Onboarnding from '../../screens/Intro/Onboarnding';
+import {Screen} from 'react-native-screens';
+import AccountRole from '../../screens/auth/AccountRole';
+import PersonalDocs from '../../screens/auth/PersonalDocs';
+import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
 const Stack = createNativeStackNavigator();
 const DriverStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Group screenOptions={{headerShown: false}}>
-        <Stack.Screen name="SplashSceen" component={SplashSceen} />
-        <Stack.Screen name="Onboarnding" component={Onboarnding} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Kidprofile" component={Kidprofile} />
+        <Stack.Screen name="DriverHomeScreen" component={DriverHomeScreen} />
+        <Stack.Screen name="AccountROle" component={AccountRole} />
+        <Stack.Screen name="PersonalDocs" component={PersonalDocs} />
       </Stack.Group>
     </Stack.Navigator>
   );

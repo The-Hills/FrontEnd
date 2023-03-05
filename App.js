@@ -26,7 +26,7 @@ import {AuthProvider} from './src/hooks/auth/AuthContext';
 const queryClient = new QueryClient();
 
 function App() {
-  return (
+  return (    
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Navigation />

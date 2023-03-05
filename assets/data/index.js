@@ -39,3 +39,24 @@ export const childrenList = [
     name: 'Giang',
   },
 ];
+
+export const Requests = [
+  {
+    id: '1',
+    name: 'DucHuy',
+    avatar:
+      'https://img1.cgtrader.com/items/4259557/bf9d20c4fa/large/3d-avatar-profession-as-teacher-3d-model-bf9d20c4fa.jpg',
+  },
+  {
+    id: '2',
+    name: 'HoThiVu',
+    avatar:
+      'https://img2.cgtrader.com/items/4259549/6b68cf464c/large/3d-avatar-profession-as-chef-3d-model-6b68cf464c.jpg',
+  },
+  {
+    id: '3',
+    name: 'TuyetGiang',
+    avatar:
+      'https://img1.cgtrader.com/items/4259559/e9b6810e7b/large/3d-avatar-profession-as-administrator-3d-model-e9b6810e7b.jpg',
+  },
+];
