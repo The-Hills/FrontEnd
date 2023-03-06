@@ -13,7 +13,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {Width} from '../../../assets/ScreenDimensions';
+import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Colors} from '../../../assets/theme/colors';
 import Header from '../../components/DriverScreen/Header';
 import {FontFamily} from '../../../assets/theme/fontFamily';
@@ -26,7 +26,7 @@ const DriverHomeScreen = () => {
       style={styles.container}
       ListHeaderComponentStyle={styles.HeaderStyle}
       ListHeaderComponent={() => (
-        <View style={{backgroundColor: Colors.while}}>
+        <View style={{backgroundColor: Colors.while, paddingTop: 20}}>
           <Header />
           <Text
             style={{
@@ -56,11 +56,13 @@ export default DriverHomeScreen;
 const styles = StyleSheet.create({
   HeaderStyle: {
     width: '100%',
-    marginTop: 20,
+    // paddingTop:20
   },
   container: {
     backgroundColor: Colors.while,
     paddingHorizontal: 30,
+    height: Height,
+    width: Width,
     // paddingTop: 20,
     // paddingVertical: 20,
     // paddingBottom: 100,
