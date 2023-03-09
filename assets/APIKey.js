@@ -1,3 +1,3 @@
 const GOOGLE_API_KEY = 'AIzaSyA-hBh5wGg8YYWQ_WZhbktMNsAihyxNSRU';
-const PLACES_API_KEY = '';
+const PLACES_API_KEY = 'AIzaSyCFgvP-4W_zWaqWs2hCwp7ZLhXTm_XMtfI';
 export {GOOGLE_API_KEY, PLACES_API_KEY};

@@ -20,7 +20,7 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import RequestItem from '../../components/DriverScreen/RequestItem';
 import {Requests} from '../../../assets/data';
 
-const DriverHomeScreen = () => {
+const DriverHomeScreen = ({navigation}) => {
   return (
     <FlatList
       style={styles.container}
@@ -45,7 +45,14 @@ const DriverHomeScreen = () => {
       ItemSeparatorComponent={() => <View style={{height: 40}} />}
       contentContainerStyle={{paddingBottom: 30}}
       renderItem={({item, index}) => (
-        <RequestItem avatar={item.avatar} name={item.name} key={index} />
+        <RequestItem
+          avatar={item.avatar}
+          name={item.name}
+          key={index}
+          onAccept={() =>
+            navigation.navigate('MapScreenDriver', {item})
+          }
+        />
       )}
     />
   );

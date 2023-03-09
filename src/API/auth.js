@@ -1,14 +1,19 @@
-import axios from 'axios';
-export const BASE_URL = 'http://13.231.114.148/api';
+import axiosRequest from ".";
 
-export const URL =
-  'http://ec2-54-95-102-134.ap-northeast-1.compute.amazonaws.com/api/';
+export const regiserUser = async data => {
+  const url = 'auth/register';
+  return await axiosRequest.post(url, data);
+};
+export const registerDriver = async data => {
+  const url = 'auth/register/driver';
+  return await axiosRequest.post(url, data, config);
+};
 
-export const authApi = axios.create({
-  BASE_URL: BASE_URL,
-});
-
-export const signUp = async (email, password, fullName, phoneNumber) => {
-  const response = await authApi.post('');
-  return response.data;
+export const loginUser = async data => {
+  const url = 'auth/login';
+  return await axiosRequest.post(url, data);
+};
+export const loginDriver = async data => {
+  const url = 'auth/login/driver';
+  return await axiosRequest.post(url, data);
 };

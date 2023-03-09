@@ -8,6 +8,8 @@ import LocationBox from '../../components/general/LocationBox';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import Vehicle from '../../components/userScreen/Vehicle';
 import SavedLocations from '../../components/userScreen/SavedLocations';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useEffect} from "react"
 
 const UserHomeScreen = ({navigation}) => {
   return (

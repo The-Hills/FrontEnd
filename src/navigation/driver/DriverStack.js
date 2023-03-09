@@ -13,6 +13,8 @@ import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
 import DriverProfile from '../../screens/profile/driver/DriverProfile';
 import DriverBottomTabs from './DriverBottomTabs';
 import UserProfile from '../../screens/profile/general/UserProfile';
+import MapScreenDriver from '../../screens/other/MapScreenDriver';
+// import Scan from '../../screens/QRScan/Scan';
 const Stack = createNativeStackNavigator();
 const DriverStack = () => {
   return (
@@ -24,6 +26,8 @@ const DriverStack = () => {
         <Stack.Screen name="AccountROle" component={AccountRole} />
         <Stack.Screen name="PersonalDocs" component={PersonalDocs} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Screen name="MapScreenDriver" component={MapScreenDriver} />
+        {/* <Stack.Screen name="Scan" component={Scan} /> */}
       </Stack.Group>
     </Stack.Navigator>
   );

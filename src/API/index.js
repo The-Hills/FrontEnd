@@ -1,1 +1,36 @@
-export const BASE_URL = 'https://628d8c71a339dfef879c3fac.mockapi.io/user';
+import axios from 'axios';
+import {getAccessTokenAsync} from '../utils/StorageUtils';
+
+const ROOT_URL =
+  'http://ec2-18-179-22-58.ap-northeast-1.compute.amazonaws.com/api/';
+
+const axiosRequest = axios.create({
+  baseURL: ROOT_URL,
+});
+
+axiosRequest.interceptors.request.use(
+  async config => {
+    console.log('config.baseURL => ', config);
+    const accessToken = await getAccessTokenAsync();
+    console.log('AT: ', accessToken);
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  error => {
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
+
+axiosRequest.interceptors.response.use(
+  response => {
+    return response;
+  },
+  (error = {}) => {
+    console.log('💩: error', error);
+  },
+);
+
+export default axiosRequest;

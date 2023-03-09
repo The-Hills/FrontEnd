@@ -5,14 +5,15 @@ import {AuthContext} from '../../hooks/auth/AuthContext';
 import MainStack from '../user/MainStack';
 import AuthNavigation from '../auth/AuthNavigation';
 import DriverStack from '../driver/DriverStack';
+import { getAccessTokenAsync } from '../../utils/StorageUtils';
 
 const Navigation = () => {
-  const {userInfo} = useContext(AuthContext);
+  const {isLoggedIn} = useContext(AuthContext);
   return (
     <NavigationContainer>
-      <DriverStack/>
+      {/* <DriverStack/> */}
       {/* <MainStack /> */}
-      {/* {userInfo.loggedIn ? <MainStack /> : <AuthNavigation/>} */}
+      {isLoggedIn ? <MainStack /> : <AuthNavigation/>}
     </NavigationContainer>
   );
 };

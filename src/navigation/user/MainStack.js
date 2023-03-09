@@ -8,6 +8,7 @@ import UserHomeScreen from '../../screens/home/UserHomeScreen';
 import ChooseLocation from '../../screens/other/ChooseLocation';
 import BottomTabs from '../home/BottomTabs';
 import AccountRole from '../../screens/auth/AccountRole';
+import ProfileRegister from '../../screens/profile/kid/ProfileRegister';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
@@ -27,6 +28,7 @@ const MainStack = () => {
       <Stack.Group>
         <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="Kidprofile" component={Kidprofile} />
+        <Stack.Screen name="ProfileRegister" component={ProfileRegister} />
       </Stack.Group>
     </Stack.Navigator>
   );

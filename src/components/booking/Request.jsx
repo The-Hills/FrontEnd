@@ -14,20 +14,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import {Colors} from '../../../assets/theme/colors';
-import AvatarandName from './Avatar';
+import AvatarandName from '../DriverScreen/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-import Button from '../general/Button';
-import LocationInput from './LocationInput';
 import Avatar from '../general/Avatar';
+import LocationInput from '../DriverScreen/LocationInput';
 
-const RequestItem = ({name, avatar, onAccept,onDecline}) => {
+const Request = ({name, avatar}) => {
   return (
     <View
       style={{
-        backgroundColor: Colors.while,
-        borderRadius: 15,
-        borderWidth: 1,
-        padding: 20,
+        width: '100%',
       }}>
       <View
         style={{
@@ -95,20 +91,10 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
           </View>
         </View>
       </View>
-      <View
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexDirection: 'row',
-          marginTop: 10,
-        }}>
-        <Button onPress={onDecline} lable="Decline" type="hollow" size="small" />
-        <Button onPress={onAccept} lable="Accept" size="small" />
-      </View>
     </View>
   );
 };
 
-export default RequestItem;
+export default Request;
 
 const styles = StyleSheet.create({});

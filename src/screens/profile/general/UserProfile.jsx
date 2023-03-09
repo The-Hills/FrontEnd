@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {GeneralStyle} from '../../../styles/generalStyles';
 import {Colors} from '../../../../assets/theme/colors';
 import Button from '../../../components/general/Button';
@@ -25,12 +25,28 @@ import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {Sizes} from '../../../../assets/theme/fontSize';
 import {Width} from '../../../../assets/ScreenDimensions';
 import StatusBarAr from '../../../../assets/theme/StatusBar';
-import {Alert} from 'react-native/Libraries/Alert/Alert';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import {getUserInfoById} from '../../../API/user.api';
+import {getUIdAsync} from '../../../utils/StorageUtils';
+import {useUserQuery} from '../../../hooks/useUser';
+import Loader from '../../../components/loader/Loader';
+import Error from '../../Intro/Error';
 
 const UserProfile = ({navigation}) => {
-  const {userInfo, logout} = useContext(AuthContext);
-
+  const {logout} = useContext(AuthContext);
+  const {isLoading, data, isError} = useUserQuery();
+  if (isLoading) {
+    return (
+      <View>
+        <Loader visible={true} />
+      </View>
+    );
+  }
+  if (isError) {
+    return <Error />;
+  }
+  const UserData = data.data.data;
+  // console.log('kidList', UserData.kid);
   const check = () => {
     logout();
   };
@@ -43,24 +59,26 @@ const UserProfile = ({navigation}) => {
         <View style={styles.avatar}>
           <Avatar
             source={{
-              uri: 'https://st.depositphotos.com/1008402/58359/i/600/depositphotos_583598624-stock-photo-3d-illustration-of-smiling-young.jpg',
+              uri: `${UserData.avatar}`,
             }}
             style={{height: '100%', width: '100%'}}
           />
-          <Icon name="edit" size={17} color="#282828" />
+          <View style={{position: 'absolute', bottom: 0, right: 0}}>
+            <Icon name="edit" size={24} color="#282828" />
+          </View>
         </View>
         <View style={styles.infor}>
           <View>
-            <Text style={styles.nameChild}>Jimmy nguyen</Text>
-            <Text style={styles.idChild}>ID: 3255151</Text>
+            <Text style={styles.nameChild}>{UserData.name}</Text>
+            {/* <Text style={styles.idChild}>ID: {UserData.id}</Text> */}
           </View>
           <View style={{marginTop: 10}}>
             <Text style={styles.information}>Informations</Text>
             <Text style={styles.information}>
-              Phone: <Text style={GeneralStyle.text}>0664841155</Text>{' '}
+              Phone: <Text style={GeneralStyle.text}>{UserData.phone}</Text>
             </Text>
             <Text style={styles.information}>
-              Email: <Text style={GeneralStyle.text}>jen@gmail.com</Text>
+              Email: <Text style={GeneralStyle.text}>{UserData.email}</Text>
             </Text>
           </View>
           <View style={{marginTop: 10}}>
@@ -70,60 +88,54 @@ const UserProfile = ({navigation}) => {
                 style={{
                   height: 'auto',
                   maxHeight: 230,
+                  borderWidth: 1,
+                  borderColor: '#777171',
+                  borderRadius: 10,
                   paddingVertical: 10,
                   paddingHorizontal: 5,
                 }}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Kidprofile')}
-                  style={[styles.container]}>
-                  <View style={{height: 60, flexDirection: 'row', gap: 10}}>
-                    <Avatar
-                      source={{
-                        uri: 'https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-uma-pessoa-com-oculos-de-sol_23-2149436200.jpg?w=2000',
-                      }}
-                      style={{
-                        width: 60,
-                        height: 60,
-                      }}
-                    />
-                    <View style={{display: 'flex'}}>
-                      <Image
-                        style={{width: 50, height: 50, resizeMode: 'contain'}}
-                        source={{
-                          uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png',
-                        }}
-                      />
-                      <Text style={styles.idChild}>ID: 35544525</Text>
-                    </View>
-                  </View>
-                  <Icon name="edit" size={17} color="#282828" />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Kidprofile')}
-                  style={[styles.container]}>
-                  <View style={{height: 60, flexDirection: 'row', gap: 10}}>
-                    <Avatar
-                      source={{
-                        uri: 'https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-uma-pessoa-com-oculos-de-sol_23-2149436200.jpg?w=2000',
-                      }}
-                      style={{
-                        width: 60,
-                        height: 60,
-                      }}
-                    />
-                    <View style={{display: 'flex'}}>
-                      <Image
-                        style={{width: 50, height: 50, resizeMode: 'contain'}}
-                        source={{
-                          uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png',
-                        }}
-                      />
-                      <Text style={styles.idChild}>ID: 35544525</Text>
-                    </View>
-                  </View>
-                  <Icon name="edit" size={17} color="#282828" />
-                </TouchableOpacity>
+                {UserData.kid === [] ? (
+                  UserData.kid.map(item => {
+                    <TouchableOpacity
+                      key={item.id}
+                      onPress={() => navigation.navigate('Kidprofile')}
+                      style={[styles.container]}>
+                      <View style={{height: 60, flexDirection: 'row', gap: 10}}>
+                        <Avatar
+                          source={{
+                            uri: `${item.avatar}`,
+                          }}
+                          style={{
+                            width: 60,
+                            height: 60,
+                          }}
+                        />
+                        <View style={{display: 'flex'}}>
+                          <Image
+                            style={{
+                              width: 50,
+                              height: 50,
+                              resizeMode: 'contain',
+                            }}
+                            source={{
+                              uri: `${item.qrCode}`,
+                            }}
+                          />
+                          <Text style={styles.idChild}>ID: 35544525</Text>
+                        </View>
+                      </View>
+                    </TouchableOpacity>;
+                  })
+                ) : (
+                  <Text
+                    style={{
+                      color: 'red',
+                      textAlign: 'center',
+                      fontFamily: FontFamily.Medium,
+                    }}>
+                    Your children list is empty ...
+                  </Text>
+                )}
               </View>
             </ScrollView>
             <View
@@ -135,10 +147,13 @@ const UserProfile = ({navigation}) => {
                 marginVertical: 10,
               }}>
               <View style={{width: 60, height: 60}}>
-                <Image
-                  style={{width: '100%', height: '100%'}}
-                  source={require('../../../../assets/images/add.png')}
-                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ProfileRegister')}>
+                  <Image
+                    style={{width: '100%', height: '100%'}}
+                    source={require('../../../../assets/images/add.png')}
+                  />
+                </TouchableOpacity>
               </View>
               <Button onPress={check} lable="Sign Out" size="small" />
             </View>
@@ -209,7 +224,7 @@ const styles = StyleSheet.create({
   infor: {
     width: Width,
     paddingHorizontal: 30,
-    top: 30,
+    top: 10,
   },
   nameChild: {
     fontSize: Sizes.text,

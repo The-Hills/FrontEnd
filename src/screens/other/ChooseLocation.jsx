@@ -42,7 +42,6 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [Sellect, setSellect] = useState('none');
   const [selectedChild, setSelectedChild] = useState(childrenList[0].id);
   const [selectedVehicle, setSelectedVehicle] = useState();
-
   const [shouldShow, setShouldShow] = useState(1);
 
   const mapRef = useRef(null);
