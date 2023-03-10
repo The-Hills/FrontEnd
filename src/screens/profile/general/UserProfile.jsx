@@ -46,7 +46,7 @@ const UserProfile = ({navigation}) => {
     return <Error />;
   }
   const UserData = data.data.data;
-  // console.log('kidList', UserData.kid);
+  console.log('kidList', UserData.id);
   const check = () => {
     logout();
   };

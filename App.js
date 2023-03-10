@@ -23,10 +23,10 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 import {AuthProvider} from './src/hooks/auth/AuthContext';
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function App() {
-  return (    
+  return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Navigation />

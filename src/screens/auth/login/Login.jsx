@@ -12,10 +12,12 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import React, {useContext, useState} from 'react';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
+import useRQGlobalState from '../../../States/useRQGlobalStates';
 const Login = ({navigation}) => {
   const [inputs, setInputs] = React.useState({email: '', password: ''});
   const [errors, setErrors] = useState({});
   const {userInfo, isLoading, login, authUser} = useContext(AuthContext);
+  const [role] = useRQGlobalState('role', null);
 
   const validate = async () => {
     Keyboard.dismiss();
@@ -42,6 +44,7 @@ const Login = ({navigation}) => {
   const handleError = (error, input) => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
+  console.log('login', role);
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
       <Loader visible={isLoading} />

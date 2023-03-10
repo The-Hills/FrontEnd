@@ -12,14 +12,15 @@ import {
   setUIdAsync,
   setURoleAsync,
 } from '../../utils/StorageUtils';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [initialRouteName, setInitialRouteName] = React.useState('');
+  // const [initialRouteName, setInitialRouteName] = React.useState('');
   const [isLoggedIn, setIsLoggedIn] = useState();
-
-  const register = async ({name, email, password, phone}, role = '') => {
+  const [value] = useRQGlobalState('role', null);
+  const register = async ({name, email, password, phone},) => {
     setIsLoading(true);
     // return axios
     //   .post(`${URL}auth/register`, {
@@ -42,7 +43,7 @@ export const AuthProvider = ({children}) => {
     }
   };
 
-  const login = async ({email, password}, role = 'user') => {
+  const login = async ({email, password}) => {
     setIsLoading(true);
     // return axios
     //   .post(`${URL}auth/login`, {
@@ -51,7 +52,7 @@ export const AuthProvider = ({children}) => {
     //   })\
     try {
       const res =
-        role === 'user'
+      value === 'user'
           ? await loginUser({email, password})
           : await loginDriver({email, password});
 
@@ -100,7 +101,7 @@ export const AuthProvider = ({children}) => {
     <AuthContext.Provider
       value={{
         isLoading,
-        initialRouteName,
+        // initialRouteName,
         userInfo,
         register,
         login,

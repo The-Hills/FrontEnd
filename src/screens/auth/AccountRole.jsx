@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {GeneralStyle} from '../../styles/generalStyles';
@@ -23,14 +23,16 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Sizes} from '../../../assets/theme/fontSize';
 import {Colors} from '../../../assets/theme/colors';
 import DropDownPicker from 'react-native-dropdown-picker';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const AccountRole = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [role, setRole] = useRQGlobalState('role', value);
   const [items, setItems] = useState([
     {
       label: 'Driver',
-      value: 'Driver',
+      value: 'driver',
       icon: () => (
         <Image
           source={require('../../../assets/images/DriverImg.png')}
@@ -40,7 +42,7 @@ const AccountRole = ({navigation}) => {
     },
     {
       label: 'User',
-      value: 'User',
+      value: 'user',
       icon: () => (
         <Image
           source={require('../../../assets/images/userImg.png')}
@@ -49,9 +51,16 @@ const AccountRole = ({navigation}) => {
       ),
     },
   ]);
+
+  useEffect(() => {
+    setRole(value);
+  }, [value]);
   const [checkMargin, setCheckMargin] = useState(false);
+  // console.log('role: ', role);
+
   return (
     <View style={[GeneralStyle.container, styles.container]}>
+      <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={styles.header}>
         <LogoPkid
           style={{
@@ -99,10 +108,7 @@ const AccountRole = ({navigation}) => {
             alignItems: 'center',
             justifyContent: 'flex-start',
           }}>
-          <Button
-            onPress={() => navigation.navigate('PersonalDocs')}
-            lable="Submit"
-          />
+          <Button onPress={() => navigation.navigate('Login')} lable="Submit" />
         </View>
       </View>
     </View>

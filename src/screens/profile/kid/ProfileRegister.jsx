@@ -30,7 +30,7 @@ import {useCreateKidInfo, useUserQuery} from '../../../hooks/useUser';
 
 const ProfileRegister = ({navigation: {goBack}}) => {
   const useKidMutation = useCreateKidInfo();
-  const data = useUserQuery();
+  const {data} = useUserQuery();
   const [inputs, setInputs] = useState({
     parentId: data.data.data.id,
     name: null,
@@ -38,23 +38,23 @@ const ProfileRegister = ({navigation: {goBack}}) => {
     gender: null,
     url: 'https://cdn3d.iconscout.com/3d/premium/thumb/cool-boy-7215485-5873297.png',
   });
-  // if (isLoading) {
-  //   return <Loader visible={true} />;
-  // }
-  // if (isSuccess) {
-  //   return (
-  //     <View>
-  //       <Text style={{color: 'red'}}>Success!</Text>
-  //     </View>
-  //   );
-  // }
-  // if (isError) {
-  //   return (
-  //     <View>
-  //       <Text style={{color: 'red'}}>Error roi!</Text>
-  //     </View>
-  //   );
-  // }
+    // if (isLoading) {
+    //   return <Loader visible={true} />;
+    // }
+    // if (isSuccess) {
+    //   return (
+    //     <View>
+    //       <Text style={{color: 'red'}}>Success!</Text>
+    //     </View>
+    //   );
+    // }
+    // if (isError) {
+    //   return (
+    //     <View>
+    //       <Text style={{color: 'red'}}>Error roi!</Text>
+    //     </View>
+    //   );
+    // }
   const choosePhotoFromLibrary = url => {
     ImagePicker.openPicker({
       width: 400,
@@ -75,6 +75,8 @@ const ProfileRegister = ({navigation: {goBack}}) => {
   const Submit = () => {
     useKidMutation.mutate(inputs);
   };
+  // console.log('id', data.data.data.id);
+  // console.log('data inputs: ', inputs);
 
   return (
     <View style={GeneralStyle.container}>
