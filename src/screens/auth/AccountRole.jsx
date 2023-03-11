@@ -29,6 +29,7 @@ const AccountRole = ({navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [role, setRole] = useRQGlobalState('role', value);
+  const [error, setError] = useState(false);
   const [items, setItems] = useState([
     {
       label: 'Driver',
@@ -56,8 +57,13 @@ const AccountRole = ({navigation}) => {
     setRole(value);
   }, [value]);
   const [checkMargin, setCheckMargin] = useState(false);
-  // console.log('role: ', role);
-
+  const submit = () => {
+    if (role != null) {
+      navigation.navigate('Login');
+    } else {
+      setError(true);
+    }
+  };
   return (
     <View style={[GeneralStyle.container, styles.container]}>
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
@@ -77,13 +83,16 @@ const AccountRole = ({navigation}) => {
             checkMargin === true ? {marginBottom: 100} : null,
           ]}>
           <DropDownPicker
-            onOpen={() => setCheckMargin(!checkMargin)}
+            onOpen={() => {
+              setCheckMargin(!checkMargin), setError(false);
+            }}
             onClose={() => setCheckMargin(false)}
             placeholder="Select a role"
             placeholderStyle={{
               color: Colors.black,
               fontFamily: FontFamily.Medium,
             }}
+            // onPress={setError(false)}
             labelStyle={{
               color: Colors.black,
               fontFamily: FontFamily.Medium,
@@ -102,13 +111,25 @@ const AccountRole = ({navigation}) => {
             dropDownDirection="BOTTOM"
           />
         </View>
+        {error && (
+          <Text
+            style={{
+              paddingLeft: 10,
+              color: Colors.red,
+              marginBottom: 20,
+              fontFamily: FontFamily.Regular,
+            }}>
+            Please choose your role!
+          </Text>
+        )}
         <View
           style={{
             flex: 1,
             alignItems: 'center',
             justifyContent: 'flex-start',
+            marginTop: 20,
           }}>
-          <Button onPress={() => navigation.navigate('Login')} lable="Submit" />
+          <Button onPress={submit} lable="Submit" />
         </View>
       </View>
     </View>
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
   },
   form: {
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 5,
   },
   text: {
     textAlign: 'center',

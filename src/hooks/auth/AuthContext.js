@@ -1,6 +1,12 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {createContext, useEffect, useState} from 'react';
-import {loginDriver, loginUser, regiserUser, URL} from '../../API/auth';
+import {
+  loginDriver,
+  loginUser,
+  regiserUser,
+  registerDriver,
+  URL,
+} from '../../API/auth';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -17,10 +23,12 @@ export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  // const [initialRouteName, setInitialRouteName] = React.useState('');
+  const [success, setSccess] = useState(false);
+  const [error, setError] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [value] = useRQGlobalState('role', null);
-  const register = async ({name, email, password, phone},) => {
+  const register = async ({name, email, password, phone}) => {
+    console.log('chay di');
     setIsLoading(true);
     // return axios
     //   .post(`${URL}auth/register`, {
@@ -32,45 +40,40 @@ export const AuthProvider = ({children}) => {
     //   .then(res => {
 
     try {
-      const res = await regiserUser({name, email, password, phone});
+      const res =
+        value === 'user'
+          ? await regiserUser({name, email, password, phone})
+          : await registerDriver({name, email, password, phone});
+
       let userInfo = res.data;
-      setUserInfo(userInfo);
-      console.log('Datane', userInfo);
+      console.log(userInfo);
+      // setUserInfo(userInfo);
       setIsLoading(false);
+      if (res.status === 200) {
+        setSccess(true);
+      }
+      return res;
     } catch (e) {
       console.log(`register error ${e}`);
+      setError(true);
       setIsLoading(false);
     }
   };
 
   const login = async ({email, password}) => {
     setIsLoading(true);
-    // return axios
-    //   .post(`${URL}auth/login`, {
-    //     email,
-    //     password,
-    //   })\
     try {
       const res =
-      value === 'user'
+        value === 'user'
           ? await loginUser({email, password})
           : await loginDriver({email, password});
-
       let userInfo = res.data;
       setUserInfo(userInfo);
-      console.log('user info after Login', userInfo);
-
-      // AsyncStorage.setItem(
-      //   'userInfo',
-      //   JSON.stringify({...userInfo, loggedIn: true}),
-      // );
-
-      // save user basic info to async storage
+      // console.log('user info after Login', userInfo);
       setAccessTokenAsync(userInfo.token);
       setUIdAsync(userInfo.id);
       setURoleAsync(userInfo.role);
-
-      console.log(AsyncStorage.getAllKeys());
+      // console.log(AsyncStorage.getAllKeys());
       authUser();
       setIsLoading(false);
     } catch (e) {
@@ -101,13 +104,14 @@ export const AuthProvider = ({children}) => {
     <AuthContext.Provider
       value={{
         isLoading,
-        // initialRouteName,
         userInfo,
         register,
         login,
         logout,
+        success,
         authUser,
         isLoggedIn,
+        error,
       }}>
       {children}
     </AuthContext.Provider>

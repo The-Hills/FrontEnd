@@ -46,7 +46,7 @@ const UserProfile = ({navigation}) => {
     return <Error />;
   }
   const UserData = data.data.data;
-  console.log('kidList', UserData.id);
+  console.log('kidList', UserData.kid);
   const check = () => {
     logout();
   };
@@ -83,48 +83,47 @@ const UserProfile = ({navigation}) => {
           </View>
           <View style={{marginTop: 10}}>
             <Text style={styles.information}>Your Childs</Text>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView>
               <View
                 style={{
                   height: 'auto',
-                  maxHeight: 230,
-                  borderWidth: 1,
-                  borderColor: '#777171',
-                  borderRadius: 10,
+                  maxHeight: 450,
                   paddingVertical: 10,
-                  paddingHorizontal: 5,
                 }}>
-                {UserData.kid === [] ? (
+                {UserData.kid.lenght !== 0 ? (
                   UserData.kid.map(item => {
-                    <TouchableOpacity
-                      key={item.id}
-                      onPress={() => navigation.navigate('Kidprofile')}
-                      style={[styles.container]}>
-                      <View style={{height: 60, flexDirection: 'row', gap: 10}}>
-                        <Avatar
-                          source={{
-                            uri: `${item.avatar}`,
-                          }}
-                          style={{
-                            width: 60,
-                            height: 60,
-                          }}
-                        />
-                        <View style={{display: 'flex'}}>
-                          <Image
-                            style={{
-                              width: 50,
-                              height: 50,
-                              resizeMode: 'contain',
-                            }}
+                    return (
+                      <TouchableOpacity
+                        key={item.id}
+                        onPress={() => navigation.navigate('Kidprofile')}
+                        style={[styles.container]}>
+                        <View
+                          style={{height: 60, flexDirection: 'row', gap: 10}}>
+                          <Avatar
                             source={{
-                              uri: `${item.qrCode}`,
+                              uri: `${item.avatar}`,
+                            }}
+                            style={{
+                              width: 60,
+                              height: 60,
                             }}
                           />
-                          <Text style={styles.idChild}>ID: 35544525</Text>
+                          <View style={{display: 'flex'}}>
+                            <Image
+                              style={{
+                                width: 50,
+                                height: 50,
+                                resizeMode: 'contain',
+                              }}
+                              source={{
+                                uri: `${item.qr}`,
+                              }}
+                            />
+                            <Text style={styles.idChild}>ID: {item.id}</Text>
+                          </View>
                         </View>
-                      </View>
-                    </TouchableOpacity>;
+                      </TouchableOpacity>
+                    );
                   })
                 ) : (
                   <Text
