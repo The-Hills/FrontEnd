@@ -27,10 +27,12 @@ import Button from '../../../components/general/Button';
 
 import Loader from '../../../components/loader/Loader';
 import {useCreateKidInfo, useUserQuery} from '../../../hooks/useUser';
+import Header from '../../../components/general/Header';
+import Modal from 'react-native-modal';
 
 const ProfileRegister = ({navigation: {goBack}}) => {
   const useKidMutation = useCreateKidInfo();
-  const {data} = useUserQuery();
+    const {data} = useUserQuery();
   const [inputs, setInputs] = useState({
     parentId: data.data.data.id,
     name: null,
@@ -38,23 +40,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
     gender: null,
     url: 'https://cdn3d.iconscout.com/3d/premium/thumb/cool-boy-7215485-5873297.png',
   });
-    // if (isLoading) {
-    //   return <Loader visible={true} />;
-    // }
-    // if (isSuccess) {
-    //   return (
-    //     <View>
-    //       <Text style={{color: 'red'}}>Success!</Text>
-    //     </View>
-    //   );
-    // }
-    // if (isError) {
-    //   return (
-    //     <View>
-    //       <Text style={{color: 'red'}}>Error roi!</Text>
-    //     </View>
-    //   );
-    // }
+  const [isModalVisible, setModalVisible] = useState(true);
   const choosePhotoFromLibrary = url => {
     ImagePicker.openPicker({
       width: 400,
@@ -75,15 +61,10 @@ const ProfileRegister = ({navigation: {goBack}}) => {
   const Submit = () => {
     useKidMutation.mutate(inputs);
   };
-  // console.log('id', data.data.data.id);
-  // console.log('data inputs: ', inputs);
 
   return (
     <View style={GeneralStyle.container}>
-      <Back style={styles.btn} onPress={() => goBack()} />
-      <View style={styles.header}>
-        <Text style={styles.title}>Create Kid Profile</Text>
-      </View>
+      <Header lable="Create Kid profile" show={true} onPress={() => goBack()} />
       <View style={styles.content}>
         <View style={styles.avatar}>
           <Avatar
@@ -114,6 +95,59 @@ const ProfileRegister = ({navigation: {goBack}}) => {
           <Button onPress={Submit} lable="Submit" />
         </View>
       </View>
+      {useKidMutation.isSuccess && (
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.modal}>
+            <View
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                // gap: 30,
+                paddingHorizontal: 20,
+                paddingVertical: 30,
+
+                // width: '100%',
+              }}>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: 80,
+                    height: 80,
+                    resizeMode: 'contain',
+                  }}
+                  source={require('../../../../assets/images/sss.png')}
+                />
+                <Text
+                  style={{
+                    color: Colors.black,
+                    paddingTop: 10,
+                    fontFamily: FontFamily.SemiBold,
+                    fontSize: 25,
+                    textAlign: 'center',
+                  }}>
+                  Success!
+                </Text>
+              </View>
+              <Button
+                onPress={() => {
+                  goBack();
+                  setModalVisible(!isModalVisible);
+                }}
+                style={{width: Width - 90}}
+                lable="Continue"
+              />
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -121,6 +155,14 @@ const ProfileRegister = ({navigation: {goBack}}) => {
 export default ProfileRegister;
 
 const styles = StyleSheet.create({
+  modal: {
+    backgroundColor: Colors.while,
+    height: 250,
+    borderRadius: 30,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     marginBottom: 10,
     paddingHorizontal: 10,

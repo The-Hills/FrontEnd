@@ -1,6 +1,6 @@
-import axiosRequest from ".";
+import axiosRequest from '.';
 
-export const  regiserUser = async data => {
+export const regiserUser = async data => {
   const url = 'auth/register';
   return await axiosRequest.post(url, data);
 };

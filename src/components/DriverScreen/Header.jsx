@@ -16,15 +16,19 @@ import React from 'react';
 import AvatarandName from './Avatar';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
+import {useDriverQuery} from '../../hooks/useUser';
 
-const Header = () => {
+const Header = ({avatar, name, active}) => {
+  const {data} = useDriverQuery();
+  const DriverData = data.data.data;
   return (
     <View>
       <AvatarandName
         source={{
-          uri: 'https://img2.cgtrader.com/items/4259561/e25cef6441/large/3d-avatar-profession-as-soldier-3d-model-e25cef6441.jpg',
+          uri: DriverData.avatar,
         }}
-        name="hoquoctri"
+        name={DriverData.name}
+        active={DriverData.status}
       />
       <View
         style={{

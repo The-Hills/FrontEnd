@@ -10,9 +10,8 @@ const axiosRequest = axios.create({
 
 axiosRequest.interceptors.request.use(
   async config => {
-    console.log('config.baseURL => ', config);
+    // console.log('config.baseURL => ', config);
     const accessToken = await getAccessTokenAsync();
-    console.log('AT: ', accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }

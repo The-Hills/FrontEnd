@@ -11,7 +11,7 @@ export const getAccessTokenAsync = async () => {
 export const setAccessTokenAsync = async token => {
   return await AsyncStorage.setItem(TOKEN_KEY, token);
 };
-
+  
 export const removeAccessTokenAsync = async () => {
   return await AsyncStorage.removeItem(TOKEN_KEY);
 };
@@ -29,7 +29,7 @@ export const removeUidAsync = async () => {
 };
 
 export const getURoleAsync = async () => {
-  return await AsyncStorage.getItem(UID_KEY);
+  return await AsyncStorage.getItem(ROLE_KEY);
 };
 
 export const setURoleAsync = async role => {

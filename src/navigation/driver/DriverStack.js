@@ -23,8 +23,6 @@ const DriverStack = () => {
         <Stack.Screen name="DriverBottomTabs" component={DriverBottomTabs} />
         <Stack.Screen name="DriverProfile" component={DriverProfile} />
         <Stack.Screen name="DriverHomeScreen" component={DriverHomeScreen} />
-        <Stack.Screen name="AccountROle" component={AccountRole} />
-        <Stack.Screen name="PersonalDocs" component={PersonalDocs} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="MapScreenDriver" component={MapScreenDriver} />
         {/* <Stack.Screen name="Scan" component={Scan} /> */}

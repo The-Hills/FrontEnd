@@ -17,13 +17,13 @@ import {GeneralStyle} from '../../styles/generalStyles';
 import {Width} from '../../../assets/ScreenDimensions';
 import {Colors} from '../../../assets/theme/colors';
 
-const SavedLocations = ({url, onPress,style}) => {
+const SavedLocations = ({url, onPress,style,lable}) => {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container,style]}>
       <View style={styles.img}>
         <Image style={[GeneralStyle.img]} source={url} />
       </View>
-      <Text style={[GeneralStyle.text, styles.text]}>Home</Text>
+      <Text style={[GeneralStyle.text, styles.text]}>{lable}</Text>
     </TouchableOpacity>
   );
 };

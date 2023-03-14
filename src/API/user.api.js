@@ -5,14 +5,23 @@ export const getUserInfoById = async id => {
 };
 
 export const updateUser = async data => {
-  const url = `/${data.id}`;
+  const url = `${data.id}`;
   return await axiosRequest.patch(url, data);
 };
 
+// driver
+export const getDriverInfoById = async id => {
+  const url = `driver/${id}`;
+  return await axiosRequest.get(url, id);
+};
 
+export const updateDriver = async data => {
+  console.log('id update Driver =>', data);
+  const url = `driver/${data.id}`;
+  return await axiosRequest.put(url, data);
+};
 
-
-//  KID 
+//  KID
 export const createKidProfile = async data => {
   const url = 'kid/';
   return await axiosRequest.post(url, data);

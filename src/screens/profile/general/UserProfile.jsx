@@ -18,9 +18,7 @@ import {Colors} from '../../../../assets/theme/colors';
 import Button from '../../../components/general/Button';
 import Icon from 'react-native-vector-icons/Feather';
 import {AuthContext, AuthProvider} from '../../../hooks/auth/AuthContext';
-import Back from '../../../components/general/Back';
 import Avatar from '../../../components/general/Avatar';
-import Title from '../../../components/auth/Title';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {Sizes} from '../../../../assets/theme/fontSize';
 import {Width} from '../../../../assets/ScreenDimensions';
@@ -31,66 +29,66 @@ import {getUIdAsync} from '../../../utils/StorageUtils';
 import {useUserQuery} from '../../../hooks/useUser';
 import Loader from '../../../components/loader/Loader';
 import Error from '../../Intro/Error';
+import Header from '../../../components/general/Header';
 
 const UserProfile = ({navigation}) => {
   const {logout} = useContext(AuthContext);
-  const {isLoading, data, isError} = useUserQuery();
-  if (isLoading) {
-    return (
-      <View>
-        <Loader visible={true} />
-      </View>
-    );
-  }
-  if (isError) {
-    return <Error />;
-  }
+  const {data} = useUserQuery();
   const UserData = data.data.data;
-  console.log('kidList', UserData.kid);
   const check = () => {
     logout();
   };
   return (
     <View style={GeneralStyle.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>Profile</Text>
-      </View>
+      <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
+      <Header show={true} lable="Profile" />
       <View style={styles.content}>
         <View style={styles.avatar}>
           <Avatar
             source={{
               uri: `${UserData.avatar}`,
             }}
-            style={{height: '100%', width: '100%'}}
+            style={{width: 100, height: 100, backgroundColor: Colors.red}}
           />
-          <View style={{position: 'absolute', bottom: 0, right: 0}}>
-            <Icon name="edit" size={24} color="#282828" />
-          </View>
-        </View>
-        <View style={styles.infor}>
           <View>
             <Text style={styles.nameChild}>{UserData.name}</Text>
-            {/* <Text style={styles.idChild}>ID: {UserData.id}</Text> */}
           </View>
+        </View>
+
+        <View style={styles.infor}>
           <View style={{marginTop: 10}}>
             <Text style={styles.information}>Informations</Text>
-            <Text style={styles.information}>
-              Phone: <Text style={GeneralStyle.text}>{UserData.phone}</Text>
-            </Text>
-            <Text style={styles.information}>
-              Email: <Text style={GeneralStyle.text}>{UserData.email}</Text>
-            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingVertical: 5,
+              }}>
+              <Text style={styles.lable}>Phone:</Text>
+              <Text style={styles.text}>{UserData.phone}</Text>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Text style={styles.lable}>Email:</Text>
+              <Text style={styles.text}>email@gmail.com</Text>
+            </View>
           </View>
           <View style={{marginTop: 10}}>
             <Text style={styles.information}>Your Childs</Text>
-            <ScrollView>
-              <View
-                style={{
-                  height: 'auto',
-                  maxHeight: 450,
-                  paddingVertical: 10,
-                }}>
-                {UserData.kid.lenght !== 0 ? (
+            <ScrollView
+              style={{
+                height: 'auto',
+                maxHeight: 200,
+                paddingVertical: 10,
+              }}>
+              {/* <View style={{backgroundColor: 'red', height: 500}}></View> */}
+              <View style={{paddingVertical: 10}}>
+                {UserData.kid.lenght != 0 ? (
                   UserData.kid.map(item => {
                     return (
                       <TouchableOpacity
@@ -108,53 +106,85 @@ const UserProfile = ({navigation}) => {
                               height: 60,
                             }}
                           />
-                          <View style={{display: 'flex'}}>
-                            <Image
-                              style={{
-                                width: 50,
-                                height: 50,
-                                resizeMode: 'contain',
-                              }}
-                              source={{
-                                uri: `${item.qr}`,
-                              }}
-                            />
-                            <Text style={styles.idChild}>ID: {item.id}</Text>
+                          <View
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'space-around',
+                              height: '100%',
+                              // justifyContent: 'flex-start',
+                            }}>
+                            <Text style={styles.idChild}>
+                              Name: {item.name}
+                            </Text>
+                            <Text style={styles.idChild}>Age: {item.age}</Text>
                           </View>
                         </View>
+                        <Image
+                          style={{
+                            width: 50,
+                            height: 50,
+                            resizeMode: 'contain',
+                          }}
+                          source={{
+                            uri: `${item.qr}`,
+                          }}
+                        />
                       </TouchableOpacity>
                     );
                   })
                 ) : (
-                  <Text
+                  <View
                     style={{
-                      color: 'red',
-                      textAlign: 'center',
-                      fontFamily: FontFamily.Medium,
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
                     }}>
-                    Your children list is empty ...
-                  </Text>
+                    <Image
+                      style={{width: 50, height: 50}}
+                      source={require('../../../../assets/images/empty.png')}
+                    />
+                    <Text
+                      style={{
+                        color: Colors.red,
+                        textAlign: 'center',
+                        fontFamily: FontFamily.Medium,
+                      }}>
+                      Please add your kid's profiles
+                    </Text>
+                  </View>
                 )}
               </View>
             </ScrollView>
             <View
               style={{
                 display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginVertical: 10,
+                gap: 10,
+                marginVertical: 15,
               }}>
-              <View style={{width: 60, height: 60}}>
+              <View>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('ProfileRegister')}>
-                  <Image
-                    style={{width: '100%', height: '100%'}}
-                    source={require('../../../../assets/images/add.png')}
-                  />
+                  <Text
+                    style={{
+                      color: Colors.main,
+                      fontFamily: FontFamily.Medium,
+                      fontSize: 18,
+                    }}>
+                    Create kid profile
+                  </Text>
                 </TouchableOpacity>
               </View>
-              <Button onPress={check} lable="Sign Out" size="small" />
+              <TouchableOpacity onPress={check}>
+                <Text
+                  style={{
+                    color: Colors.red,
+                    fontFamily: FontFamily.Medium,
+                    fontSize: 18,
+                  }}>
+                  Logout
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -168,73 +198,66 @@ export default UserProfile;
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
-    paddingHorizontal: 10,
-    paddingVertical: 15,
+    paddingVertical: 3,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-between',
     backgroundColor: Colors.while,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-
-    elevation: 2,
   },
   text: {
     color: Colors.black,
-  },
-  header: {
-    flexGrow: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    fontFamily: FontFamily.Regular,
+    fontSize: 15,
   },
   information: {
     fontFamily: FontFamily.Medium,
-    color: Colors.black,
-    fontSize: Sizes.name,
+    color: '#C7C7C7',
+    fontSize: 12,
   },
-  title: {
+  lable: {
     fontFamily: FontFamily.Medium,
-    color: Colors.main,
-    fontSize: Sizes.title,
+    color: Colors.black,
+    fontSize: 15,
+  },
+  avatar: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    gap: 10,
+    borderColor: '#C7C7C7',
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    paddingHorizontal: 30,
+    width: Width - 60,
   },
   content: {
-    flexGrow: 9,
-    width: Width,
+    flexGrow: 3,
+    width: '100%',
     backgroundColor: Colors.while,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
     alignItems: 'center',
     lineHeight: 24,
   },
-  avatar: {
-    height: 109,
-    width: 109,
-    borderRadius: 90,
-    backgroundColor: '#D9D9D9',
-  },
   infor: {
+    flex: 2.9,
     width: Width,
     paddingHorizontal: 30,
-    top: 10,
+    // top: 10,
   },
   nameChild: {
-    fontSize: Sizes.text,
-    fontFamily: FontFamily.Bold,
+    fontSize: 18,
+    fontFamily: FontFamily.Medium,
     color: Colors.black,
     textAlign: 'center',
   },
   idChild: {
     fontSize: Sizes.text,
     color: Colors.black,
-    textAlign: 'center',
+    textAlign: 'left',
   },
   img: {
     width: 65,

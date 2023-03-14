@@ -20,6 +20,7 @@ export const GeneralStyle = StyleSheet.create({
   text: {
     fontFamily: FontFamily.Regular,
     fontSize: Sizes.text,
+    
   },
   img: {
     width: '100%',

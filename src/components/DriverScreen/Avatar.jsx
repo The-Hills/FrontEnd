@@ -3,7 +3,7 @@ import React from 'react';
 import Avatar from '../general/Avatar';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-const AvatarandName = ({name, source}) => {
+const AvatarandName = ({name, source, active, showStatus = true}) => {
   return (
     <View
       style={{
@@ -31,30 +31,31 @@ const AvatarandName = ({name, source}) => {
         />
       </View>
       <View>
-        <View
-          style={{
-            display: 'flex',
-            // justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-            gap: 5,
-          }}>
+        {showStatus && (
           <View
             style={{
-              width: 10,
-              height: 10,
-              backgroundColor: '#74D88F',
-              borderRadius: 90,
-            }}></View>
-          <Text
-            style={{
-              color: '#777171',
-              fontFamily: FontFamily.Regular,
-              fontSize: 13,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'row',
+              gap: 5,
             }}>
-            Online
-          </Text>
-        </View>
+            <View
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: active === 'unActive' ? '#777171' : '#74D88F',
+                borderRadius: 90,
+              }}></View>
+            <Text
+              style={{
+                color: '#777171',
+                fontFamily: FontFamily.Regular,
+                fontSize: 13,
+              }}>
+              {active === 'unActive' ? 'Offline' : 'Online'}
+            </Text>
+          </View>
+        )}
         <Text
           style={{
             color: Colors.black,

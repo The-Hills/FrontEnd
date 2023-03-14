@@ -20,9 +20,9 @@ import {Width} from '../../../assets/ScreenDimensions';
 import VehicleType from './Vehicle';
 import Button from '../general/Button';
 
-const Confirm = ({pickLoation, dropOff}) => {
+const Confirm = ({style,pickLoation, dropOff, vehicleType, findDriver, payment}) => {
   return (
-    <View style={{width: '100%'}}>
+    <View style={[{width: '100%'}, style]}>
       <View
         style={{
           padding: 5,
@@ -115,7 +115,7 @@ const Confirm = ({pickLoation, dropOff}) => {
         </View>
       </View>
       <View style={{marginVertical: 20}}>
-        <VehicleType />
+        <VehicleType name={vehicleType} />
       </View>
       <View
         style={{
@@ -139,7 +139,7 @@ const Confirm = ({pickLoation, dropOff}) => {
             source={require('../../../assets/images/cashPay.png')}
           />
         </View>
-        <View style={[styles.payments, styles.shadow]}>
+        <TouchableOpacity onPress={payment} style={[styles.payments, styles.shadow]}>
           <Text
             style={{
               color: Colors.black,
@@ -152,9 +152,9 @@ const Confirm = ({pickLoation, dropOff}) => {
             style={{width: 70, height: 70}}
             source={require('../../../assets/images/momo.png')}
           />
-        </View>
+        </TouchableOpacity>
       </View>
-      <Button lable="Find driver" />
+      <Button onPress={findDriver} lable="Find driver" />
     </View>
   );
 };

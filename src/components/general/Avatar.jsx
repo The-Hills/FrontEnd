@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
-    borderRadius: 90,
+    resizeMode: 'cover',
+
+    borderRadius: 100,
   },
 });

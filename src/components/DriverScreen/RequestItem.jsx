@@ -20,7 +20,19 @@ import Button from '../general/Button';
 import LocationInput from './LocationInput';
 import Avatar from '../general/Avatar';
 
-const RequestItem = ({name, avatar, onAccept,onDecline}) => {
+const RequestItem = ({
+  name,
+  avatar,
+  onAccept,
+  onDecline,
+  startLocation,
+  endLocation,
+  distance,
+  fee,
+  kidName,
+  qr,
+  kidAvatar,
+}) => {
   return (
     <View
       style={{
@@ -36,7 +48,11 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
           alignItems: 'center',
           flexDirection: 'row',
         }}>
-        <AvatarandName source={{uri: `${avatar}`}} name={name} />
+        <AvatarandName
+          showStatus={false}
+          source={{uri: `${avatar}`}}
+          name={name}
+        />
         <View>
           <Text
             style={{
@@ -45,7 +61,7 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
               fontSize: 13,
               textAlign: 'right',
             }}>
-            VND 45.000
+            VND {fee}
           </Text>
           <Text
             style={{
@@ -54,22 +70,19 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
               fontSize: 13,
               textAlign: 'right',
             }}>
-            3km
+            {distance}km
           </Text>
         </View>
       </View>
       <View style={{display: 'flex', gap: 20, marginVertical: 20}}>
-        <LocationInput
-          name="map-pin"
-          location="101b Le Huu Trac Son Tra TP.Da Nang"
-        />
-        <LocationInput name="send" location="99To Hien Thanh, Da Nang" />
+        <LocationInput name="map-pin" location={startLocation} />
+        <LocationInput name="send" location={endLocation} />
       </View>
       <View>
         <View style={{height: 60, flexDirection: 'row', gap: 10}}>
           <Avatar
             source={{
-              uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+              uri: kidAvatar,
             }}
             style={{
               borderWidth: 0.5,
@@ -89,9 +102,9 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
                 width: 35,
                 height: 35,
               }}
-              source={require('../../../assets/images/image13.png')}
+              source={{uri: qr}}
             />
-            <Text style={{color: Colors.black}}>ID: 1999248</Text>
+            <Text style={{color: Colors.black}}>Name: {kidName}</Text>
           </View>
         </View>
       </View>
@@ -102,7 +115,12 @@ const RequestItem = ({name, avatar, onAccept,onDecline}) => {
           flexDirection: 'row',
           marginTop: 10,
         }}>
-        <Button onPress={onDecline} lable="Decline" type="hollow" size="small" />
+        <Button
+          onPress={onDecline}
+          lable="Decline"
+          type="hollow"
+          size="small"
+        />
         <Button onPress={onAccept} lable="Accept" size="small" />
       </View>
     </View>

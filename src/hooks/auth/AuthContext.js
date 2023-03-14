@@ -11,6 +11,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getAccessTokenAsync,
+  getURoleAsync,
   removeAccessTokenAsync,
   removeRoleAsync,
   removeUidAsync,
@@ -26,19 +27,10 @@ export const AuthProvider = ({children}) => {
   const [success, setSccess] = useState(false);
   const [error, setError] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState();
+  const [role, setRole] = useState(null);
   const [value] = useRQGlobalState('role', null);
   const register = async ({name, email, password, phone}) => {
-    console.log('chay di');
     setIsLoading(true);
-    // return axios
-    //   .post(`${URL}auth/register`, {
-    //     email,
-    //     name,
-    //     password,
-    //     phone,
-    //   })
-    //   .then(res => {
-
     try {
       const res =
         value === 'user'
@@ -47,7 +39,6 @@ export const AuthProvider = ({children}) => {
 
       let userInfo = res.data;
       console.log(userInfo);
-      // setUserInfo(userInfo);
       setIsLoading(false);
       if (res.status === 200) {
         setSccess(true);
@@ -69,11 +60,11 @@ export const AuthProvider = ({children}) => {
           : await loginDriver({email, password});
       let userInfo = res.data;
       setUserInfo(userInfo);
-      // console.log('user info after Login', userInfo);
+      // console.log('dataUSS', userInfo);
       setAccessTokenAsync(userInfo.token);
       setUIdAsync(userInfo.id);
       setURoleAsync(userInfo.role);
-      // console.log(AsyncStorage.getAllKeys());
+      // console.log('login role', userInfo.role);
       authUser();
       setIsLoading(false);
     } catch (e) {
@@ -83,11 +74,9 @@ export const AuthProvider = ({children}) => {
   };
   const logout = () => {
     setIsLoading(true);
-    // AsyncStorage.removeItem('userInfo');
     removeAccessTokenAsync(userInfo.token);
     removeRoleAsync(userInfo.role);
     removeUidAsync(userInfo.uid);
-    // setUserInfo({});
     setIsLoggedIn(false);
     setIsLoading(false);
     authUser();
@@ -95,7 +84,9 @@ export const AuthProvider = ({children}) => {
 
   const authUser = async () => {
     let accessToken = await getAccessTokenAsync();
+    let role = await getURoleAsync();
     setIsLoggedIn(!!accessToken);
+    setRole(role);
   };
   useEffect(() => {
     authUser();
@@ -108,6 +99,7 @@ export const AuthProvider = ({children}) => {
         register,
         login,
         logout,
+        role,
         success,
         authUser,
         isLoggedIn,

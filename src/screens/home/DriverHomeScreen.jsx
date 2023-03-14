@@ -19,15 +19,28 @@ import Header from '../../components/DriverScreen/Header';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import RequestItem from '../../components/DriverScreen/RequestItem';
 import {Requests} from '../../../assets/data';
+import {useDriverQuery} from '../../hooks/useUser';
+import {useBookingData} from '../../hooks/booking/useBooking';
+import Loader from '../../components/loader/Loader';
+import Error from '../Intro/Error';
 
 const DriverHomeScreen = ({navigation}) => {
+  const {isError, isLoading, data} = useBookingData();
+  if (isLoading) {
+    return <Loader />;
+  }
+  if (isError) {
+    return <Error />;
+  }
+  const BookingData = data.data.data;
+  console.log('DataBooking', BookingData);
   return (
     <FlatList
       style={styles.container}
       ListHeaderComponentStyle={styles.HeaderStyle}
       ListHeaderComponent={() => (
         <View style={{backgroundColor: Colors.while, paddingTop: 20}}>
-          <Header />
+          <Header/>
           <Text
             style={{
               color: Colors.black,
@@ -40,18 +53,23 @@ const DriverHomeScreen = ({navigation}) => {
         </View>
       )}
       stickyHeaderIndices={[0]}
-      data={Requests}
+      data={BookingData}
       scrollEnabled={true}
       ItemSeparatorComponent={() => <View style={{height: 40}} />}
       contentContainerStyle={{paddingBottom: 30}}
       renderItem={({item, index}) => (
         <RequestItem
-          avatar={item.avatar}
-          name={item.name}
+          avatar={item.kid.parent.avatar}
+          name={item.kid.parent.name}
+          startLocation={item.startLocation}
+          endLocation={item.endLocation}
+          distance={item.distance}
+          fee={item.fee}
+          kidName={item.kid.name}
+          qr={item.kid.qr}
+          kidAvatar={item.kid.avatar}
           key={index}
-          onAccept={() =>
-            navigation.navigate('MapScreenDriver', {item})
-          }
+          onAccept={() => navigation.navigate('MapScreenDriver', {item})}
         />
       )}
     />

@@ -8,9 +8,24 @@ import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
 import {Colors} from '../../../assets/theme/colors';
+import {useDriverQuery} from '../../hooks/useUser';
+import Loader from '../../components/loader/Loader';
+import Error from '../../screens/Intro/Error';
 const Tab = createBottomTabNavigator();
 
 const DriverBottomTabs = () => {
+  const {isLoading, isError} = useDriverQuery();
+  if (isLoading) {
+    return (
+      <View>
+        <Loader visible={true} />
+      </View>
+    );
+  }
+  if (isError) {
+    return <Error />;
+  }
+
   return (
     <Tab.Navigator
       initialRouteName="DriverHomeScreen"

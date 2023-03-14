@@ -129,7 +129,7 @@ const AccountRole = ({navigation}) => {
             justifyContent: 'flex-start',
             marginTop: 20,
           }}>
-          <Button onPress={submit} lable="Submit" />
+          <Button onPress={submit} lable="Next" />
         </View>
       </View>
     </View>

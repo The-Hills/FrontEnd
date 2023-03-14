@@ -65,13 +65,23 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
       <Modalize
         disableScrollIfPossible={true}
         keyboardAvoidingOffset={300}
-        alwaysOpen={450}  
+        alwaysOpen={450}
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
         {shouldShow == 1 ? (
           <View style={[styles.BottomContainer, {height: 450}]}>
-            <Request avatar={item.avatar} name={item.name} />
+            <Request
+              startLocation={item.startLocation}
+              endLocation={item.endLocation}
+              distance={item.distance}
+              fee={item.fee}
+              kidName={item.kid.name}
+              qr={item.kid.qr}
+              kidAvatar={item.kid.avatar}
+              avatar={item.kid.parent.avatar}
+              name={item.kid.parent.name}
+            />
             <Button
               onPress={() => {
                 setShouldShow(2);

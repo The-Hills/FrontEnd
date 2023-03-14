@@ -31,6 +31,11 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {carsAround, childrenList, VehiclesType} from '../../../assets/data';
 import VehicleType from '../../components/booking/Vehicle';
 import Confirm from '../../components/booking/Confirm';
+import {useUserQuery} from '../../hooks/useUser';
+import {useBooking, usePayment} from '../../hooks/booking/useBooking';
+import {NetworkInfo} from 'react-native-network-info';
+import Loader from '../../components/loader/Loader';
+import Loader2 from '../../components/loader/Loader2';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   const [origin, setOrigin] = useState(null);
@@ -40,14 +45,26 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [showDirections, setShowDirections] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [Sellect, setSellect] = useState('none');
-  const [selectedChild, setSelectedChild] = useState(childrenList[0].id);
-  const [selectedVehicle, setSelectedVehicle] = useState();
+  const [selectedVehicle, setSelectedVehicle] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
-
+  const [distance, setDistance] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [ipAddress, setIpAddress] = useState(null);
+  const [payment, setPayment] = useState(null);
+  const {data} = useUserQuery();
+  const kidData = data.data.data.kid;
+  const [selectedChild, setSelectedChild] = useState(kidData[0].id);
+  const useBookingMutation = useBooking();
+  const usePaymentMutation = usePayment();
+  const paymentData = usePaymentMutation.data;
+  console.log('pay', paymentData);
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
 
+  NetworkInfo.getIPAddress().then(ipAddress => {
+    setIpAddress(ipAddress);
+  });
   const isSelectedChild = id => {
     return id === selectedChild;
   };
@@ -99,6 +116,17 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     }
     moveTo(position);
   };
+  // if (usePaymentMutation.isSuccess) {
+  //   setPayment(paymentData);
+  // }
+  if (useBookingMutation.isSuccess) {
+    return (
+      <View>
+        <Text style={{color: 'red'}}>Success</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.map}>
@@ -140,7 +168,8 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               strokeWidth={5}
               strokeColor="hotpink"
               onReady={result => {
-                console.log(`Distance: ${result.distance} km`);
+                setDistance(result.distance);
+                setDuration(result.duration);
               }}
             />
           )}
@@ -156,135 +185,137 @@ const ChooseLocation = ({navigation: {goBack}}) => {
         ref={modalizeRef}>
         {shouldShow == 1 ? (
           <View style={[styles.searchContainer, {height: 700}]}>
-            <LocationBox
-              onPlaceSelected={details => {
-                onPlaceSelected(details, 'origin');
-              }}
-              onFocus={() => {
-                onOpen();
-              }}
-              iconName="map-pin"
-              placeholder="Kid's location"
-              type="base"
-              iconSend="arrow-right"
-              styles1={{
-                container: {
-                  flex: 1,
-                  height: 50,
-                  alignItems: 'center',
-                },
-                textInputContainer: {
-                  flexDirection: 'row',
-                },
-                textInput: {
-                  backgroundColor: Colors.blue2,
-                  height: 50,
-                  borderRadius: 5,
-                  paddingVertical: 5,
-                  marginBottom: 0,
-                  paddingHorizontal: 10,
-                  fontSize: 15,
-                  flex: 1,
-                  color: Colors.black,
-                },
-                powered: {
-                  display: 'none',
-                },
-                listView: {
-                  position: 'absolute',
-                  width: Width,
-                  paddingHorizontal: 30,
-                  left: -65,
-                  zIndex: 300,
-                  top: 130,
-                },
-                row: {
-                  backgroundColor: Colors.while,
-                  height: 50,
-                  flexDirection: 'row',
-                },
-                separator: {
-                  height: 0.5,
-                  backgroundColor: '#c8c7cc',
-                },
-                description: {
-                  color: Colors.black,
-                },
-                loader: {
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  height: 20,
-                },
-              }}
-            />
-            <LocationBox
-              onPlaceSelected={details => {
-                onPlaceSelected(details, 'destination');
-              }}
-              onFocus={() => {
-                onOpen();
-              }}
-              style={styles.box}
-              type="none"
-              iconName="send"
-              BGcolor={Colors.while}
-              placeholder="Where to?"
-              iconSend="arrow-right"
-              marginTop={50}
-              styles1={{
-                container: {
-                  flex: 1,
-                  height: 50,
-                },
-                textInputContainer: {
-                  flexDirection: 'row',
-                },
-                textInput: {
-                  backgroundColor: Colors.while,
-                  height: '100%',
-                  borderRadius: 5,
-                  height: 50,
-                  marginBottom: 0,
-                  paddingVertical: 5,
-                  paddingHorizontal: 10,
-                  fontSize: 15,
-                  flex: 1,
-                  color: Colors.black,
-                },
-                powered: {
-                  display: 'none',
-                },
-                listView: {
-                  position: 'absolute',
-                  width: Width,
-                  paddingHorizontal: 30,
-                  left: -65,
-                  zIndex: 200,
-                  top: 65,
-                },
-                row: {
-                  backgroundColor: Colors.while,
-                  height: 50,
-                  flexDirection: 'row',
-                },
-                separator: {
-                  height: 0.5,
-                  backgroundColor: '#c8c7cc',
-                },
-                description: {
-                  color: Colors.black,
-                },
-                loader: {
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  height: 20,
-                },
-              }}
-            />
+            <View style={{marginTop: 30, display: 'flex', gap: 30}}>
+              <LocationBox
+                onPlaceSelected={details => {
+                  onPlaceSelected(details, 'origin');
+                }}
+                onFocus={() => {
+                  onOpen();
+                }}
+                iconName="map-pin"
+                placeholder="Kid's location"
+                type="base"
+                iconSend="arrow-right"
+                styles1={{
+                  container: {
+                    flex: 1,
+                    height: 50,
+                    alignItems: 'center',
+                  },
+                  textInputContainer: {
+                    flexDirection: 'row',
+                  },
+                  textInput: {
+                    backgroundColor: Colors.blue2,
+                    height: 50,
+                    borderRadius: 5,
+                    paddingVertical: 5,
+                    marginBottom: 0,
+                    paddingHorizontal: 10,
+                    fontSize: 15,
+                    flex: 1,
+                    color: Colors.black,
+                  },
+                  powered: {
+                    display: 'none',
+                  },
+                  listView: {
+                    position: 'absolute',
+                    width: Width,
+                    paddingHorizontal: 30,
+                    left: -65,
+                    zIndex: 300,
+                    top: 130,
+                  },
+                  row: {
+                    backgroundColor: Colors.while,
+                    height: 50,
+                    flexDirection: 'row',
+                  },
+                  separator: {
+                    height: 0.5,
+                    backgroundColor: '#c8c7cc',
+                  },
+                  description: {
+                    color: Colors.black,
+                  },
+                  loader: {
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    height: 20,
+                  },
+                }}
+              />
+              <LocationBox
+                onPlaceSelected={details => {
+                  onPlaceSelected(details, 'destination');
+                }}
+                onFocus={() => {
+                  onOpen();
+                }}
+                style={styles.box}
+                type="none"
+                iconName="send"
+                BGcolor={Colors.while}
+                placeholder="Where to?"
+                iconSend="arrow-right"
+                marginTop={50}
+                styles1={{
+                  container: {
+                    flex: 1,
+                    height: 50,
+                  },
+                  textInputContainer: {
+                    flexDirection: 'row',
+                  },
+                  textInput: {
+                    backgroundColor: Colors.while,
+                    height: '100%',
+                    borderRadius: 5,
+                    height: 50,
+                    marginBottom: 0,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    fontSize: 15,
+                    flex: 1,
+                    color: Colors.black,
+                  },
+                  powered: {
+                    display: 'none',
+                  },
+                  listView: {
+                    position: 'absolute',
+                    width: Width,
+                    paddingHorizontal: 30,
+                    left: -65,
+                    zIndex: 200,
+                    top: 65,
+                  },
+                  row: {
+                    backgroundColor: Colors.while,
+                    height: 50,
+                    flexDirection: 'row',
+                  },
+                  separator: {
+                    height: 0.5,
+                    backgroundColor: '#c8c7cc',
+                  },
+                  description: {
+                    color: Colors.black,
+                  },
+                  loader: {
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    height: 20,
+                  },
+                }}
+              />
+            </View>
             <View style={{display: Sellect}}>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                {childrenList
+                {kidData
                   .filter(child => child.id == selectedChild)
                   .map(child => (
                     <View
@@ -292,7 +323,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                       style={{height: 60, flexDirection: 'row', gap: 10}}>
                       <Avatar
                         source={{
-                          uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                          uri: `${child.avatar}`,
                         }}
                         style={{
                           borderWidth: 0.5,
@@ -312,10 +343,12 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                             width: 40,
                             height: 40,
                           }}
-                          source={require('../../../assets/images/image13.png')}
+                          source={{
+                            uri: `${child.qr}`,
+                          }}
                         />
                         <Text style={{color: Colors.black}}>
-                          ID: {child.id} {child.name}
+                          Name: {child.name}
                         </Text>
                       </View>
                     </View>
@@ -340,7 +373,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           </View>
         ) : shouldShow == 2 ? (
           <View style={[styles.searchContainer, {height: 600}]}>
-            <View style={{marginBottom: 20}}>
+            <View style={{marginBottom: 20, marginTop: 30}}>
               {VehiclesType.map((item, index) => (
                 <VehicleType
                   onPress={() => {
@@ -356,9 +389,47 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           </View>
         ) : shouldShow == 3 ? (
           <View style={[styles.searchContainer, {height: 500}]}>
+            {/* <Loader2 visible={true} /> */}
             <Confirm
+              style={{paddingTop: 30}}
+              payment={() => {
+                usePaymentMutation.mutate({
+                  amount: 5000,
+                  ipAddress: ipAddress,
+                });
+              }}
+              vehicleType={selectedVehicle !== 0 ? 'Car' : 'bike'}
               pickLoation={pickDetail.formatted_address}
               dropOff={dropDetail.formatted_address}
+              findDriver={() => {
+                useBookingMutation.mutate({
+                  distance: 7,
+                  startLocation: 'Da Nang',
+                  endLocation: 'Ha Noi',
+                  startPosition: {
+                    latitude: 16.0597639,
+                    longitude: 108.2355983,
+                  },
+                  endPosition: {
+                    latitude: 16.0597632,
+                    longitude: 108.2414633,
+                  },
+                  fee: 50000,
+                  payment: '59eec2a7-8df9-40b9-9b3d-af581082b2asd',
+                  kidId: '1ae5aa71-c759-49b9-bad0-8f25752e1a92',
+                  typeVehicle: 'Car',
+
+                  // distance: distance,
+                  // startLocation: pickDetail,
+                  // endLocation: dropDetail,
+                  // startPosition: {origin},
+                  // endPosition: {destination},
+                  // fee: 50000,
+                  // payment: 1,
+                  // kidId: selectedChild,
+                  // typeVehicle: selectedVehicle !== 0 ? 'Car' : 'Motobike',
+                });
+              }}
             />
           </View>
         ) : null}
@@ -375,13 +446,11 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               flexDirection: 'column',
               justifyContent: 'space-between',
               height: '100%',
-              // gap: 30,
+              paddingHorizontal: 20,
               paddingVertical: 30,
-
-              // width: '100%',
             }}>
-            <View style={styles.modalContent}>
-              {childrenList.map(child => (
+            <ScrollView horizontal={true} style={styles.modalContent}>
+              {kidData.map(child => (
                 <TouchableOpacity
                   key={child.id}
                   style={[
@@ -390,6 +459,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                       justifyContent: 'center',
                       alignItems: 'center',
                       gap: 5,
+                      paddingRight: 30,
                     },
                   ]}
                   onPress={() => {
@@ -397,7 +467,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   }}>
                   <Avatar
                     source={{
-                      uri: 'https://cdn3d.iconscout.com/3d/premium/thumb/boy-7215504-5873316.png?f=webp',
+                      uri: `${child.avatar}`,
                     }}
                     style={[
                       {
@@ -417,7 +487,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   </Text>
                 </TouchableOpacity>
               ))}
-            </View>
+            </ScrollView>
             <Button
               onPress={() => {
                 setModalVisible(!isModalVisible);
@@ -440,10 +510,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
   },
   modalContent: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 30,
+    // justifyContent: 'center',
   },
   modal: {
     backgroundColor: Colors.while,
@@ -474,7 +541,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     // display:
-    paddingTop: 30,
+    // paddingTop: 30,
     gap: 20,
     bottom: 0,
     // height: 600,
@@ -487,7 +554,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 4,
-    padding: 8,
+    // padding: 8,
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
   },

@@ -58,6 +58,7 @@ const LocationBox = ({
         onPress={(data, details = null) => {
           onPlaceSelected(details);
         }}
+        
         listViewDisplayed="auto"
         renderRow={results => (
           <View

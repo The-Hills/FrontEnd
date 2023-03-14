@@ -13,19 +13,46 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import Header from '../../../components/DriverScreen/Header';
 import {Colors} from '../../../../assets/theme/colors';
 import Icon from 'react-native-vector-icons/Feather';
 import {Height, Width} from '../../../../assets/ScreenDimensions';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
+import {AuthContext} from '../../../hooks/auth/AuthContext';
+import {useDriverQuery, useUpdateDriver} from '../../../hooks/useUser';
+
 
 const DriverProfile = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const {logout} = useContext(AuthContext);
+  const {data} = useDriverQuery();
+  const DriverData = data.data.data;
+  const useDriverMutate = useUpdateDriver();
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => {
+      changeStatus(!previousState);
+      return !previousState;
+    });
+  };
+  const changeStatus = status => {
+    if (status) {
+      useDriverMutate.mutate( {
+        id: DriverData.id,
+        status: 'active',
+      });
+    } else {
+      useDriverMutate.mutate({
+        id: DriverData.id,
+        status: 'unActive',
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Header />
+      <Header
+      />
       <View style={styles.content}>
         <View style={styles.row}>
           <Text
@@ -104,6 +131,16 @@ const DriverProfile = ({navigation}) => {
           </Text>
           <Icon name="chevron-right" color={Colors.black} size={24} />
         </View>
+        <TouchableOpacity onPress={logout} style={styles.row}>
+          <Text
+            style={{
+              color: Colors.black,
+              fontFamily: FontFamily.Medium,
+              fontSize: 16,
+            }}>
+            Logout
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

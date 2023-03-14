@@ -20,15 +20,12 @@ import Avatar from '../../../components/general/Avatar';
 import {Sizes} from '../../../../assets/theme/fontSize';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {Width} from '../../../../assets/ScreenDimensions';
-import Back from '../../../components/general/Back';
+import Header from '../../../components/general/Header';
 
 const Kidprofile = ({navigation: {goBack}}) => {
   return (
     <View style={GeneralStyle.container}>
-      <Back style={styles.btn} onPress={() => goBack()} />
-      <View style={styles.header}>
-        <Text style={styles.title}>Kid Profile</Text>
-      </View>
+      <Header show={true} lable="Kid Profile" onPress={() => goBack()} />
       <View style={styles.content}>
         <View style={styles.avatar}>
           <Avatar
@@ -37,7 +34,6 @@ const Kidprofile = ({navigation: {goBack}}) => {
             }}
             style={{height: '100%', width: '100%'}}
           />
-          <Icon name="edit" size={17} color="#282828" />
         </View>
         <View style={styles.infor}>
           <View
@@ -47,20 +43,13 @@ const Kidprofile = ({navigation: {goBack}}) => {
               alignItems: 'center',
             }}>
             <Text style={styles.nameChild}>Tom</Text>
-            <Text style={styles.idChild}>ID: 3255151</Text>
-            <Image
-              style={{width: 50, height: 50, resizeMode: 'contain'}}
-              source={{
-                uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/QR_code_for_mobile_English_Wikipedia.svg/1200px-QR_code_for_mobile_English_Wikipedia.svg.png',
-              }}
-            />
           </View>
           <View style={{marginTop: 10}}>
             <Text style={styles.information}>Informations</Text>
-            <Text style={styles.information}>
+            <Text style={styles.lable}>
               Full Name: <Text style={GeneralStyle.text}>Thanh Nhat Ha</Text>{' '}
             </Text>
-            <Text style={styles.information}>
+            <Text style={styles.lable}>
               Age: <Text style={GeneralStyle.text}>11 years old</Text>
             </Text>
           </View>
@@ -111,6 +100,11 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: Sizes.name,
   },
+  lable:{
+    fontFamily: FontFamily.Medium,
+    color: Colors.black,
+    fontSize: 15
+  },
   title: {
     fontFamily: FontFamily.Medium,
     color: Colors.main,
@@ -134,7 +128,6 @@ const styles = StyleSheet.create({
   infor: {
     width: Width,
     paddingHorizontal: 30,
-    top: 30,
   },
   nameChild: {
     fontSize: Sizes.name,

@@ -9,9 +9,11 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import Vehicle from '../../components/userScreen/Vehicle';
 import SavedLocations from '../../components/userScreen/SavedLocations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useEffect} from "react"
+import {useEffect} from 'react';
+
 
 const UserHomeScreen = ({navigation}) => {
+
   return (
     <View style={GeneralStyle.container}>
       <StatusBarAr bg={Colors.main} />
@@ -70,17 +72,26 @@ const UserHomeScreen = ({navigation}) => {
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={styles.listLocation}>
-              <SavedLocations url={require('../../../assets/images/new.png')} />
               <SavedLocations
+                lable="Add"
+                url={require('../../../assets/images/new.png')}
+              />
+              <SavedLocations
+                lable="School "
                 url={require('../../../assets/images/school.png')}
               />
               <SavedLocations
+                lable="Home"
                 url={require('../../../assets/images/home.png')}
               />
               <SavedLocations
+                lable="Company"
                 url={require('../../../assets/images/work2.png')}
               />
-              <SavedLocations url={require('../../../assets/images/hp.png')} />
+              <SavedLocations
+                lable="Hospital"
+                url={require('../../../assets/images/hp.png')}
+              />
             </View>
           </ScrollView>
           <View style={styles.vehicle}>

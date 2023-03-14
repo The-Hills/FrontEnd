@@ -12,9 +12,30 @@ import UserProfile from '../../screens/profile/general/UserProfile';
 import MapComponent from '../../components/map/MapComponent';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 import ChooseLocation from '../../screens/other/ChooseLocation';
+import {useUserQuery} from '../../hooks/useUser';
+import Loader from '../../components/loader/Loader';
 
 const Tab = createBottomTabNavigator();
+
 const BottomTabs = () => {
+  const {isLoading, isError, error} = useUserQuery();
+  if (isLoading) {
+    return (
+      <View>
+        <Loader visible={true} />
+      </View>
+    );
+  }
+  if (isError) {
+    return <Error />;
+  }
+  if (error) {
+    return (
+      <View>
+        <Text>{error.message}</Text>
+      </View>
+    );
+  }
   return (
     <Tab.Navigator
       initialRouteName="UserHomeScreen"
