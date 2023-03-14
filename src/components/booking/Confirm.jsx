@@ -20,7 +20,14 @@ import {Width} from '../../../assets/ScreenDimensions';
 import VehicleType from './Vehicle';
 import Button from '../general/Button';
 
-const Confirm = ({style,pickLoation, dropOff, vehicleType, findDriver, payment}) => {
+const Confirm = ({
+  style,
+  pickLoation,
+  dropOff,
+  vehicleType,
+  findDriver,
+  payment,
+}) => {
   return (
     <View style={[{width: '100%'}, style]}>
       <View
@@ -139,18 +146,20 @@ const Confirm = ({style,pickLoation, dropOff, vehicleType, findDriver, payment})
             source={require('../../../assets/images/cashPay.png')}
           />
         </View>
-        <TouchableOpacity onPress={payment} style={[styles.payments, styles.shadow]}>
+        <TouchableOpacity
+          onPress={payment}
+          style={[styles.payments, styles.shadow]}>
           <Text
             style={{
               color: Colors.black,
               fontFamily: FontFamily.Medium,
               fontSize: 15,
             }}>
-            Pay with MOMO
+            Pay with VNPAY
           </Text>
           <Image
             style={{width: 70, height: 70}}
-            source={require('../../../assets/images/momo.png')}
+            source={require('../../../assets/images/vnpay.png')}
           />
         </TouchableOpacity>
       </View>

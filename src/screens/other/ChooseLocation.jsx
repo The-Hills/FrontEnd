@@ -38,6 +38,12 @@ import Loader from '../../components/loader/Loader';
 import Loader2 from '../../components/loader/Loader2';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
+  // react Query
+  const useBookingMutation = useBooking();
+  const usePaymentMutation = usePayment();
+  const {data} = useUserQuery();
+
+  //  states
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [pickDetail, setPickDetail] = useState(null);
@@ -51,13 +57,15 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [duration, setDuration] = useState(0);
   const [ipAddress, setIpAddress] = useState(null);
   const [payment, setPayment] = useState(null);
-  const {data} = useUserQuery();
   const kidData = data.data.data.kid;
   const [selectedChild, setSelectedChild] = useState(kidData[0].id);
-  const useBookingMutation = useBooking();
-  const usePaymentMutation = usePayment();
   const paymentData = usePaymentMutation.data;
-  console.log('pay', paymentData);
+  useEffect(() => {
+    if (usePaymentMutation.status === 'success') {
+      setPayment(paymentData.data);
+    }
+  }, [paymentData]);
+
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
@@ -116,13 +124,18 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     }
     moveTo(position);
   };
-  // if (usePaymentMutation.isSuccess) {
-  //   setPayment(paymentData);
-  // }
-  if (useBookingMutation.isSuccess) {
+
+  if (useBookingMutation.status === 'success') {
     return (
       <View>
         <Text style={{color: 'red'}}>Success</Text>
+      </View>
+    );
+  }
+  if (useBookingMutation.status === 'error') {
+    return (
+      <View>
+        <Text style={{color: 'red'}}>error</Text>
       </View>
     );
   }
@@ -389,7 +402,13 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           </View>
         ) : shouldShow == 3 ? (
           <View style={[styles.searchContainer, {height: 500}]}>
-            {/* <Loader2 visible={true} /> */}
+            <Loader2
+              visible={
+                usePaymentMutation.isLoading || useBookingMutation.isLoading
+                  ? true
+                  : false
+              }
+            />
             <Confirm
               style={{paddingTop: 30}}
               payment={() => {
@@ -403,31 +422,15 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               dropOff={dropDetail.formatted_address}
               findDriver={() => {
                 useBookingMutation.mutate({
-                  distance: 7,
-                  startLocation: 'Da Nang',
-                  endLocation: 'Ha Noi',
-                  startPosition: {
-                    latitude: 16.0597639,
-                    longitude: 108.2355983,
-                  },
-                  endPosition: {
-                    latitude: 16.0597632,
-                    longitude: 108.2414633,
-                  },
+                  distance: distance,
+                  startLocation: pickDetail.formatted_address,
+                  endLocation: dropDetail.formatted_address,
+                  startPosition: {origin},
+                  endPosition: {destination},
                   fee: 50000,
-                  payment: '59eec2a7-8df9-40b9-9b3d-af581082b2asd',
-                  kidId: '1ae5aa71-c759-49b9-bad0-8f25752e1a92',
-                  typeVehicle: 'Car',
-
-                  // distance: distance,
-                  // startLocation: pickDetail,
-                  // endLocation: dropDetail,
-                  // startPosition: {origin},
-                  // endPosition: {destination},
-                  // fee: 50000,
-                  // payment: 1,
-                  // kidId: selectedChild,
-                  // typeVehicle: selectedVehicle !== 0 ? 'Car' : 'Motobike',
+                  payment: payment.id,
+                  kidId: selectedChild,
+                  typeVehicle: selectedVehicle !== 0 ? 'Car' : 'Motobike',
                 });
               }}
             />

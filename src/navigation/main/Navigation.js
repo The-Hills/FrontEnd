@@ -19,7 +19,7 @@ const Navigation = () => {
         role === 'user' ? (
           <MainStack />
         ) : (
-          <Loader />
+          <DriverStack />
         )
       ) : (
         <AuthNavigation />

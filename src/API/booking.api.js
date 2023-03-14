@@ -1,6 +1,7 @@
 import axiosRequest from '.';
 
 export const createBooking = async data => {
+  console.log('dataPUT', data);
   const url = '/booking';
   return await axiosRequest.post(url, data);
 };
