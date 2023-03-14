@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+
 import {
   SafeAreaView,
   View,
@@ -14,12 +14,24 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import Navigation from './src/navigation/main/Navigation';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import {AuthProvider} from './src/hooks/auth/AuthContext';
+export const queryClient = new QueryClient();
+
 function App() {
   return (
-    <View style={styles.container}>
-      <Icon name="image" size={30} color="#ffffff" />
-      <Text style={styles.text}>Pikid</Text>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Navigation />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
@@ -29,6 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#4BB7D6',
   },
   text: {
     fontFamily: 'Poppins-ExtraBold',
