@@ -3,6 +3,8 @@ import {
   createBooking,
   createPayment,
   fetchBookingData,
+  getPrice,
+  getVehicle,
 } from '../../API/booking.api';
 
 export const useBooking = () => {
@@ -10,7 +12,6 @@ export const useBooking = () => {
   return useMutation(createBooking, {
     onSuccess: data => {
       queryClient.setQueriesData(['bookings', data]);
-     
     },
   });
 };
@@ -23,5 +24,16 @@ export const usePayment = () => {
     },
   });
 };
+
+export const useGetPrice = () => {
+  const queryClient = useQueryClient();
+  return useMutation(getPrice, {
+    onSuccess: data => {
+      queryClient.setQueriesData(['price', data]);
+    },
+  });
+};
+
+export const useVehicale = () => useQuery(['vehicle'], getVehicle);
 
 export const useBookingData = () => useQuery(['booking'], fetchBookingData);

@@ -19,6 +19,7 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Width} from '../../../assets/ScreenDimensions';
 import VehicleType from './Vehicle';
 import Button from '../general/Button';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const Confirm = ({
   style,
@@ -27,7 +28,9 @@ const Confirm = ({
   vehicleType,
   findDriver,
   payment,
+  distance,
 }) => {
+  const [type] = useRQGlobalState('type', 0);
   return (
     <View style={[{width: '100%'}, style]}>
       <View
@@ -122,7 +125,11 @@ const Confirm = ({
         </View>
       </View>
       <View style={{marginVertical: 20}}>
-        <VehicleType name={vehicleType} />
+        <VehicleType
+          name={vehicleType}
+          distance={distance}
+          price={type !== 0 ? 10000 : 5000}
+        />
       </View>
       <View
         style={{

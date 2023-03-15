@@ -32,10 +32,17 @@ import {carsAround, childrenList, VehiclesType} from '../../../assets/data';
 import VehicleType from '../../components/booking/Vehicle';
 import Confirm from '../../components/booking/Confirm';
 import {useUserQuery} from '../../hooks/useUser';
-import {useBooking, usePayment} from '../../hooks/booking/useBooking';
+import {
+  useBooking,
+  usePayment,
+  useVehicale,
+} from '../../hooks/booking/useBooking';
 import {NetworkInfo} from 'react-native-network-info';
 import Loader from '../../components/loader/Loader';
 import Loader2 from '../../components/loader/Loader2';
+import Vehicles from '../../components/DriverScreen/Vehicles';
+import useRQGlobalState from '../../States/useRQGlobalStates';
+import {LogBox} from 'react-native';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   // react Query
@@ -51,7 +58,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [showDirections, setShowDirections] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [Sellect, setSellect] = useState('none');
-  const [selectedVehicle, setSelectedVehicle] = useState(0);
+  const [type] = useRQGlobalState('type', 0);
+  const [feeMoto] = useRQGlobalState('feeMoto', 0);
+  const [feeCar] = useRQGlobalState('feeCar', 0);
+
   const [shouldShow, setShouldShow] = useState(1);
   const [distance, setDistance] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -60,6 +70,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const kidData = data.data.data.kid;
   const [selectedChild, setSelectedChild] = useState(kidData[0].id);
   const paymentData = usePaymentMutation.data;
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
   useEffect(() => {
     if (usePaymentMutation.status === 'success') {
       setPayment(paymentData.data);
@@ -77,9 +90,6 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     return id === selectedChild;
   };
 
-  const isSelectedVehicle = id => {
-    return id === selectedVehicle;
-  };
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
@@ -93,7 +103,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   };
   useEffect(() => {
     traceRoute();
-  });
+  }, [origin, destination]);
   const traceRoute = () => {
     if (origin && destination) {
       setShowDirections(true);
@@ -102,9 +112,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   };
 
   const CheckSellectVehicleTye = () => {
-    if (selectedVehicle != null) {
-      setShouldShow(3);
-    }
+    setShouldShow(3);
   };
 
   const onPlaceSelected = (details, flag) => {
@@ -140,6 +148,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     );
   }
 
+  console.log('type:', type);
+
+  // console.log('distance:', distance);
+  // console.log('fee', type !== 0 ? feeCar : feeMoto);
   return (
     <View style={styles.container}>
       <View style={styles.map}>
@@ -387,16 +399,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
         ) : shouldShow == 2 ? (
           <View style={[styles.searchContainer, {height: 600}]}>
             <View style={{marginBottom: 20, marginTop: 30}}>
-              {VehiclesType.map((item, index) => (
-                <VehicleType
-                  onPress={() => {
-                    setSelectedVehicle(index);
-                  }}
-                  key={index}
-                  name={item.name}
-                  style={isSelectedVehicle(index) && styles.activeVehicle}
-                />
-              ))}
+              <Vehicles distance={distance} />
             </View>
             <Button onPress={() => CheckSellectVehicleTye()} lable="Next" />
           </View>
@@ -410,14 +413,15 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               }
             />
             <Confirm
+              distance={distance}
               style={{paddingTop: 30}}
               payment={() => {
                 usePaymentMutation.mutate({
-                  amount: 5000,
+                  amount: type !== 0 ? feeCar : feeMoto,
                   ipAddress: ipAddress,
                 });
               }}
-              vehicleType={selectedVehicle !== 0 ? 'Car' : 'bike'}
+              vehicleType={type !== 0 ? 'Car' : 'Motobike'}
               pickLoation={pickDetail.formatted_address}
               dropOff={dropDetail.formatted_address}
               findDriver={() => {
@@ -427,10 +431,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   endLocation: dropDetail.formatted_address,
                   startPosition: {origin},
                   endPosition: {destination},
-                  fee: 50000,
+                  fee: type !== 0 ? feeCar : feeMoto,
                   payment: payment.id,
                   kidId: selectedChild,
-                  typeVehicle: selectedVehicle !== 0 ? 'Car' : 'Motobike',
+                  typeVehicle: type !== 0 ? 'Car' : 'Motobike',
                 });
               }}
             />
