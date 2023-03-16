@@ -30,7 +30,7 @@ import Request from '../../components/booking/Request';
 
 const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const {item} = route.params;
-  console.log(item);
+
   const [shouldShow, setShouldShow] = useState(1);
   const mapRef = useRef(null);
 

@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   Dimensions,
+  Linking,
   StyleSheet,
   Image,
   Pressable,
@@ -93,6 +94,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
+  const onClose = async () => {
+    modalizeRef.current?.close('alwaysOpen');
+  };
 
   const moveTo = async position => {
     const camera = await mapRef.current?.getCamera();
@@ -114,7 +118,19 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const CheckSellectVehicleTye = () => {
     setShouldShow(3);
   };
-
+  useEffect(() => {
+    if (origin && destination) {
+      mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+        edgePadding: {
+          top: 200,
+          right: 200,
+          bottom: 1000,
+          left: 200,
+        },
+        animated: true,
+      });
+    }
+  });
   const onPlaceSelected = (details, flag) => {
     const position = {
       latitude: details?.geometry.location.lat,
@@ -147,23 +163,20 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       </View>
     );
   }
-
-  console.log('type:', type);
-
-  // console.log('distance:', distance);
-  // console.log('fee', type !== 0 ? feeCar : feeMoto);
   return (
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
           {origin && (
-            <Marker coordinate={origin}>
+            <Marker identifier="origin" coordinate={origin}>
               <Image
                 source={require('../../../assets/images/piker.png')}
                 style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
             </Marker>
           )}
-          {destination && <Marker coordinate={destination} />}
+          {destination && (
+            <Marker identifier="destination" coordinate={destination} />
+          )}
           {carsAround.map((car, index) => (
             <Marker coordinate={car.location} key={index}>
               {car.vehicleType == 'Car' ? (
@@ -194,7 +207,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               strokeColor="hotpink"
               onReady={result => {
                 setDistance(result.distance);
-                setDuration(result.duration);
+                setDuration(Math.floor(result.duration));
               }}
             />
           )}
@@ -204,7 +217,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       <Modalize
         disableScrollIfPossible={true}
         keyboardAvoidingOffset={300}
-        alwaysOpen={320}
+        alwaysOpen={350}
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
@@ -214,6 +227,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               <LocationBox
                 onPlaceSelected={details => {
                   onPlaceSelected(details, 'origin');
+                  onClose();
                 }}
                 onFocus={() => {
                   onOpen();
@@ -399,7 +413,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
         ) : shouldShow == 2 ? (
           <View style={[styles.searchContainer, {height: 600}]}>
             <View style={{marginBottom: 20, marginTop: 30}}>
-              <Vehicles distance={distance} />
+              <Vehicles distance={distance} time={3} />
             </View>
             <Button onPress={() => CheckSellectVehicleTye()} lable="Next" />
           </View>

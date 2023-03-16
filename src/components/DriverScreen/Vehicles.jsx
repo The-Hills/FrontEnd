@@ -20,7 +20,7 @@ import Error from '../../screens/Intro/Error';
 import VehicleType from '../booking/Vehicle';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 
-const Vehicles = ({distance}) => {
+const Vehicles = ({distance, time}) => {
   const {isFetching, isError, data} = useVehicale();
   const [type, setType] = useRQGlobalState('type', 0);
   const [selectedVehicle, setSelectedVehicle] = useState(0);
@@ -53,6 +53,7 @@ const Vehicles = ({distance}) => {
           name={item.name}
           price={item.price}
           distance={distance}
+          time ={time}
           style={isSelectedVehicle(index) && styles.activeVehicle}
         />
       ))}

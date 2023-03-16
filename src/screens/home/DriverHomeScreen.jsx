@@ -33,7 +33,6 @@ const DriverHomeScreen = ({navigation}) => {
     return <Error />;
   }
   const BookingData = data.data.data;
-  console.log('DataBooking', BookingData);
   return (
     <FlatList
       style={styles.container}

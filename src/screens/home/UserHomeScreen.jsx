@@ -11,9 +11,7 @@ import SavedLocations from '../../components/userScreen/SavedLocations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useEffect} from 'react';
 
-
 const UserHomeScreen = ({navigation}) => {
-
   return (
     <View style={GeneralStyle.container}>
       <StatusBarAr bg={Colors.main} />

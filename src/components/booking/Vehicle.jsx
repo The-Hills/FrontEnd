@@ -18,7 +18,7 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Width} from '../../../assets/ScreenDimensions';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 
-const VehicleType = ({name, price, onPress, style, distance}) => {
+const VehicleType = ({name, time, price, onPress, style, distance}) => {
   const [feeMoto, setFeeMoto] = useRQGlobalState('feeMoto', 0);
   const [feeCar, setFeeCar] = useRQGlobalState('feeCar', 0);
   const [Moto, setMoto] = useState(0);
@@ -81,7 +81,7 @@ const VehicleType = ({name, price, onPress, style, distance}) => {
             fontSize: 12,
             fontFamily: FontFamily.Light,
           }}>
-          5-7 min
+          {time} - {time + 2} min
         </Text>
       </View>
     </TouchableOpacity>

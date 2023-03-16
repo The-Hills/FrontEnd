@@ -63,9 +63,7 @@ const Register = ({navigation}) => {
       isValid = false;
     }
     if ((isValid = true)) {
-      console.log('cai lonnn tau ne');
       const res = await register(inputs);
-      console.log('homnay', res);
       if (res.data.message === 'Successfully') {
         navigation.navigate('Login');
       }

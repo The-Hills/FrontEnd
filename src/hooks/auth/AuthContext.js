@@ -20,6 +20,8 @@ import {
   setURoleAsync,
 } from '../../utils/StorageUtils';
 import useRQGlobalState from '../../States/useRQGlobalStates';
+import Loader from '../../components/loader/Loader';
+import Error from '../../screens/Intro/Error';
 export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
   const [userInfo, setUserInfo] = useState({});
@@ -40,8 +42,8 @@ export const AuthProvider = ({children}) => {
       let userInfo = res.data;
       console.log(userInfo);
       setIsLoading(false);
-      if (res.status === 200) {
-        setSccess(true);
+      if (res.status === 400) {
+        return <Error />;
       }
       return res;
     } catch (e) {

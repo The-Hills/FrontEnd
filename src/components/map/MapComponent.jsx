@@ -67,12 +67,12 @@ export default React.forwardRef((props, mapRef) => {
           latitudeDelta: 0.01,
           longitudeDelta: 0.01,
         }}
-        customMapStyle={customStyle}> 
-          {props.children}
+        customMapStyle={customStyle}>
+        {props.children}
       </MapView>
     </View>
   );
-}) 
+});
 
 //create our styling code:
 const styles = StyleSheet.create({
