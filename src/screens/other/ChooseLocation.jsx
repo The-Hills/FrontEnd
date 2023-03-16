@@ -118,19 +118,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const CheckSellectVehicleTye = () => {
     setShouldShow(3);
   };
-  useEffect(() => {
-    if (origin && destination) {
-      mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
-        edgePadding: {
-          top: 200,
-          right: 200,
-          bottom: 1000,
-          left: 200,
-        },
-        animated: true,
-      });
-    }
-  });
+
   const onPlaceSelected = (details, flag) => {
     const position = {
       latitude: details?.geometry.location.lat,
@@ -148,7 +136,19 @@ const ChooseLocation = ({navigation: {goBack}}) => {
     }
     moveTo(position);
   };
-
+  useEffect(() => {
+    if (origin && destination) {
+      mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+        edgePadding: {
+          top: 200,
+          right: 200,
+          bottom: 1000,
+          left: 200,
+        },
+        animated: true,
+      });
+    }
+  }, [distance]);
   if (useBookingMutation.status === 'success') {
     return (
       <View>

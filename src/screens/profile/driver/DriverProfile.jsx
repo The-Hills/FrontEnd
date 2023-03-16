@@ -12,6 +12,7 @@ import {
   Pressable,
   ScrollView,
   TouchableOpacity,
+  AppState,
 } from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
 import Header from '../../../components/DriverScreen/Header';
@@ -21,7 +22,6 @@ import {Height, Width} from '../../../../assets/ScreenDimensions';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import {useDriverQuery, useUpdateDriver} from '../../../hooks/useUser';
-
 
 const DriverProfile = ({navigation}) => {
   const [isEnabled, setIsEnabled] = useState(false);
@@ -37,7 +37,7 @@ const DriverProfile = ({navigation}) => {
   };
   const changeStatus = status => {
     if (status) {
-      useDriverMutate.mutate( {
+      useDriverMutate.mutate({
         id: DriverData.id,
         status: 'active',
       });
@@ -48,11 +48,19 @@ const DriverProfile = ({navigation}) => {
       });
     }
   };
-
+  useEffect(() => {
+    AppState.addEventListener('change', state => {
+      if (state === 'background') {
+        useDriverMutate.mutate({
+          id: DriverData.id,
+          status: 'unActive',
+        });
+      }
+    });
+  }, []);
   return (
     <View style={styles.container}>
-      <Header
-      />
+      <Header />
       <View style={styles.content}>
         <View style={styles.row}>
           <Text
