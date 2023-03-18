@@ -9,9 +9,22 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import Vehicle from '../../components/userScreen/Vehicle';
 import SavedLocations from '../../components/userScreen/SavedLocations';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
+import {useUserQuery} from '../../hooks/useUser';
+import Modal from 'react-native-modal';
+import ContentModal from '../../components/booking/ContentModal';
 
 const UserHomeScreen = ({navigation}) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const {data} = useUserQuery();
+  const UserData = data.data.data;
+  const checkKidData = () => {
+    if (UserData.kid.length === 0) {
+      setModalVisible(true);
+    } else {
+      navigation.navigate('ChooseLocation');
+    }
+  };
   return (
     <View style={GeneralStyle.container}>
       <StatusBarAr bg={Colors.main} />
@@ -36,8 +49,8 @@ const UserHomeScreen = ({navigation}) => {
         <ScrollView>
           <View style={styles.LocationBox}>
             <LocationBox
-              onFocus={() => navigation.navigate('ChooseLocation')}
-              onPress={() => navigation.navigate('ChooseLocation')}
+              onFocus={() => checkKidData()}
+              onPress={() => checkKidData()}
               style={styles.box}
               iconName="map-pin"
               placeholder="Kid's location"
@@ -52,8 +65,8 @@ const UserHomeScreen = ({navigation}) => {
               }}
             />
             <LocationBox
-              onFocus={() => navigation.navigate('ChooseLocation')}
-              onPress={() => navigation.navigate('ChooseLocation')}
+              onFocus={() => checkKidData()}
+              onPress={() => checkKidData()}
               style={styles.box}
               styles1={{
                 textInput: {
@@ -101,6 +114,19 @@ const UserHomeScreen = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
+      <Modal
+        isVisible={isModalVisible}
+        onSwipeComplete={() => {
+          setModalVisible(false), navigation.navigate('ProfileRegister');
+        }}
+        swipeDirection="right">
+        <View style={styles.modal}>
+          <ContentModal
+            source={require('../../../assets/images/file.png')}
+            title="Add Kid"
+          />
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -108,6 +134,14 @@ const UserHomeScreen = ({navigation}) => {
 export default UserHomeScreen;
 
 const styles = StyleSheet.create({
+  modal: {
+    backgroundColor: Colors.while,
+    height: 100,
+    borderRadius: 15,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   LocationBox: {
     paddingHorizontal: 25,
   },

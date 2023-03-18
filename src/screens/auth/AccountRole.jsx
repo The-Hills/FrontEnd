@@ -53,7 +53,6 @@ const AccountRole = ({navigation}) => {
     return id === selectedVehicle;
   };
   const check = index => {
-    console.log('set', index);
     setSelectedVehicle(index);
   };
   const submit = () => {

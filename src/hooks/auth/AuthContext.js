@@ -41,7 +41,7 @@ export const AuthProvider = ({children}) => {
           : await registerDriver({name, email, password, phone});
 
       let userInfo = res.data;
-      console.log(userInfo);
+      // console.log(userInfo);
       setIsLoading(false);
       if (res.status === 400) {
         return <Error />;

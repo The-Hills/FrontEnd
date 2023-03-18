@@ -17,7 +17,7 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Colors} from '../../../assets/theme/colors';
 import {Width} from '../../../assets/ScreenDimensions';
 
-const ContentModal = () => {
+const ContentModal = ({source, title}) => {
   return (
     <View
       style={{
@@ -35,7 +35,7 @@ const ContentModal = () => {
           left: -30,
           bottom: -50,
         }}
-        source={require('../../../assets/images/find6.png')}
+        source={source}
       />
       <Text
         style={{
@@ -45,7 +45,7 @@ const ContentModal = () => {
           fontSize: 22,
           fontFamily: FontFamily.SemiBold,
         }}>
-        Finding Driver...
+        {title}
       </Text>
     </View>
   );

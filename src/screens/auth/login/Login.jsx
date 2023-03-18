@@ -44,7 +44,7 @@ const Login = ({navigation}) => {
   const handleError = (error, input) => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
-  console.log('login', role);
+
   return (
     <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
       <Loader visible={isLoading} />

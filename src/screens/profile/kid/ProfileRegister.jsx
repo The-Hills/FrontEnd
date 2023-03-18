@@ -24,6 +24,7 @@ import {Width} from '../../../../assets/ScreenDimensions';
 import Avatar from '../../../components/general/Avatar';
 import Input from '../../../components/general/Input';
 import Button from '../../../components/general/Button';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 import Loader from '../../../components/loader/Loader';
 import {useCreateKidInfo, useUserQuery} from '../../../hooks/useUser';
@@ -41,19 +42,33 @@ const ProfileRegister = ({navigation: {goBack}}) => {
     url: 'https://cdn3d.iconscout.com/3d/premium/thumb/cool-boy-7215485-5873297.png',
   });
   const [isModalVisible, setModalVisible] = useState(true);
-  const choosePhotoFromLibrary = url => {
-    ImagePicker.openPicker({
-      width: 400,
-      height: 300,
-      cropping: true,
-    }).then(image => {
+  const choosePhotoFromLibrary = async url => {
+    // ImagePicker.openPicker({
+    //   width: 400,
+    //   height: 300,
+    //   cropping: true,
+    // }).then(image => {
+    //   console.log(image);
+    //   setInputs(prev => {
+    //     return {
+    //       ...prev,
+    //       url: image.path,
+    //     };
+    //   });
+    // });
+    const result = await launchImageLibrary({
+      includeBase64: true,
+      mediaType: 'photo',
+    });
+    console.log(result.assets[0].base64);
+    if (result.assets) {
       setInputs(prev => {
         return {
           ...prev,
-          url: image.path,
+          url: result.assets[0].uri,
         };
       });
-    });
+    }
   };
   const handleOnchange = (text, input) => {
     setInputs(prevState => ({...prevState, [input]: text}));
@@ -85,6 +100,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
           />
           <Input
             lable="Age"
+            keyboardType="numeric"
             onChangeText={text => handleOnchange(text, 'age')}
           />
           <Input
@@ -100,7 +116,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
           onSwipeComplete={() => {
             setModalVisible(false), goBack();
           }}
-          swipeDirection="down"
+          swipeDirection="right"
           isVisible={isModalVisible}>
           <View style={styles.modal}>
             <View

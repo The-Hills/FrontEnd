@@ -25,7 +25,7 @@ import Button from '../../components/general/Button';
 import Back from '../../components/general/Back';
 import {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {PLACES_API_KEY} from '../../../assets/APIKey';
+import {GOOGLE_API_KEY_2, PLACES_API_KEY} from '../../../assets/APIKey';
 // import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
@@ -204,7 +204,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           {showDirections && origin && destination && (
             <MapViewDirections
               origin={origin}
-              destination={destination}
+              destination={destination}     
               apikey={PLACES_API_KEY}
               strokeWidth={5}
               strokeColor="hotpink"
