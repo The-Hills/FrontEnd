@@ -25,15 +25,12 @@ import {useDriverQuery, useUpdateDriver} from '../../../hooks/useUser';
 import useRQGlobalState from '../../../States/useRQGlobalStates';
 
 const DriverProfile = ({navigation}) => {
-  const useDriverMutate = useUpdateDriver();
-  const [currentLocation] = useRQGlobalState('location', {
-    latitude: 0,
-    longitude: 0,
-  });
   const [isEnabled, setIsEnabled] = useState(false);
   const {logout} = useContext(AuthContext);
   const {data} = useDriverQuery();
   const DriverData = data.data.data;
+  // console.log(DriverData);
+  const useDriverMutate = useUpdateDriver();
   const toggleSwitch = () => {
     setIsEnabled(previousState => {
       changeStatus(!previousState);

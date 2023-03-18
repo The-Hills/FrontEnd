@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, memo} from 'react';
 import AvatarandName from './Avatar';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
@@ -21,14 +21,17 @@ import Geolocation from '@react-native-community/geolocation';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const Header = ({avatar, name, active}) => {
-  const useShareCurrentLocation = useUpdateDriver();
+  const [driverData, setDriverData] = useRQGlobalState('driverData', null);
   const [currentLocation, setCurrentLocation] = useRQGlobalState('location', {
     latitude: 0,
     longitude: 0,
   });
   const {data} = useDriverQuery();
   const DriverData = data.data.data;
-  // console.log(DriverData); 
+  useEffect(() => {
+    setDriverData(DriverData);
+  }, [data]);
+  const useShareCurrentLocation = useUpdateDriver();
   useEffect(() => {
     Geolocation.getCurrentPosition(position => {
       setCurrentLocation({
@@ -78,7 +81,7 @@ const Header = ({avatar, name, active}) => {
   );
 };
 
-export default Header;
+export default memo(Header);
 
 const styles = StyleSheet.create({
   text: {

@@ -23,8 +23,10 @@ import {useDriverQuery} from '../../hooks/useUser';
 import {useBookingData} from '../../hooks/booking/useBooking';
 import Loader from '../../components/loader/Loader';
 import Error from '../Intro/Error';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const DriverHomeScreen = ({navigation}) => {
+  const [driverData] = useRQGlobalState('driverData', null);
   const {isError, isLoading, data} = useBookingData();
   if (isLoading) {
     return <Loader />;
@@ -33,47 +35,87 @@ const DriverHomeScreen = ({navigation}) => {
     return <Error />;
   }
   const BookingData = data.data.data;
+  // console.log(BookingData);
+  const filteredData = BookingData.filter(item => {
+    return item.status === 'onTracking';
+  });
+
   return (
-    <FlatList
-      style={styles.container}
-      ListHeaderComponentStyle={styles.HeaderStyle}
-      ListHeaderComponent={() => (
-        <View style={{backgroundColor: Colors.while, paddingTop: 20}}>
-          <Header />
+    <View
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        paddingHorizontal: 30,
+        paddingTop: 20,
+        height: '100%',
+        backgroundColor: Colors.while,
+      }}>
+      <View
+        style={{
+          width: '100%',
+        }}>
+        <Header />
+      </View>
+      { driverData && driverData.status === 'active' ? (
+        <FlatList
+          style={styles.container}
+          ListHeaderComponentStyle={styles.HeaderStyle}
+          ListHeaderComponent={() => (
+            <View style={{backgroundColor: Colors.while}}>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontFamily: FontFamily.SemiBold,
+                  fontSize: 20,
+                  marginTop: 10,
+                }}>
+                New request
+              </Text>
+            </View>
+          )}
+          stickyHeaderIndices={[0]}
+          data={filteredData}
+          scrollEnabled={true}
+          ItemSeparatorComponent={() => <View style={{height: 40}} />}
+          contentContainerStyle={{paddingBottom: 100}}
+          renderItem={({item, index}) => (
+            <RequestItem
+              startPosition={item.startPosition}
+              endPosition={item.endPosition}
+              avatar={item.kid.parent.avatar}
+              name={item.kid.parent.name}
+              startLocation={item.startLocation}
+              endLocation={item.endLocation}
+              distance={item.distance}
+              fee={item.fee}
+              kidName={item.kid.name}
+              qr={item.kid.qr}
+              kidAvatar={item.kid.avatar}
+              key={index}
+              onAccept={() => navigation.navigate('MapScreenDriver', {item})}
+            />
+          )}
+        />
+      ) : (
+        <View
+          style={{display: 'flex', alignItems: 'center', paddingVertical: 30}}>
+          <Image
+            style={{width: Width / 1.2, height: Width / 1.2}}
+            source={require('../../../assets/images/off.png')}
+          />
           <Text
             style={{
+              textAlign: 'center',
+              paddingHorizontal: 30,
               color: Colors.black,
-              fontFamily: FontFamily.SemiBold,
+              fontFamily: FontFamily.Medium,
               fontSize: 20,
-              marginTop: 10,
             }}>
-            New request
+            Please switch to online to receive requests!
           </Text>
         </View>
       )}
-      stickyHeaderIndices={[0]}
-      data={BookingData}
-      scrollEnabled={true}
-      ItemSeparatorComponent={() => <View style={{height: 40}} />}
-      contentContainerStyle={{paddingBottom: 100}}
-      renderItem={({item, index}) => (
-        <RequestItem
-          startPosition={item.startPosition}
-          endPosition={item.endPosition}
-          avatar={item.kid.parent.avatar}
-          name={item.kid.parent.name}
-          startLocation={item.startLocation}
-          endLocation={item.endLocation}
-          distance={item.distance}
-          fee={item.fee}
-          kidName={item.kid.name}
-          qr={item.kid.qr}
-          kidAvatar={item.kid.avatar}
-          key={index}
-          onAccept={() => navigation.navigate('MapScreenDriver', {item})}
-        />
-      )}
-    />
+    </View>
   );
 };
 
