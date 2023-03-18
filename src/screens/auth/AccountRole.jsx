@@ -26,37 +26,36 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const AccountRole = ({navigation}) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [role, setRole] = useRQGlobalState('role', value);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [role, setRole] = useRQGlobalState('role', null);
   const [error, setError] = useState(false);
-  const [items, setItems] = useState([
-    {
-      label: 'Driver',
-      value: 'driver',
-      icon: () => (
-        <Image
-          source={require('../../../assets/images/DriverImg.png')}
-          style={styles.iconStyle}
-        />
-      ),
-    },
-    {
-      label: 'User',
-      value: 'user',
-      icon: () => (
-        <Image
-          source={require('../../../assets/images/userImg.png')}
-          style={styles.iconStyle}
-        />
-      ),
-    },
-  ]);
 
-  useEffect(() => {
-    setRole(value);
-  }, [value]);
-  const [checkMargin, setCheckMargin] = useState(false);
+  const roles = [
+    {
+      name: 'driver',
+      img: require('../../../assets/images/rolee1.png'),
+      title: 'A driver',
+      disciption: 'I have a vehicle',
+    },
+    {
+      name: 'user',
+      img: require('../../../assets/images/rolee2.png'),
+      title: 'A user',
+      disciption: 'I want find the driver',
+    },
+  ];
+
+  // useEffect(() => {
+  //   setRole('driver');
+  // }, [selectedVehicle]);
+
+  const isSelectedVehicle = id => {
+    return id === selectedVehicle;
+  };
+  const check = index => {
+    console.log('set', index);
+    setSelectedVehicle(index);
+  };
   const submit = () => {
     if (role != null) {
       navigation.navigate('Login');
@@ -76,47 +75,58 @@ const AccountRole = ({navigation}) => {
         />
       </View>
       <View style={styles.content}>
-        <Title Title="Your role" text="Choose your role in Pikid" />
-        <View
-          style={[
-            styles.form,
-            checkMargin === true ? {marginBottom: 100} : null,
-          ]}>
-          <DropDownPicker
-            onOpen={() => {
-              setCheckMargin(!checkMargin), setError(false);
-            }}
-            onClose={() => setCheckMargin(false)}
-            placeholder="Select a role"
-            placeholderStyle={{
-              color: Colors.black,
-              fontFamily: FontFamily.Medium,
-            }}
-            // onPress={setError(false)}
-            labelStyle={{
-              color: Colors.black,
-              fontFamily: FontFamily.Medium,
-            }}
-            listItemLabelStyle={{
-              color: Colors.black,
-              fontFamily: FontFamily.Medium,
-            }}
-            showArrowIcon={true}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            dropDownDirection="BOTTOM"
-          />
+        <Title Title="I am" text="Choose your role in Pikid" />
+        <View style={[styles.form]}>
+          {roles.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                check(index), setRole(item.name), setError(false);
+              }}
+              style={[
+                {
+                  width: '100%',
+                  borderRadius: 15,
+                  backgroundColor: Colors.while,
+                  paddingHorizontal: 10,
+                  display: 'flex',
+                  gap: 20,
+                  borderWidth: 2,
+                  borderColor: Colors.while,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginBottom: 20,
+                },
+                GeneralStyle.shadow,
+                isSelectedVehicle(index) && styles.choose,
+              ]}>
+              <Image style={{width: 100, height: 100}} source={item.img} />
+              <View>
+                <Text
+                  style={{
+                    color: Colors.black,
+                    fontFamily: FontFamily.SemiBold,
+                    fontSize: 20,
+                  }}>
+                  {item.title}
+                </Text>
+                <Text
+                  style={{
+                    color: '#777777',
+                    fontFamily: FontFamily.Medium,
+                    fontSize: 15,
+                  }}>
+                  {item.disciption}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
         {error && (
           <Text
             style={{
               paddingLeft: 10,
               color: Colors.red,
-              marginBottom: 20,
               fontFamily: FontFamily.Regular,
             }}>
             Please choose your role!
@@ -144,6 +154,9 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: 30,
     height: 30,
+  },
+  choose: {
+    borderColor: Colors.main,
   },
   container: {
     backgroundColor: Colors.main,
