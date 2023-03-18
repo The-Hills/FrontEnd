@@ -12,15 +12,38 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import AvatarandName from './Avatar';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-import {useDriverQuery} from '../../hooks/useUser';
+import {useDriverQuery, useUpdateDriver} from '../../hooks/useUser';
+import Geolocation from '@react-native-community/geolocation';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const Header = ({avatar, name, active}) => {
+  const useShareCurrentLocation = useUpdateDriver();
+  const [currentLocation, setCurrentLocation] = useRQGlobalState('location', {
+    latitude: 0,
+    longitude: 0,
+  });
   const {data} = useDriverQuery();
   const DriverData = data.data.data;
+  // console.log(DriverData); 
+  useEffect(() => {
+    Geolocation.getCurrentPosition(position => {
+      setCurrentLocation({
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    useShareCurrentLocation.mutate({
+      id: DriverData.id,
+      currentLocation: currentLocation,
+    });
+  }, [currentLocation]);
   return (
     <View>
       <AvatarandName

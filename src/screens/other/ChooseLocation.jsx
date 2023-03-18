@@ -44,6 +44,7 @@ import Loader2 from '../../components/loader/Loader2';
 import Vehicles from '../../components/DriverScreen/Vehicles';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 import {LogBox} from 'react-native';
+import ContentModal from '../../components/booking/ContentModal';
 
 const ChooseLocation = ({navigation: {goBack}}) => {
   // react Query
@@ -68,6 +69,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [duration, setDuration] = useState(0);
   const [ipAddress, setIpAddress] = useState(null);
   const [payment, setPayment] = useState(null);
+  const [modalConent, setModalConent] = useState(null);
   const kidData = data.data.data.kid;
   const [selectedChild, setSelectedChild] = useState(kidData[0].id);
   const paymentData = usePaymentMutation.data;
@@ -149,13 +151,13 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       });
     }
   }, [distance]);
-  if (useBookingMutation.status === 'success') {
-    return (
-      <View>
-        <Text style={{color: 'red'}}>Success</Text>
-      </View>
-    );
-  }
+  // if (useBookingMutation.status === 'success') {
+  //   return (
+  //     <View>
+  //       <Text style={{color: 'red'}}>Success</Text>
+  //     </View>
+  //   );
+  // }
   if (useBookingMutation.status === 'error') {
     return (
       <View>
@@ -163,6 +165,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.map}>
@@ -394,6 +397,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   ))}
                 <Button
                   onPress={() => {
+                    setModalConent(1);
                     setModalVisible(!isModalVisible);
                   }}
                   type="hollow"
@@ -443,13 +447,16 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   distance: distance,
                   startLocation: pickDetail.formatted_address,
                   endLocation: dropDetail.formatted_address,
-                  startPosition: {origin},
-                  endPosition: {destination},
+                  startPosition: origin,
+                  endPosition: destination,
                   fee: type !== 0 ? feeCar : feeMoto,
                   payment: payment.id,
                   kidId: selectedChild,
                   typeVehicle: type !== 0 ? 'Car' : 'Motobike',
                 });
+
+                setModalVisible(!isModalVisible);
+                setModalConent(2);
               }}
             />
           </View>
@@ -459,64 +466,72 @@ const ChooseLocation = ({navigation: {goBack}}) => {
         isVisible={isModalVisible}
         onSwipeComplete={() => setModalVisible(false)}
         swipeDirection="right">
-        <View style={styles.modal}>
-          <View
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: '100%',
-              paddingHorizontal: 20,
-              paddingVertical: 30,
-            }}>
-            <ScrollView horizontal={true} style={styles.modalContent}>
-              {kidData.map(child => (
-                <TouchableOpacity
-                  key={child.id}
-                  style={[
-                    {
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      gap: 5,
-                      paddingRight: 30,
-                    },
-                  ]}
-                  onPress={() => {
-                    setSelectedChild(child.id);
-                  }}>
-                  <Avatar
-                    source={{
-                      uri: `${child.avatar}`,
-                    }}
+        <View
+          style={[
+            styles.modal,
+            modalConent === 1 ? {height: 220} : {height: 100},
+          ]}>
+          {modalConent === 1 ? (
+            <View
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '100%',
+                paddingHorizontal: 20,
+                paddingVertical: 30,
+              }}>
+              <ScrollView horizontal={true} style={styles.modalContent}>
+                {kidData.map(child => (
+                  <TouchableOpacity
+                    key={child.id}
                     style={[
                       {
-                        borderWidth: 0.5,
-                        width: 70,
-                        height: 70,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: 5,
+                        paddingRight: 30,
                       },
-                      isSelectedChild(child.id) && styles.active,
                     ]}
-                  />
-                  <Text
-                    style={{
-                      color: Colors.black,
-                      fontFamily: FontFamily.SemiBold,
+                    onPress={() => {
+                      setSelectedChild(child.id);
                     }}>
-                    {child.name}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-            <Button
-              onPress={() => {
-                setModalVisible(!isModalVisible);
-              }}
-              style={{width: Width - 90}}
-              lable="Submit"
-            />
-          </View>
+                    <Avatar
+                      source={{
+                        uri: `${child.avatar}`,
+                      }}
+                      style={[
+                        {
+                          borderWidth: 0.5,
+                          width: 70,
+                          height: 70,
+                        },
+                        isSelectedChild(child.id) && styles.active,
+                      ]}
+                    />
+                    <Text
+                      style={{
+                        color: Colors.black,
+                        fontFamily: FontFamily.SemiBold,
+                      }}>
+                      {child.name}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              <Button
+                onPress={() => {
+                  setModalVisible(!isModalVisible);
+                }}
+                style={{width: Width - 90}}
+                lable="Submit"
+              />
+            </View>
+          ) : modalConent === 2 ? (
+            <ContentModal />
+          ) : null}
         </View>
       </Modal>
     </View>
@@ -535,8 +550,8 @@ const styles = StyleSheet.create({
   },
   modal: {
     backgroundColor: Colors.while,
-    height: 250,
-    borderRadius: 30,
+    height: 230,
+    borderRadius: 15,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

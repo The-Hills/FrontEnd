@@ -39,7 +39,7 @@ const DriverHomeScreen = ({navigation}) => {
       ListHeaderComponentStyle={styles.HeaderStyle}
       ListHeaderComponent={() => (
         <View style={{backgroundColor: Colors.while, paddingTop: 20}}>
-          <Header/>
+          <Header />
           <Text
             style={{
               color: Colors.black,
@@ -55,9 +55,11 @@ const DriverHomeScreen = ({navigation}) => {
       data={BookingData}
       scrollEnabled={true}
       ItemSeparatorComponent={() => <View style={{height: 40}} />}
-      contentContainerStyle={{paddingBottom: 30}}
+      contentContainerStyle={{paddingBottom: 100}}
       renderItem={({item, index}) => (
         <RequestItem
+          startPosition={item.startPosition}
+          endPosition={item.endPosition}
           avatar={item.kid.parent.avatar}
           name={item.kid.parent.name}
           startLocation={item.startLocation}

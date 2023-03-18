@@ -1,19 +1,65 @@
 import {StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
+import {PermissionsAndroid} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import DriverProfile from '../../screens/profile/driver/DriverProfile';
 import DriverHomeScreen from '../../screens/home/DriverHomeScreen';
 import Hangout from '../../screens/hangout/Hangout';
 import Notification from '../../screens/notification/Notification';
 import {Colors} from '../../../assets/theme/colors';
-import {useDriverQuery} from '../../hooks/useUser';
+import {useDriverQuery, useUpdateDriver} from '../../hooks/useUser';
 import Loader from '../../components/loader/Loader';
 import Error from '../../screens/Intro/Error';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 const Tab = createBottomTabNavigator();
 
 const DriverBottomTabs = () => {
+  const [currentLocation, setCurrentLocation] = useRQGlobalState('location', {
+    latitude: 0,
+    longitude: 0,
+  });
+
+  const requestLocationPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Location Permission',
+          message: 'This app needs to access your location',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        Geolocation.getCurrentPosition(
+          position => {
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+            // Do something with the user's location
+          },
+          error => {
+            // console.log(error);
+            // Handle error
+          },
+          {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+        );
+      } else {
+        console.log('Location permission denied');
+        // Handle permission denied
+      }
+    } catch (err) {
+      console.warn('loi:', err);
+    }
+  };
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
   const {isLoading, isError} = useDriverQuery();
   if (isLoading) {
     return (

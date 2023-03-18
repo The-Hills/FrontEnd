@@ -55,7 +55,10 @@ const Request = ({
               fontSize: 13,
               textAlign: 'right',
             }}>
-            VND {fee}
+            {fee.toLocaleString('it-IT', {
+              style: 'currency',
+              currency: 'VND',
+            })}
           </Text>
           <Text
             style={{

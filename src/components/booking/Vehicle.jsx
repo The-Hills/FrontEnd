@@ -30,12 +30,13 @@ const VehicleType = ({name, time, price, onPress, style, distance}) => {
   useEffect(() => {
     setFeeMoto(Moto);
   }, [Moto]);
+
   useEffect(() => {
     if (distance <= 2) {
       if (name === 'Car') {
-        setFee(15000);
+        setCar(15000);
       } else {
-        setFee(10000);
+        setMoto(10000);
       }
     } else {
       if (name === 'Car') {

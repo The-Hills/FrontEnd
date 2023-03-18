@@ -22,13 +22,18 @@ import {Height, Width} from '../../../../assets/ScreenDimensions';
 import {FontFamily} from '../../../../assets/theme/fontFamily';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import {useDriverQuery, useUpdateDriver} from '../../../hooks/useUser';
+import useRQGlobalState from '../../../States/useRQGlobalStates';
 
 const DriverProfile = ({navigation}) => {
+  const useDriverMutate = useUpdateDriver();
+  const [currentLocation] = useRQGlobalState('location', {
+    latitude: 0,
+    longitude: 0,
+  });
   const [isEnabled, setIsEnabled] = useState(false);
   const {logout} = useContext(AuthContext);
   const {data} = useDriverQuery();
   const DriverData = data.data.data;
-  const useDriverMutate = useUpdateDriver();
   const toggleSwitch = () => {
     setIsEnabled(previousState => {
       changeStatus(!previousState);
@@ -48,16 +53,7 @@ const DriverProfile = ({navigation}) => {
       });
     }
   };
-  useEffect(() => {
-    AppState.addEventListener('change', state => {
-      if (state === 'background') {
-        useDriverMutate.mutate({
-          id: DriverData.id,
-          status: 'unActive',
-        });
-      }
-    });
-  }, []);
+
   return (
     <View style={styles.container}>
       <Header />

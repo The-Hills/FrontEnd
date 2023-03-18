@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Back from '../../../components/general/Back';
 import {Colors} from '../../../../assets/theme/colors';
 import {GeneralStyle} from '../../../styles/generalStyles';
@@ -32,7 +32,7 @@ import Modal from 'react-native-modal';
 
 const ProfileRegister = ({navigation: {goBack}}) => {
   const useKidMutation = useCreateKidInfo();
-    const {data} = useUserQuery();
+  const {data} = useUserQuery();
   const [inputs, setInputs] = useState({
     parentId: data.data.data.id,
     name: null,
@@ -61,7 +61,6 @@ const ProfileRegister = ({navigation: {goBack}}) => {
   const Submit = () => {
     useKidMutation.mutate(inputs);
   };
-
   return (
     <View style={GeneralStyle.container}>
       <Header lable="Create Kid profile" show={true} onPress={() => goBack()} />
@@ -96,7 +95,13 @@ const ProfileRegister = ({navigation: {goBack}}) => {
         </View>
       </View>
       {useKidMutation.isSuccess && (
-        <Modal isVisible={isModalVisible}>
+        <Modal
+          animationInTiming={0}
+          onSwipeComplete={() => {
+            setModalVisible(false), goBack();
+          }}
+          swipeDirection="down"
+          isVisible={isModalVisible}>
           <View style={styles.modal}>
             <View
               style={{
@@ -113,37 +118,33 @@ const ProfileRegister = ({navigation: {goBack}}) => {
               }}>
               <View
                 style={{
+                  width: '100%',
                   display: 'flex',
-                  justifyContent: 'center',
                   alignItems: 'center',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}>
                 <Image
                   style={{
-                    width: 80,
-                    height: 80,
-                    resizeMode: 'contain',
+                    width: Width / 2.5,
+                    height: Width / 2.5,
+                    position: 'absolute',
+                    left: -60,
+                    bottom: -50,
                   }}
-                  source={require('../../../../assets/images/sss.png')}
+                  source={require('../../../../assets/images/newpr.png')}
                 />
                 <Text
                   style={{
-                    color: Colors.black,
-                    paddingTop: 10,
-                    fontFamily: FontFamily.SemiBold,
-                    fontSize: 25,
                     textAlign: 'center',
+                    paddingLeft: 20,
+                    color: '#144451',
+                    fontSize: 22,
+                    fontFamily: FontFamily.SemiBold,
                   }}>
                   Success!
                 </Text>
               </View>
-              <Button
-                onPress={() => {
-                  goBack();
-                  setModalVisible(!isModalVisible);
-                }}
-                style={{width: Width - 90}}
-                lable="Continue"
-              />
             </View>
           </View>
         </Modal>
@@ -157,8 +158,8 @@ export default ProfileRegister;
 const styles = StyleSheet.create({
   modal: {
     backgroundColor: Colors.while,
-    height: 250,
-    borderRadius: 30,
+    height: 100,
+    borderRadius: 20,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

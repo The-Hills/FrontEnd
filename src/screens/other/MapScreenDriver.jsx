@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {Children, useEffect, useRef, useState} from 'react';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Modalize} from 'react-native-modalize';
 import {Marker} from 'react-native-maps';
@@ -24,13 +24,16 @@ import LocationBox from '../../components/general/LocationBox';
 import Button from '../../components/general/Button';
 import Back from '../../components/general/Back';
 import {FontFamily} from '../../../assets/theme/fontFamily';
-import {Children, useEffect, useRef, useState} from 'react';
 import MapComponent from '../../components/map/MapComponent';
 import Request from '../../components/booking/Request';
+import {useAcceptBooking} from '../../hooks/booking/useBooking';
+import {getUIdAsync} from '../../utils/StorageUtils';
 
 const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const {item} = route.params;
-
+  const [origin, setOrigin] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
   const mapRef = useRef(null);
 
@@ -38,27 +41,81 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
+
+  const extractLatLng = str => {
+    const match = str.match(/\((.*?)\)/);
+    if (match) {
+      const numbers = match[1].split(' ');
+      const lat = parseFloat(numbers[0]);
+      const lng = parseFloat(numbers[1]);
+      return {lat, lng};
+    } else {
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    const startPosition = extractLatLng(item.startPosition);
+    const endPosition = extractLatLng(item.endPosition);
+    if (startPosition) {
+      setOrigin({
+        latitude: startPosition.lat,
+        longitude: startPosition.lng,
+      });
+    }
+    if (endPosition) {
+      setDestination({
+        latitude: endPosition.lat,
+        longitude: endPosition.lng,
+      });
+    }
+  }, []);
+  useEffect(() => {
+    if (origin && destination) {
+      mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+        edgePadding: {
+          top: 100,
+          right: 200,
+          bottom: 1000,
+          left: 200,
+        },
+        animated: true,
+      });
+    }
+  }, [origin, destination]);
+
+  const useMutateAcceptBooking = useAcceptBooking();
+  const Accept = async () => {
+    const id = await getUIdAsync();
+    console.log('iddriver', id);
+    useMutateAcceptBooking.mutate({
+      id: item.id,
+      data: {
+        driverId: id,
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
-          {/* <Marker 
-          coordinate={origin}>
+          <Marker coordinate={origin}>
             <Image
               source={require('../../../assets/images/piker.png')}
               style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
           </Marker>
           <Marker coordinate={destination} />
           <MapViewDirections
-            // origin={origin}
-            // destination={destination}
+            origin={origin}
+            destination={destination}
             apikey={PLACES_API_KEY}
             strokeWidth={5}
             strokeColor="hotpink"
             onReady={result => {
-              console.log(`Distance: ${result.distance} km`);
+              setDistance(result.distance);
             }}
-          /> */}
+          />
         </MapComponent>
         <Back style={styles.back} onPress={() => goBack()} />
       </View>
@@ -84,7 +141,7 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
             />
             <Button
               onPress={() => {
-                setShouldShow(2);
+                Accept();
               }}
               style={[styles.btn]}
               lable="Accept"

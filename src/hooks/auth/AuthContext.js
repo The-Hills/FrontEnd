@@ -16,6 +16,7 @@ import {
   removeRoleAsync,
   removeUidAsync,
   setAccessTokenAsync,
+  setTypeAsync,
   setUIdAsync,
   setURoleAsync,
 } from '../../utils/StorageUtils';
@@ -62,10 +63,11 @@ export const AuthProvider = ({children}) => {
           : await loginDriver({email, password});
       let userInfo = res.data;
       setUserInfo(userInfo);
-      // console.log('dataUSS', userInfo);
+      console.log('dataUSS', userInfo);
       setAccessTokenAsync(userInfo.token);
       setUIdAsync(userInfo.id);
       setURoleAsync(userInfo.role);
+      // setTypeAsync(userInfo.vehicle);
       // console.log('login role', userInfo.role);
       authUser();
       setIsLoading(false);

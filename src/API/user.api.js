@@ -16,7 +16,7 @@ export const getDriverInfoById = async id => {
 };
 
 export const updateDriver = async data => {
-  console.log('id update Driver =>', data);
+  // console.log('id update Driver =>', data);
   const url = `driver/${data.id}`;
   return await axiosRequest.put(url, data);
 };

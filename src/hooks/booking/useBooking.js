@@ -1,5 +1,6 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {
+  acceptBooking,
   createBooking,
   createPayment,
   fetchBookingData,
@@ -10,8 +11,21 @@ import {
 export const useBooking = () => {
   const queryClient = useQueryClient();
   return useMutation(createBooking, {
+    onMutate: async data => {
+      await queryClient.cancelQueries('booking');
+      const prevData = queryClient.getQueryData(['booking']);
+
+      queryClient.setQueryData(['booking'], prevData => ({
+        ...prevData,
+        data,
+      }));
+      return {prevData};
+    },
     onSuccess: data => {
       queryClient.setQueriesData(['bookings', data]);
+    },
+    onError: (error, data, context) => {
+      queryClient.setQueryData(['booking'], context.prevData);
     },
   });
 };
@@ -36,4 +50,24 @@ export const useGetPrice = () => {
 
 export const useVehicale = () => useQuery(['vehicle'], getVehicle);
 
-export const useBookingData = () => useQuery(['booking'], fetchBookingData);
+const fetchBookingByVehicleType = async () => {
+  const type = await getTypeAsync();
+  const res = await fetchBookingData(type);
+  return res;
+};
+
+export const useBookingData = () =>
+  useQuery({
+    queryKey: ['booking'],
+    queryFn: fetchBookingData,
+    refetchInterval: 1000,
+  });
+
+export const useAcceptBooking = () => {
+  const queryClient = useQueryClient();
+  return useMutation(acceptBooking, {
+    onSuccess: (id, data) => {
+      queryClient.setQueriesData(['accept', id, data]);
+    },
+  });
+};

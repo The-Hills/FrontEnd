@@ -11,7 +11,7 @@ export const getAccessTokenAsync = async () => {
 export const setAccessTokenAsync = async token => {
   return await AsyncStorage.setItem(TOKEN_KEY, token);
 };
-  
+
 export const removeAccessTokenAsync = async () => {
   return await AsyncStorage.removeItem(TOKEN_KEY);
 };
@@ -38,4 +38,12 @@ export const setURoleAsync = async role => {
 
 export const removeRoleAsync = async () => {
   return await AsyncStorage.removeItem(ROLE_KEY);
+};
+
+export const setTypeAsync = async type => {
+  return await AsyncStorage.setItem('type', type);
+};
+
+export const getTypeAsync = async () => {
+  return await AsyncStorage.getItem('type');
 };
