@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Colors} from '../../../assets/theme/colors';
 import Header from '../../components/DriverScreen/Header';
@@ -28,6 +28,7 @@ import useRQGlobalState from '../../States/useRQGlobalStates';
 const DriverHomeScreen = ({navigation}) => {
   const [driverData] = useRQGlobalState('driverData', null);
   const {isError, isLoading, data} = useBookingData();
+
   if (isLoading) {
     return <Loader />;
   }
@@ -35,11 +36,7 @@ const DriverHomeScreen = ({navigation}) => {
     return <Error />;
   }
   const BookingData = data.data.data;
-  // console.log(BookingData);
-  const filteredData = BookingData.filter(item => {
-    return item.status === 'onTracking';
-  });
-
+  const filteredData = BookingData?.filter(item => item.status === 'onTracking')
   return (
     <View
       style={{
@@ -56,7 +53,31 @@ const DriverHomeScreen = ({navigation}) => {
         }}>
         <Header />
       </View>
-      { driverData && driverData.status === 'active' ? (
+      {driverData &&
+      driverData.status === 'active' &&
+      (!BookingData || filteredData.length == 0) ? (
+        <View
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingVertical: 30,
+          }}>
+          <Image
+            style={{width: Width / 1.2, height: Width / 1.2}}
+            source={require('../../../assets/images/nodata.png')}
+          />
+          <Text
+            style={{
+              textAlign: 'center',
+              paddingHorizontal: 30,
+              color: Colors.black,
+              fontFamily: FontFamily.Medium,
+              fontSize: 20,
+            }}>
+            No request
+          </Text>
+        </View>
+      ) : driverData && driverData.status === 'active' ? (
         <FlatList
           style={styles.container}
           ListHeaderComponentStyle={styles.HeaderStyle}
@@ -98,7 +119,11 @@ const DriverHomeScreen = ({navigation}) => {
         />
       ) : (
         <View
-          style={{display: 'flex', alignItems: 'center', paddingVertical: 30}}>
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingVertical: 30,
+          }}>
           <Image
             style={{width: Width / 1.2, height: Width / 1.2}}
             source={require('../../../assets/images/off.png')}

@@ -25,6 +25,7 @@ const Confirm = ({
   style,
   pickLoation,
   dropOff,
+  time,
   vehicleType,
   findDriver,
   payment,
@@ -128,6 +129,7 @@ const Confirm = ({
         <VehicleType
           name={vehicleType}
           distance={distance}
+          time={time}
           price={type !== 0 ? 10000 : 5000}
         />
       </View>

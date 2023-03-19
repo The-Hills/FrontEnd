@@ -28,6 +28,8 @@ import MapComponent from '../../components/map/MapComponent';
 import Request from '../../components/booking/Request';
 import {useAcceptBooking} from '../../hooks/booking/useBooking';
 import {getUIdAsync} from '../../utils/StorageUtils';
+import Loader from '../../components/loader/Loader';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const {item} = route.params;
@@ -35,6 +37,7 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const [destination, setDestination] = useState(null);
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
+
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
@@ -71,23 +74,20 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     }
   }, []);
   useEffect(() => {
-    if (origin && destination) {
-      mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
-        edgePadding: {
-          top: 100,
-          right: 200,
-          bottom: 1000,
-          left: 200,
-        },
-        animated: true,
-      });
-    }
-  }, [origin, destination]);
+    mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+      edgePadding: {
+        top: 50,
+        right: 30,
+        bottom: 1000,
+        left: 30,
+      },
+      animated: true,
+    });
+  }, [distance]);
 
   const useMutateAcceptBooking = useAcceptBooking();
   const Accept = async () => {
     const id = await getUIdAsync();
-    console.log('iddriver', id);
     useMutateAcceptBooking.mutate({
       id: item.id,
       data: {
@@ -100,12 +100,12 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
-          <Marker coordinate={origin}>
+          <Marker identifier="origin" coordinate={origin}>
             <Image
               source={require('../../../assets/images/piker.png')}
               style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
           </Marker>
-          <Marker coordinate={destination} />
+          <Marker identifier="destination" coordinate={destination} />
           <MapViewDirections
             origin={origin}
             destination={destination}
@@ -126,6 +126,7 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
+        {useMutateAcceptBooking.isLoading && <Loader />}
         {shouldShow == 1 ? (
           <View style={[styles.BottomContainer, {height: 450}]}>
             <Request

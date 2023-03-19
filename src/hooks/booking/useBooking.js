@@ -68,6 +68,7 @@ export const useAcceptBooking = () => {
   return useMutation(acceptBooking, {
     onSuccess: (id, data) => {
       queryClient.setQueriesData(['accept', id, data]);
+      queryClient.invalidateQueries(['booking']);
     },
   });
 };

@@ -204,7 +204,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           {showDirections && origin && destination && (
             <MapViewDirections
               origin={origin}
-              destination={destination}     
+              destination={destination}
               apikey={PLACES_API_KEY}
               strokeWidth={5}
               strokeColor="hotpink"
@@ -439,6 +439,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   ipAddress: ipAddress,
                 });
               }}
+              time={3}
               vehicleType={type !== 0 ? 'Car' : 'Motobike'}
               pickLoation={pickDetail.formatted_address}
               dropOff={dropDetail.formatted_address}
@@ -530,7 +531,10 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               />
             </View>
           ) : modalConent === 2 ? (
-            <ContentModal />
+            <ContentModal
+              source={require('../../../assets/images/find6.png')}
+              title="Finding Driver"
+            />
           ) : null}
         </View>
       </Modal>

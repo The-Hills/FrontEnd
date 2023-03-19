@@ -24,6 +24,9 @@ const VehicleType = ({name, time, price, onPress, style, distance}) => {
   const [Moto, setMoto] = useState(0);
   const [Car, setCar] = useState(0);
 
+  console.log(name);
+  console.log(price);
+  console.log(distance);
   useEffect(() => {
     setFeeCar(Car);
   }, [Car]);
