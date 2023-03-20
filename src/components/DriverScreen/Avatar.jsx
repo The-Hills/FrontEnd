@@ -16,7 +16,7 @@ const AvatarandName = ({name, source, active, showStatus = true}) => {
       }}>
       <View
         style={{
-          width: 50,  
+          width: 50,
           height: 50,
           backgroundColor: Colors.while,
           borderRadius: 90,

@@ -26,6 +26,7 @@ const Header = ({avatar, name, active}) => {
     latitude: 0,
     longitude: 0,
   });
+  console.log(driverData);
   const {data} = useDriverQuery();
   const DriverData = data.data.data;
   useEffect(() => {

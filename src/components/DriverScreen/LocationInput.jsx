@@ -17,9 +17,9 @@ import React from 'react';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 
-const LocationInput = ({location, name}) => {
+const LocationInput = ({location, name, style}) => {
   return (
-    <View style={styles.container}>
+    <View style={[style, styles.container]}>
       <Icon name={name} size={24} color={Colors.black} />
       <Text
         numberOfLines={1}

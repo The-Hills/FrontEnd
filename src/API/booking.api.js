@@ -37,3 +37,15 @@ export const acceptBooking = async ({id, data}) => {
   const url = `/booking/acceptbooking/${id}`;
   return await axiosRequest.post(url, data);
 };
+
+export const getBooking = async id => {
+  // console.log('id', id);
+  const url = `/booking/${id}`;
+  return await axiosRequest.get(url);
+};
+
+export const updateBooking = async ({data}) => {
+  // console.log('id', id, 'data', data);
+  const url = `/booking/${data.id}`;
+  return await axiosRequest.put(url, data);
+};

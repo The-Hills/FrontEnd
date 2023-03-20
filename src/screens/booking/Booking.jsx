@@ -16,6 +16,7 @@ import React, {Children, useEffect, useRef, useState} from 'react';
 import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Modalize} from 'react-native-modalize';
 import {Marker} from 'react-native-maps';
+import Icon from 'react-native-vector-icons/Feather';
 import MapViewDirections from 'react-native-maps-directions';
 import {PLACES_API_KEY} from '../../../assets/APIKey';
 import Avatar from '../../components/general/Avatar';
@@ -34,39 +35,24 @@ import {getUIdAsync} from '../../utils/StorageUtils';
 import Loader from '../../components/loader/Loader';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 import ModalContentStartPick from '../../components/DriverScreen/ModalContentStartPick';
-import {useQuery} from '@tanstack/react-query';
-import {getBooking} from '../../API/booking.api';
 
-const MapScreenDriver = ({route, navigation: {goBack}}) => {
-  const {item} = route.params;
+const Booking = () => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
-  const {data, isLoading, isError} = useQuery({
-    queryKey: ['booking'],
-    queryFn: getBooking(item.id),
-  });
-  if (isLoading) {
-    console.log('loading');
-  }
-  if (isError) {
-    console.log('error');
-  }
+  const [bookiingID] = useRQGlobalState('id', null);
 
-  const BookingData = data.data.data;
-  console.log('data', BookingData);
+  const {data, isLoading, isError} = useBookingDetail(bookiingID);
+  // const BookingData = data.data.data;
+
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
-  useEffect(() => {
-    if (BookingData.status === 'onWayPickup') {
-      setShouldShow(2);
-    }
-  }, []);
+
   const extractLatLng = str => {
     const match = str.match(/\((.*?)\)/);
     if (match) {
@@ -79,22 +65,22 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     }
   };
 
-  useEffect(() => {
-    const startPosition = extractLatLng(item.startPosition);
-    const endPosition = extractLatLng(item.endPosition);
-    if (startPosition) {
-      setOrigin({
-        latitude: startPosition.lat,
-        longitude: startPosition.lng,
-      });
-    }
-    if (endPosition) {
-      setDestination({
-        latitude: endPosition.lat,
-        longitude: endPosition.lng,
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const startPosition = extractLatLng(BookingData.startPosition);
+  //   const endPosition = extractLatLng(BookingData.endPosition);
+  //   if (startPosition) {
+  //     setOrigin({
+  //       latitude: startPosition.lat,
+  //       longitude: startPosition.lng,
+  //     });
+  //   }
+  //   if (endPosition) {
+  //     setDestination({
+  //       latitude: endPosition.lat,
+  //       longitude: endPosition.lng,
+  //     });
+  //   }
+  // }, []);
   useEffect(() => {
     mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
       edgePadding: {
@@ -106,29 +92,18 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
       animated: true,
     });
   }, [distance]);
-
-  const useMutateAcceptBooking = useAcceptBooking();
-  const Accept = async () => {
-    const id = await getUIdAsync();
-    useMutateAcceptBooking.mutate({
-      id: item.id,
-      data: {
-        driverId: id,
-      },
-    });
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
-          <Marker identifier="origin" coordinate={origin}>
+          {/* <Marker identifier="origin" coordinate={origin}>
             <Image
               source={require('../../../assets/images/piker.png')}
               style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
           </Marker>
           <Marker identifier="destination" coordinate={destination} />
           <MapViewDirections
+          
             origin={origin}
             destination={destination}
             apikey={PLACES_API_KEY}
@@ -137,9 +112,8 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
             onReady={result => {
               setDistance(result.distance);
             }}
-          />
+          /> */}
         </MapComponent>
-        <Back style={styles.back} onPress={() => goBack()} />
       </View>
       <Modalize
         disableScrollIfPossible={true}
@@ -148,49 +122,86 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
         adjustToContentHeight={true}
         withOverlay={false}
         ref={modalizeRef}>
-        {useMutateAcceptBooking.isLoading && <Loader />}
+        {/* {useMutateAcceptBooking.isLoading && <Loader />} */}
         {shouldShow == 1 ? (
-          <View style={[styles.BottomContainer, {height: 420}]}>
-            <Request
-              startLocation={item.startLocation}
-              endLocation={item.endLocation}
-              distance={item.distance}
-              fee={item.fee}
-              kidName={item.kid.name}
-              qr={item.kid.qr}
-              kidAvatar={item.kid.avatar}
-              avatar={item.kid.parent.avatar}
-              name={item.kid.parent.name}
-            />
-            <Button
-              onPress={() => {
-                Accept();
-              }}
-              style={[styles.btn]}
-              lable="Accept"
-            />
-          </View>
-        ) : shouldShow == 2 ? (
-          <View style={[styles.BottomContainer, {height: 360}]}>
-            <ModalContentStartPick
-              startLocation={item.startLocation}
-              endLocation={item.endLocation}
-              distance={item.distance}
-              fee={item.fee}
-              kidName={item.kid.name}
-              qr={item.kid.qr}
-              kidAvatar={item.kid.avatar}
-              avatar={item.kid.parent.avatar}
-              name={item.kid.parent.name}
-            />
-            <Button onPress={() => CheckSellectVehicleTye()} lable="Scan" />
-          </View>
-        ) : shouldShow == 3 ? (
-          <View style={[styles.BottomContainer, {height: 'auto'}]}>
-            <Confirm
-              pickLoation={pickDetail.formatted_address}
-              dropOff={dropDetail.formatted_address}
-            />
+          <View style={[styles.BottomContainer, {height: 250}]}>
+            <Text
+              style={{
+                color: Colors.black,
+                fontFamily: FontFamily.SemiBold,
+                fontSize: 20,
+              }}>
+              Your Driver on the way
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                gap: 20,
+              }}>
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: Colors.main,
+                  borderRadius: 360,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="phone-call" size={24} color={Colors.while} />
+              </View>
+              <Avatar
+                style={{width: 100, height: 100, borderWidth: 1}}
+                source={{
+                  uri: 'https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png',
+                }}
+              />
+              <View
+                style={{
+                  width: 50,
+                  height: 50,
+                  backgroundColor: Colors.main,
+                  borderRadius: 360,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Icon name="message-circle" size={24} color={Colors.while} />
+              </View>
+            </View>
+            <View style={{display: 'flex', flexDirection: 'row'}}>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontFamily: FontFamily.SemiBold,
+                  fontSize: 15,
+                }}>
+                Ho Quoc Tri
+              </Text>
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontFamily: FontFamily.SemiBold,
+                  fontSize: 15,
+                }}>
+                (
+              </Text>
+              <Image
+                style={{width: 20, height: 20}}
+                source={require('../../../assets/images/star.png')}
+              />
+              <Text
+                style={{
+                  color: Colors.black,
+                  fontFamily: FontFamily.SemiBold,
+                  fontSize: 15,
+                }}>
+                5)
+              </Text>
+            </View>
           </View>
         ) : null}
       </Modalize>
@@ -198,7 +209,7 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   );
 };
 
-export default MapScreenDriver;
+export default Booking;
 
 const styles = StyleSheet.create({
   activeVehicle: {

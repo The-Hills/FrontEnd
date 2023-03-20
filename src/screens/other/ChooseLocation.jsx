@@ -70,6 +70,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
   const [ipAddress, setIpAddress] = useState(null);
   const [payment, setPayment] = useState(null);
   const [modalConent, setModalConent] = useState(null);
+  const [bookiingID, setBookingID] = useRQGlobalState('id', null);
   const kidData = data.data.data.kid;
   const [selectedChild, setSelectedChild] = useState(kidData[0].id);
   const paymentData = usePaymentMutation.data;
@@ -126,8 +127,8 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       latitude: details?.geometry.location.lat,
       longitude: details?.geometry.location.lng,
     };
-    // const address = {
-    //   addressName: details?.address_components
+      // const address = {
+      //   addressName: details?.address_components
     // }
     if (flag === 'origin') {
       setOrigin(position);
@@ -151,13 +152,9 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       });
     }
   }, [distance]);
-  // if (useBookingMutation.status === 'success') {
-  //   return (
-  //     <View>
-  //       <Text style={{color: 'red'}}>Success</Text>
-  //     </View>
-  //   );
-  // }
+  if (useBookingMutation.status === 'success') {
+    setBookingID(useBookingMutation.data.data.data.id);
+  }
   if (useBookingMutation.status === 'error') {
     return (
       <View>

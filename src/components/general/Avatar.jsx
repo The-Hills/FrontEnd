@@ -26,7 +26,7 @@ export default Avatar;
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 90,
+    borderRadius: 360,
   },
   img: {
     width: '100%',

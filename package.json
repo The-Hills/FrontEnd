@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@craftzdog/react-native-buffer": "^6.0.5",
     "@gorhom/bottom-sheet": "^4.4.5",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/geolocation": "^3.0.5",

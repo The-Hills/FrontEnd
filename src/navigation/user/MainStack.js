@@ -9,6 +9,7 @@ import ChooseLocation from '../../screens/other/ChooseLocation';
 import BottomTabs from '../home/BottomTabs';
 import AccountRole from '../../screens/auth/AccountRole';
 import ProfileRegister from '../../screens/profile/kid/ProfileRegister';
+import Booking from '../../screens/booking/Booking';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
@@ -23,6 +24,7 @@ const MainStack = () => {
           name="ChooseLocation"
           component={ChooseLocation}
         />
+        <Stack.Screen name="Booking" component={Booking} />
       </Stack.Group>
       <Stack.Group>
         <Stack.Screen name="UserProfile" component={UserProfile} />

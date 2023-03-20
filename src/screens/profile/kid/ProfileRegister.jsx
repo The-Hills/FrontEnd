@@ -60,7 +60,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
       includeBase64: true,
       mediaType: 'photo',
     });
-    console.log(result.assets[0].base64);
+    // console.log(result.assets[0].base64);
     if (result.assets) {
       setInputs(prev => {
         return {

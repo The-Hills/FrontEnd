@@ -36,7 +36,7 @@ const DriverHomeScreen = ({navigation}) => {
     return <Error />;
   }
   const BookingData = data.data.data;
-  const filteredData = BookingData?.filter(item => item.status === 'onTracking')
+  const filteredData = BookingData?.filter(item => item.status === 'onWaiting');
   return (
     <View
       style={{

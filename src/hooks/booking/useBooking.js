@@ -4,6 +4,7 @@ import {
   createBooking,
   createPayment,
   fetchBookingData,
+  getBooking,
   getPrice,
   getVehicle,
 } from '../../API/booking.api';
@@ -69,6 +70,15 @@ export const useAcceptBooking = () => {
     onSuccess: (id, data) => {
       queryClient.setQueriesData(['accept', id, data]);
       queryClient.invalidateQueries(['booking']);
+      queryClient.invalidateQueries(['bookingDetail']);
     },
+  });
+};
+
+//
+export const useBookingDetail = id => {
+  return useQuery({
+    queryKey: ['bookingDetail', id],
+    queryFn: getBooking(id),
   });
 };
