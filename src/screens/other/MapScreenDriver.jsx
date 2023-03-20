@@ -44,17 +44,19 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
   const {data, isLoading, isError} = useQuery({
-    queryKey: ['booking'],
-    queryFn: getBooking(item.id),
+    queryKey: ['bookingDetail'],
+    queryFn: () => getBooking(item.id),
   });
+  console.log('item', item);
   if (isLoading) {
     console.log('loading');
   }
   if (isError) {
     console.log('error');
   }
-
-  const BookingData = data.data.data;
+  // console.log('dayy', data?.data?.data);
+  // if (!data) return;
+  const BookingData = data?.data?.data;
   console.log('data', BookingData);
   const mapRef = useRef(null);
 
@@ -63,10 +65,11 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     modalizeRef.current?.open('top');
   };
   useEffect(() => {
-    if (BookingData.status === 'onWayPickup') {
+    console.log('hihihihiihiiiii');
+    if (BookingData?.status === 'onWayPickUp') {
       setShouldShow(2);
     }
-  }, []);
+  });
   const extractLatLng = str => {
     const match = str.match(/\((.*?)\)/);
     if (match) {
