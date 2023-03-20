@@ -37,6 +37,7 @@ export default React.forwardRef((props, mapRef) => {
     longitude: 0,
   });
   // console.log("mapRef: ", mapRef);
+  console.log(currentLocation);
   // const currentLocationRef = useRef(null);
   useEffect(() => {
     Geolocation.getCurrentPosition(position => {

@@ -43,6 +43,10 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   const [destination, setDestination] = useState(null);
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
+  const [currentLocation] = useRQGlobalState('location', {
+    latitude: 0,
+    longitude: 0,
+  });
   const {data, isLoading, isError} = useQuery({
     queryKey: ['bookingDetail'],
     queryFn: () => getBooking(item.id),
@@ -65,7 +69,6 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     modalizeRef.current?.open('top');
   };
   useEffect(() => {
-    console.log('hihihihiihiiiii');
     if (BookingData?.status === 'onWayPickUp') {
       setShouldShow(2);
     }
@@ -130,10 +133,23 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
               source={require('../../../assets/images/piker.png')}
               style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
           </Marker>
+          {/* {currentLocation !== null ? (
+            <Marker identifier="origin" coordinate={currentLocation}>
+              <Image
+                source={require('../../../assets/images/drivermarker.png')}
+                style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
+            </Marker>
+          ) : null} */}
           <Marker identifier="destination" coordinate={destination} />
           <MapViewDirections
-            origin={origin}
-            destination={destination}
+            origin={
+              BookingData?.status === 'onWayPickUp' ? currentLocation : origin
+            }
+            destination={
+              BookingData?.status === 'onWayPickUp'
+                ? currentLocation
+                : destination
+            }
             apikey={PLACES_API_KEY}
             strokeWidth={5}
             strokeColor="hotpink"
@@ -141,6 +157,15 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
               setDistance(result.distance);
             }}
           />
+          {/* {BookingData?.status === 'onWayPickUp' ? (
+            <MapViewDirections
+              origin={currentLocation}
+              destination={origin}
+              apikey={PLACES_API_KEY}
+              strokeWidth={5}
+              strokeColor="red"
+            />
+          ) : null} */}
         </MapComponent>
         <Back style={styles.back} onPress={() => goBack()} />
       </View>
@@ -186,7 +211,7 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
               avatar={item.kid.parent.avatar}
               name={item.kid.parent.name}
             />
-            <Button onPress={() => CheckSellectVehicleTye()} lable="Scan" />
+            <Button lable="Scan" />
           </View>
         ) : shouldShow == 3 ? (
           <View style={[styles.BottomContainer, {height: 'auto'}]}>
