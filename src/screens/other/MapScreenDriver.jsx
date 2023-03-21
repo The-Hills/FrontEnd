@@ -150,11 +150,14 @@ const MapScreenDriver = ({navigation, route, navigation: {goBack}}) => {
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
-          <Marker identifier="origin" coordinate={origin}>
-            <Image
-              source={require('../../../assets/images/piker.png')}
-              style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
-          </Marker>
+          {BookingData?.status === 'onRide' ||
+          BookingData?.status === 'completed' ? null : (
+            <Marker identifier="origin" coordinate={origin}>
+              <Image
+                source={require('../../../assets/images/piker.png')}
+                style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
+            </Marker>
+          )}
           {/* {currentLocation !== null ? (
             <Marker identifier="origin" coordinate={currentLocation}>
               <Image
@@ -165,12 +168,13 @@ const MapScreenDriver = ({navigation, route, navigation: {goBack}}) => {
           <Marker identifier="destination" coordinate={destination} />
           <MapViewDirections
             origin={
-              BookingData?.status === 'onWayPickUp' ? currentLocation : origin
+              BookingData?.status === 'onWayPickUp' ||
+              BookingData?.status === 'onRide'
+                ? currentLocation
+                : origin
             }
             destination={
-              BookingData?.status === 'onWayPickUp'
-                ? currentLocation
-                : destination
+              BookingData?.status === 'onWayPickUp' ? origin : destination
             }
             apikey={PLACES_API_KEY}
             strokeWidth={5}
