@@ -23,10 +23,6 @@ const VehicleType = ({name, time, price, onPress, style, distance}) => {
   const [feeCar, setFeeCar] = useRQGlobalState('feeCar', 0);
   const [Moto, setMoto] = useState(0);
   const [Car, setCar] = useState(0);
-
-  console.log(name);
-  console.log(price);
-  console.log(distance);
   useEffect(() => {
     setFeeCar(Car);
   }, [Car]);
@@ -49,7 +45,6 @@ const VehicleType = ({name, time, price, onPress, style, distance}) => {
       }
     }
   }, []);
-  // console.log('feee:', feeCar);
 
   return (
     <TouchableOpacity onPress={onPress} style={[styles.container, style]}>

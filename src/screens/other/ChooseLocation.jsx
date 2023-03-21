@@ -127,8 +127,8 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       latitude: details?.geometry.location.lat,
       longitude: details?.geometry.location.lng,
     };
-      // const address = {
-      //   addressName: details?.address_components
+    // const address = {
+    //   addressName: details?.address_components
     // }
     if (flag === 'origin') {
       setOrigin(position);
@@ -440,7 +440,8 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               vehicleType={type !== 0 ? 'Car' : 'Motobike'}
               pickLoation={pickDetail.formatted_address}
               dropOff={dropDetail.formatted_address}
-              findDriver={() => {
+              findDriver={async () => {
+                await Linking.openURL(payment?.url);
                 useBookingMutation.mutate({
                   distance: distance,
                   startLocation: pickDetail.formatted_address,
