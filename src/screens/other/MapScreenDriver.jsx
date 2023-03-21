@@ -29,6 +29,7 @@ import Request from '../../components/booking/Request';
 import {
   useAcceptBooking,
   useBookingDetail,
+  usecompletedBooking,
 } from '../../hooks/booking/useBooking';
 import {getUIdAsync} from '../../utils/StorageUtils';
 import Loader from '../../components/loader/Loader';
@@ -37,12 +38,15 @@ import ModalContentStartPick from '../../components/DriverScreen/ModalContentSta
 import {useQuery} from '@tanstack/react-query';
 import {getBooking} from '../../API/booking.api';
 
-const MapScreenDriver = ({route, navigation: {goBack}}) => {
+const MapScreenDriver = ({navigation, route, navigation: {goBack}}) => {
   const {item} = route.params;
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(1);
+  const [kidID, setKidID] = useRQGlobalState('kidID', null);
+  const [status, setStatus] = useRQGlobalState('status', '');
+  const [bookingID, setBookingID] = useRQGlobalState('bookingID', null);
   const [currentLocation] = useRQGlobalState('location', {
     latitude: 0,
     longitude: 0,
@@ -51,17 +55,22 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
     queryKey: ['bookingDetail'],
     queryFn: () => getBooking(item.id),
   });
-  console.log('item', item);
+  // console.log('item', kidID);
   if (isLoading) {
     console.log('loading');
   }
   if (isError) {
     console.log('error');
   }
+
+  useEffect(() => {
+    setKidID(item.kid.id);
+    setBookingID(item.id);
+  }, []);
   // console.log('dayy', data?.data?.data);
   // if (!data) return;
   const BookingData = data?.data?.data;
-  console.log('data', BookingData);
+  // console.log('data', BookingData);
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
@@ -71,6 +80,9 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
   useEffect(() => {
     if (BookingData?.status === 'onWayPickUp') {
       setShouldShow(2);
+    }
+    if (BookingData?.status === 'onRide') {
+      setStatus('onRide');
     }
   });
   const extractLatLng = str => {
@@ -120,6 +132,16 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
       id: item.id,
       data: {
         driverId: id,
+      },
+    });
+  };
+
+  const useMutateCompletedBooking = usecompletedBooking();
+  const Completed = async () => {
+    useMutateCompletedBooking.mutate({
+      id: item.id,
+      data: {
+        status: 'completed',
       },
     });
   };
@@ -211,7 +233,20 @@ const MapScreenDriver = ({route, navigation: {goBack}}) => {
               avatar={item.kid.parent.avatar}
               name={item.kid.parent.name}
             />
-            <Button lable="Scan" />
+            {BookingData?.status === 'onWayPickUp' ? (
+              <Button
+                lable="Scan"
+                onPress={() => navigation.navigate('Scan')}
+              />
+            ) : BookingData?.status === 'onRide' ? (
+              <Button
+                lable="Completed"
+                onPress={() => {
+                  Completed();
+                  navigation.navigate('Completed');
+                }}
+              />
+            ) : null}
           </View>
         ) : shouldShow == 3 ? (
           <View style={[styles.BottomContainer, {height: 'auto'}]}>

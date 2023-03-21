@@ -15,20 +15,20 @@ import DriverBottomTabs from './DriverBottomTabs';
 import UserProfile from '../../screens/profile/general/UserProfile';
 import MapScreenDriver from '../../screens/other/MapScreenDriver';
 import Scan from '../../screens/QRScan/Scan';
-// import Scan from '../../screens/QRScan/Scan';
+import Completed from '../../screens/booking/Completed';
 const Stack = createNativeStackNavigator();
 const DriverStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Scan">
+    <Stack.Navigator initialRouteName="DriverBottomTabs">
       <Stack.Group screenOptions={{headerShown: false}}>
         <Stack.Screen name="DriverBottomTabs" component={DriverBottomTabs} />
-        <Stack.Screen name="Scan" component={Scan} />
 
         <Stack.Screen name="DriverProfile" component={DriverProfile} />
         <Stack.Screen name="DriverHomeScreen" component={DriverHomeScreen} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
         <Stack.Screen name="MapScreenDriver" component={MapScreenDriver} />
-        {/* <Stack.Screen name="Scan" component={Scan} /> */}
+        <Stack.Screen name="Scan" component={Scan} />
+        <Stack.Screen name="Completed" component={Completed} />
       </Stack.Group>
     </Stack.Navigator>
   );

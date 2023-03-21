@@ -33,8 +33,19 @@ export const getVehicle = async () => {
 };
 
 export const acceptBooking = async ({id, data}) => {
-  console.log('id', id, 'data', data);
+  // console.log('id', id, 'data', data);
   const url = `/booking/acceptbooking/${id}`;
+  return await axiosRequest.post(url, data);
+};
+
+export const pickupBooking = async ({id, data}) => {
+  // console.log('id', id, 'data', data);
+  const url = `/booking/pickup/${id}`;
+  return await axiosRequest.post(url, data);
+};
+export const completedBooking = async ({id, data}) => {
+  // console.log('id', id, 'data', data);
+  const url = `/booking/completedbooking/${id}`;
   return await axiosRequest.post(url, data);
 };
 

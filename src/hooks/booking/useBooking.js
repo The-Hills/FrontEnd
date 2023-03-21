@@ -1,12 +1,14 @@
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {
   acceptBooking,
+  completedBooking,
   createBooking,
   createPayment,
   fetchBookingData,
   getBooking,
   getPrice,
   getVehicle,
+  pickupBooking,
 } from '../../API/booking.api';
 
 export const useBooking = () => {
@@ -67,6 +69,28 @@ export const useBookingData = () =>
 export const useAcceptBooking = () => {
   const queryClient = useQueryClient();
   return useMutation(acceptBooking, {
+    onSuccess: (id, data) => {
+      queryClient.setQueriesData(['accept', id, data]);
+      queryClient.invalidateQueries(['booking']);
+      queryClient.invalidateQueries(['bookingDetail']);
+    },
+  });
+};
+
+export const usePickupBooking = () => {
+  const queryClient = useQueryClient();
+  return useMutation(pickupBooking, {
+    onSuccess: (id, data) => {
+      queryClient.setQueriesData(['accept', id, data]);
+      queryClient.invalidateQueries(['booking']);
+      queryClient.invalidateQueries(['bookingDetail']);
+    },
+  });
+};
+
+export const usecompletedBooking = () => {
+  const queryClient = useQueryClient();
+  return useMutation(completedBooking, {
     onSuccess: (id, data) => {
       queryClient.setQueriesData(['accept', id, data]);
       queryClient.invalidateQueries(['booking']);

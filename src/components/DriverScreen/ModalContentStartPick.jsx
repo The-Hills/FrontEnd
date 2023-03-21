@@ -19,6 +19,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import Avatar from '../general/Avatar';
 import AvatarandName from './Avatar';
 import LocationInput from './LocationInput';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const ModalContentStartPick = ({
   name,
@@ -31,6 +32,7 @@ const ModalContentStartPick = ({
   qr,
   kidAvatar,
 }) => {
+  const [status, setStatus] = useRQGlobalState('status', '');
   return (
     <View
       style={{
@@ -61,14 +63,21 @@ const ModalContentStartPick = ({
             marginBottom: 5,
             paddingLeft: 5,
           }}>
-          Kid's Location
+          {status === 'onRide' ? `Drop location` : `Kid's location`}
         </Text>
-        <LocationInput
-          style={styles.check}
-          name="map-pin"
-          location={startLocation}
-        />
-        {/* <LocationInput name="send" location={endLocation} /> */}
+        {status === 'onRide' ? (
+          <LocationInput
+            style={styles.check}
+            name="send"
+            location={endLocation}
+          />
+        ) : (
+          <LocationInput
+            style={styles.check2}
+            name="map-pin"
+            location={startLocation}
+          />
+        )}
       </View>
       <View>
         <View style={{height: 60, flexDirection: 'row', gap: 10}}>
@@ -110,5 +119,9 @@ const styles = StyleSheet.create({
   check: {
     borderWidth: 1,
     borderColor: Colors.main,
+  },
+  check2: {
+    borderWidth: 1,
+    borderColor: Colors.red,
   },
 });
