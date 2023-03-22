@@ -6,7 +6,7 @@ export const regiserUser = async data => {
 };
 export const registerDriver = async data => {
   const url = 'auth/register/driver';
-  return await axiosRequest.post(url, data, config);
+  return await axiosRequest.post(url, data);
 };
 
 export const loginUser = async data => {

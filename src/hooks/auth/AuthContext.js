@@ -7,7 +7,6 @@ import {
   registerDriver,
   URL,
 } from '../../API/auth';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   getAccessTokenAsync,
@@ -32,18 +31,35 @@ export const AuthProvider = ({children}) => {
   const [isLoggedIn, setIsLoggedIn] = useState();
   const [role, setRole] = useState(null);
   const [value] = useRQGlobalState('role', null);
-  const register = async ({name, email, password, phone}) => {
+  const register = async ({
+    name,
+    cardId,
+    vehicleColor,
+    vehicleLicensePlates,
+    vehicleName,
+    vehicleType,
+    email,
+    password,
+    phone,
+  }) => {
     setIsLoading(true);
     try {
       const res =
         value === 'user'
           ? await regiserUser({name, email, password, phone})
-          : await registerDriver({name, email, password, phone});
-
-      let userInfo = res.data;
-      // console.log(userInfo);
+          : await registerDriver({
+              name,
+              cardId,
+              vehicleColor,
+              vehicleLicensePlates,
+              vehicleName,
+              vehicleType,
+              email,
+              password,
+              phone,
+            });
       setIsLoading(false);
-      if (res.status === 400) {
+      if (res?.status === 400) {
         return <Error />;
       }
       return res;
@@ -63,14 +79,12 @@ export const AuthProvider = ({children}) => {
           : await loginDriver({email, password});
       let userInfo = res.data;
       setUserInfo(userInfo);
-      console.log('dataUSS', userInfo);
       setAccessTokenAsync(userInfo.token);
       setUIdAsync(userInfo.id);
       setURoleAsync(userInfo.role);
-      // setTypeAsync(userInfo.vehicle);
-      // console.log('login role', userInfo.role);
       authUser();
       setIsLoading(false);
+      await AsyncStorage.setItem('userId', userInfo.id);
     } catch (e) {
       console.log(`login error ${e}`);
       setIsLoading(false);

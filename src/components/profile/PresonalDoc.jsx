@@ -18,9 +18,13 @@ import Icon from 'react-native-vector-icons/Feather';
 import {GeneralStyle} from '../../styles/generalStyles';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 
-const PresonalDoc = ({label, description, onChangeCamera, onChangeUpload}) => {
-  
-
+const PresonalDoc = ({
+  label,
+  source,
+  description,
+  onChangeCamera,
+  onChangeUpload,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.left}>
@@ -61,7 +65,7 @@ const PresonalDoc = ({label, description, onChangeCamera, onChangeUpload}) => {
         onPress={onChangeCamera}
         activeOpacity={0.5}
         style={styles.right}>
-        <Icon name="camera" color={Colors.while} size={24} />
+        <Image style={{width: '100%', height: '100%'}} source={source} />
       </TouchableOpacity>
     </View>
   );

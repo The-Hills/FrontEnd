@@ -6,6 +6,7 @@ import Onboarnding from '../../screens/Intro/Onboarnding';
 import Login from '../../screens/auth/login/Login';
 import Register from '../../screens/auth/register/Register';
 import AccountRole from '../../screens/auth/AccountRole';
+import PersonalDocs from '../../screens/auth/PersonalDocs';
 const Stack = createNativeStackNavigator();
 
 const AuthNavigation = () => {
@@ -17,6 +18,7 @@ const AuthNavigation = () => {
         <Stack.Screen name="AccountRole" component={AccountRole} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="PersonalDocs" component={PersonalDocs} />
       </Stack.Group>
     </Stack.Navigator>
   );

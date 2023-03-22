@@ -35,17 +35,22 @@ import {getUIdAsync} from '../../utils/StorageUtils';
 import Loader from '../../components/loader/Loader';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 import ModalContentStartPick from '../../components/DriverScreen/ModalContentStartPick';
+import ContentModal from '../../components/booking/ContentModal';
+import {getBooking} from '../../API/booking.api';
+import {useQuery} from '@tanstack/react-query';
 
-const Booking = () => {
+const Booking = ({navigation}) => {
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [distance, setDistance] = useState(0);
-  const [shouldShow, setShouldShow] = useState(1);
+  const [shouldShow, setShouldShow] = useState(2);
   const [bookiingID] = useRQGlobalState('id', null);
 
-  const {data, isLoading, isError} = useBookingDetail(bookiingID);
-  // const BookingData = data.data.data;
-
+  const {data, isLoading, isError} = useQuery({
+    queryKey: ['bookingDetail'],
+    queryFn: () => getBooking(bookiingID),
+  });
+  const BookingData = data?.data?.data;
   const mapRef = useRef(null);
 
   const modalizeRef = useRef(null);
@@ -114,6 +119,10 @@ const Booking = () => {
             }}
           /> */}
         </MapComponent>
+        <Back
+          style={styles.back}
+          onPress={() => navigation.navigate('BottomTabs')}
+        />
       </View>
       <Modalize
         disableScrollIfPossible={true}
@@ -203,7 +212,22 @@ const Booking = () => {
               </Text>
             </View>
           </View>
-        ) : null}
+        ) : (
+          <View style={[styles.BottomContainer, {height: 400}]}>
+            <Image
+              style={{width: 250, height: 250}}
+              source={require('../../../assets/images/finddd.png')}
+            />
+            <Text
+              style={{
+                color: Colors.black,
+                fontFamily: FontFamily.SemiBold,
+                fontSize: 25,
+              }}>
+              Finding driver...
+            </Text>
+          </View>
+        )}
       </Modalize>
     </View>
   );

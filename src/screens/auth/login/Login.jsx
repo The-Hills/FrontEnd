@@ -46,7 +46,7 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
+    <View style={{height: '100%', width: '100%'}}>
       <Loader visible={isLoading} />
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
@@ -92,7 +92,7 @@ const Login = ({navigation}) => {
           </View>
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };
 

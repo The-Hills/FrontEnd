@@ -46,7 +46,7 @@ import useRQGlobalState from '../../States/useRQGlobalStates';
 import {LogBox} from 'react-native';
 import ContentModal from '../../components/booking/ContentModal';
 
-const ChooseLocation = ({navigation: {goBack}}) => {
+const ChooseLocation = ({navigation, navigation: {goBack}}) => {
   // react Query
   const useBookingMutation = useBooking();
   const usePaymentMutation = usePayment();
@@ -152,9 +152,25 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       });
     }
   }, [distance]);
-  if (useBookingMutation.status === 'success') {
+
+  const sendRequets = () => {
+    useBookingMutation.mutate({
+      distance: distance,
+      startLocation: pickDetail.formatted_address,
+      endLocation: dropDetail.formatted_address,
+      startPosition: origin,
+      endPosition: destination,
+      fee: type !== 0 ? feeCar : feeMoto,
+      payment: payment.id,
+      kidId: selectedChild,
+      typeVehicle: type !== 0 ? 'Car' : 'Motobike',
+    });
+  };
+
+  if (useBookingMutation.isSuccess) {
     setBookingID(useBookingMutation.data.data.data.id);
   }
+
   if (useBookingMutation.status === 'error') {
     return (
       <View>
@@ -162,22 +178,28 @@ const ChooseLocation = ({navigation: {goBack}}) => {
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
           {origin && (
-            <Marker identifier="origin" coordinate={origin}>
+            <Marker
+              title={`kid's Location`}
+              identifier="origin"
+              coordinate={origin}>
               <Image
                 source={require('../../../assets/images/piker.png')}
                 style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
             </Marker>
           )}
           {destination && (
-            <Marker identifier="destination" coordinate={destination} />
+            <Marker
+              title={`Drop Location`}
+              identifier="destination"
+              coordinate={destination}
+            />
           )}
-          {carsAround.map((car, index) => (
+          {/* {carsAround.map((car, index) => (
             <Marker coordinate={car.location} key={index}>
               {car.vehicleType == 'Car' ? (
                 <Image
@@ -197,7 +219,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                   }}></Image>
               )}
             </Marker>
-          ))}
+          ))} */}
           {showDirections && origin && destination && (
             <MapViewDirections
               origin={origin}
@@ -420,13 +442,7 @@ const ChooseLocation = ({navigation: {goBack}}) => {
           </View>
         ) : shouldShow == 3 ? (
           <View style={[styles.searchContainer, {height: 500}]}>
-            <Loader2
-              visible={
-                usePaymentMutation.isLoading || useBookingMutation.isLoading
-                  ? true
-                  : false
-              }
-            />
+            <Loader2 visible={usePaymentMutation.isLoading ? true : false} />
             <Confirm
               distance={distance}
               style={{paddingTop: 30}}
@@ -440,22 +456,11 @@ const ChooseLocation = ({navigation: {goBack}}) => {
               vehicleType={type !== 0 ? 'Car' : 'Motobike'}
               pickLoation={pickDetail.formatted_address}
               dropOff={dropDetail.formatted_address}
-              findDriver={async () => {
-                await Linking.openURL(payment?.url);
-                useBookingMutation.mutate({
-                  distance: distance,
-                  startLocation: pickDetail.formatted_address,
-                  endLocation: dropDetail.formatted_address,
-                  startPosition: origin,
-                  endPosition: destination,
-                  fee: type !== 0 ? feeCar : feeMoto,
-                  payment: payment.id,
-                  kidId: selectedChild,
-                  typeVehicle: type !== 0 ? 'Car' : 'Motobike',
-                });
-
+              findDriver={() => {
+                sendRequets();
                 setModalVisible(!isModalVisible);
-                setModalConent(2);
+                // navigation.navigate('Booking');
+                // Linking.openURL(payment?.url);
               }}
             />
           </View>
@@ -491,7 +496,8 @@ const ChooseLocation = ({navigation: {goBack}}) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         gap: 5,
-                        paddingRight: 30,
+                        paddingHorizontal: 15,
+                        // paddingRight: 30,
                       },
                     ]}
                     onPress={() => {
@@ -548,6 +554,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1.5,
   },
   modalContent: {
+    gap: 30,
+    display: 'flex',
     // justifyContent: 'center',
   },
   modal: {

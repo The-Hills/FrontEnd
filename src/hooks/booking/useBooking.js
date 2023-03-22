@@ -63,7 +63,7 @@ export const useBookingData = () =>
   useQuery({
     queryKey: ['booking'],
     queryFn: fetchBookingData,
-    refetchInterval: 1000,
+    // refetchInterval: 1000,
   });
 
 export const useAcceptBooking = () => {

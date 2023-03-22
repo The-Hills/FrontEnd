@@ -61,7 +61,6 @@ const RequestItem = ({
               fontSize: 13,
               textAlign: 'right',
             }}>
-
             {fee.toLocaleString('it-IT', {
               style: 'currency',
               currency: 'VND',
@@ -125,7 +124,7 @@ const RequestItem = ({
           type="hollow"
           size="small"
         />
-        <Button onPress={onAccept} lable="Accept" size="small" />
+        <Button onPress={onAccept} lable="View" size="small" />
       </View>
     </View>
   );

@@ -17,16 +17,19 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Colors} from '../../../assets/theme/colors';
 import {Width} from '../../../assets/ScreenDimensions';
 
-const ContentModal = ({source, title}) => {
+const ContentModal = ({source, title, style}) => {
   return (
     <View
-      style={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-      }}>
+      style={[
+        {
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        },
+        style,
+      ]}>
       <Image
         style={{
           width: Width / 2.18,

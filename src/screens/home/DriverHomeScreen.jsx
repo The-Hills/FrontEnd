@@ -18,16 +18,21 @@ import {Colors} from '../../../assets/theme/colors';
 import Header from '../../components/DriverScreen/Header';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import RequestItem from '../../components/DriverScreen/RequestItem';
-import {Requests} from '../../../assets/data';
-import {useDriverQuery} from '../../hooks/useUser';
 import {useBookingData} from '../../hooks/booking/useBooking';
 import Loader from '../../components/loader/Loader';
 import Error from '../Intro/Error';
 import useRQGlobalState from '../../States/useRQGlobalStates';
+import socket from '../../services/socketio';
 
 const DriverHomeScreen = ({navigation}) => {
   const [driverData] = useRQGlobalState('driverData', null);
-  const {isError, isLoading, data} = useBookingData();
+  const {isError, isLoading, data, refetch} = useBookingData();
+
+  socket.on('new_booking', res => {
+    console.log('message =>', res.message);
+    console.log('data =>', res.data);
+    refetch();
+  });
 
   if (isLoading) {
     return <Loader />;

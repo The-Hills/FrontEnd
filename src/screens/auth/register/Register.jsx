@@ -13,16 +13,26 @@ import {Sizes} from '../../../../assets/theme/fontSize';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {AuthContext} from '../../../hooks/auth/AuthContext';
 import Loader from '../../../components/loader/Loader';
+import useRQGlobalState from '../../../States/useRQGlobalStates';
 
 const Register = ({navigation}) => {
-  const [inputs, setInputs] = React.useState({
+  const [inputs, setInputs] = useRQGlobalState('PersonalDocs', {
     email: null,
     name: null,
     password: null,
     phone: null,
+    vehicleName: 'Winner',
+    vehicleColor: 'Black',
+    vehicleType: 'motorbike',
+    vehicleLicensePlates: '1554-553535',
+    driverLicense: null,
+    vehicleImage: null,
+    cardId: null,
+    avatar: null,
   });
   const [errors, setErrors] = React.useState({});
   const {isLoading, register} = useContext(AuthContext);
+  const [role] = useRQGlobalState('role', null);
   const validate = async () => {
     Keyboard.dismiss();
     let isValid = true;
@@ -64,7 +74,7 @@ const Register = ({navigation}) => {
     }
     if ((isValid = true)) {
       const res = await register(inputs);
-      if (res.data.message === 'Successfully') {
+      if (res?.data?.message === 'Successfully') {
         navigation.navigate('Login');
       }
     }
@@ -77,7 +87,7 @@ const Register = ({navigation}) => {
     setErrors(prevState => ({...prevState, [input]: error}));
   };
   return (
-    <KeyboardAwareScrollView extraScrollHeight={Height} enableOnAndroid>
+    <KeyboardAwareScrollView>
       <Loader visible={isLoading} />
       <StatusBar backgroundColor={Colors.main} barStyle="light-content" />
       <View style={[GeneralStyle.container, styles.container]}>
@@ -129,7 +139,13 @@ const Register = ({navigation}) => {
               alignItems: 'center',
               justifyContent: 'flex-start',
             }}>
-            <Button lable="Register" onPress={validate} />
+            {role !== 'driver' ? (
+              <Button lable="Register" onPress={validate} />
+            ) : (
+              <Button
+                lable="Next"
+                onPress={() => navigation.navigate('PersonalDocs')}/>
+            )}
             <Text
               onPress={() => navigation.navigate('Login')}
               style={[styles.text]}>

@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import {Colors} from '../../../assets/theme/colors';
 import {FontFamily} from '../../../assets/theme/fontFamily';
@@ -32,6 +32,26 @@ const Confirm = ({
   distance,
 }) => {
   const [type] = useRQGlobalState('type', 0);
+  const [selectedPayment, setSelectedPayment] = useState(null);
+  const payments = [
+    {
+      name: 'Cash',
+      img: require('../../../assets/images/cashPay.png'),
+      title: 'Cash payment',
+    },
+    {
+      name: 'VNPAY',
+      img: require('../../../assets/images/vnpay.png'),
+      title: 'Pay with VNPAY',
+    },
+  ];
+
+  const isSelectedPayment = id => {
+    return id === selectedPayment;
+  };
+  const check = index => {
+    setSelectedPayment(index);
+  };
   return (
     <View style={[{width: '100%'}, style]}>
       <View
@@ -141,36 +161,31 @@ const Confirm = ({
           alignItems: 'center',
           marginBottom: 20,
         }}>
-        <View style={[styles.payments, styles.shadow]}>
-          <Text
-            style={{
-              color: Colors.black,
-              fontFamily: FontFamily.Medium,
-              fontSize: 15,
-            }}>
-            Cash payment
-          </Text>
-          <Image
-            style={{width: 70, height: 70}}
-            source={require('../../../assets/images/cashPay.png')}
-          />
-        </View>
-        <TouchableOpacity
-          onPress={payment}
-          style={[styles.payments, styles.shadow]}>
-          <Text
-            style={{
-              color: Colors.black,
-              fontFamily: FontFamily.Medium,
-              fontSize: 15,
-            }}>
-            Pay with VNPAY
-          </Text>
-          <Image
-            style={{width: 70, height: 70}}
-            source={require('../../../assets/images/vnpay.png')}
-          />
-        </TouchableOpacity>
+        {payments.map((item, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={payment}
+            onPressIn={() => {
+              console.log(index);
+              console.log('hahaha');
+              check(index);
+            }}
+            style={[
+              styles.payments,
+              styles.shadow,
+              isSelectedPayment(index) && styles.choose,
+            ]}>
+            <Text
+              style={{
+                color: Colors.black,
+                fontFamily: FontFamily.Medium,
+                fontSize: 15,
+              }}>
+              {item.title}
+            </Text>
+            <Image style={{width: 70, height: 70}} source={item.img} />
+          </TouchableOpacity>
+        ))}
       </View>
       <Button onPress={findDriver} lable="Find driver" />
     </View>
@@ -184,6 +199,8 @@ const styles = StyleSheet.create({
     width: '48%',
     display: 'flex',
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: Colors.while,
   },
   shadow: {
     borderRadius: 10,
@@ -197,5 +214,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2.62,
 
     elevation: 2,
+  },
+  choose: {
+    borderColor: Colors.main,
   },
 });

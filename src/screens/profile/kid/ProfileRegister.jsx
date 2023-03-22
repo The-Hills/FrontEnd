@@ -39,7 +39,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
     name: null,
     age: null,
     gender: null,
-    url: 'https://cdn3d.iconscout.com/3d/premium/thumb/cool-boy-7215485-5873297.png',
+    url: 'https://taytou.com/wp-content/uploads/2022/08/Avatar-trang-xoa-don-gian-cho-nam-nen-xam.jpg',
   });
   const [isModalVisible, setModalVisible] = useState(true);
   const choosePhotoFromLibrary = async url => {

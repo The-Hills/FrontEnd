@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {GeneralStyle} from '../../styles/generalStyles';
 import Button from '../../components/general/Button';
 import {Colors} from '../../../assets/theme/colors';
@@ -8,32 +8,49 @@ import {FontFamily} from '../../../assets/theme/fontFamily';
 import {Sizes} from '../../../assets/theme/fontSize';
 import PresonalDoc from '../../components/profile/PresonalDoc';
 import ImagePicker from 'react-native-image-crop-picker';
+import useRQGlobalState from '../../States/useRQGlobalStates';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import Input from '../../components/general/Input';
+import {AuthContext} from '../../hooks/auth/AuthContext';
 
 const PersonalDocs = ({navigation}) => {
-  const [images, setImages] = useState({
-    driverLicense: '',
-    vehicleImage: '',
-    cardId: '',
-    avatar: '',
+  const [inputs, setInputs] = useRQGlobalState('PersonalDocs', {
+    email: null,
+    name: null,
+    password: null,
+    phone: null,
+    vehicleName: 'Winner',
+    vehicleColor: 'Black',
+    vehicleType: 'motorbike',
+    vehicleLicensePlates: '1554-553535',
+    driverLicense: null,
+    vehicleImage: null,
+    cardId: null,
+    avatar: null,
   });
-  const takePhotoFromCamera = url => {
-    ImagePicker.openCamera({
-      width: 400,
-      height: 300,
-      cropping: true,
-    }).then(image => {
-      setImages({...images, [url]: image});
-    });
+  const {isLoading, register} = useContext(AuthContext);
+  
+  const handleOnchange = (text, input) => {
+    setInputs(prevState => ({...prevState, [input]: text}));
   };
-
-  const choosePhotoFromLibrary = url => {
-    ImagePicker.openPicker({
-      width: 400,
-      height: 300,
-      cropping: true,
-    }).then(image => {
-      setImages({...images, [url]: image});
+  const choosePhotoFromLibrary = async (uri, input) => {
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
     });
+    if (result.assets) {
+      setInputs(prev => {
+        return {
+          ...prev,
+          [input]: result.assets[0].uri,
+        };
+      });
+    }
+  };
+  const sendRegister = async () => {
+    const res = await register(inputs);
+    if (res.data.message === 'Successfully') {
+      navigation.navigate('Login');
+    }
   };
   return (
     <View style={[GeneralStyle.container, styles.container]}>
@@ -48,35 +65,43 @@ const PersonalDocs = ({navigation}) => {
       </View>
       <View style={styles.content}>
         <View style={{marginVertical: 10, gap: 20}}>
+          <View>
+            <Input
+              onChangeText={text => handleOnchange(text, 'cardId')}
+              lable="ID Card"
+            />
+          </View>
           <PresonalDoc
+            source={{
+              uri: `${inputs.drivingLicense}`,
+            }}
             label="Driving license"
             description="upload the driving photo here."
             onChangeCamera={() => takePhotoFromCamera('drivingLicense')}
-            onChangeUpload={() => choosePhotoFromLibrary('drivingLicense')}
+            onChangeUpload={url =>
+              choosePhotoFromLibrary(url, 'drivingLicense')
+            }
           />
           <PresonalDoc
-            label="Image vehicle"
+            source={{
+              uri: `${inputs.vehicleImage}`,
+            }}
+            label="Vehicle Image"
             description="upload the driving photo here."
             onChangeCamera={() => takePhotoFromCamera('vehicleImage')}
-            onChangeUpload={() => choosePhotoFromLibrary('vehicleImage')}
+            onChangeUpload={url => choosePhotoFromLibrary(url, 'vehicleImage')}
           />
           <PresonalDoc
-            label="VietName ID Card"
-            description="upload the driving photo here."
-            onChangeCamera={() => takePhotoFromCamera('cardId')}
-            onChangeUpload={() => choosePhotoFromLibrary('cardId')}
-          />
-          <PresonalDoc
+            source={{
+              uri: `${inputs.avatar}`,
+            }}
             label="Avatar"
             description="upload the driving photo here."
             onChangeCamera={() => takePhotoFromCamera('avatar')}
-            onChangeUpload={() => choosePhotoFromLibrary('avatar')}
+            onChangeUpload={url => choosePhotoFromLibrary(url, 'avatar')}
           />
         </View>
-        <Button
-          onPress={() => navigation.navigate('DriverHomeScreen')}
-          lable="Submit"
-        />
+        <Button onPress={() => sendRegister()} lable="Submit" />
       </View>
     </View>
   );
