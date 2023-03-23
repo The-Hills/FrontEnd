@@ -10,6 +10,7 @@ import BottomTabs from '../home/BottomTabs';
 import AccountRole from '../../screens/auth/AccountRole';
 import ProfileRegister from '../../screens/profile/kid/ProfileRegister';
 import Booking from '../../screens/booking/Booking';
+import Completed from '../../screens/booking/Completed';
 const Stack = createNativeStackNavigator();
 
 const MainStack = () => {
@@ -25,6 +26,7 @@ const MainStack = () => {
           component={ChooseLocation}
         />
         <Stack.Screen name="Booking" component={Booking} />
+        <Stack.Screen name="Completed" component={Completed} />
       </Stack.Group>
       <Stack.Group>
         <Stack.Screen name="UserProfile" component={UserProfile} />

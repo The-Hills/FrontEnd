@@ -19,8 +19,10 @@ import LogoPkid from '../../components/general/LogoPkid';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
 import Button from '../../components/general/Button';
+import useRQGlobalState from '../../States/useRQGlobalStates';
 
 const Completed = ({navigation}) => {
+  const [value] = useRQGlobalState('role', null);
   return (
     <View
       style={{
@@ -55,12 +57,19 @@ const Completed = ({navigation}) => {
             left: Width / 3.5,
             right: Width / 3.5,
           }}>
-          <Avatar
-            style={{width: 120, height: 120, backgroundColor: Colors.red}}
-            source={{
-              uri: 'https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-pessoa_23-2149436182.jpg?w=2000',
-            }}
-          />
+          {value !== 'driver' ? (
+            <Image
+              style={{width: 130, height: 130}}
+              source={require('../../../assets/images/sss1.png')}
+            />
+          ) : (
+            <Avatar
+              style={{width: 120, height: 120, backgroundColor: Colors.red}}
+              source={{
+                uri: 'https://img.freepik.com/psd-gratuitas/ilustracao-3d-de-pessoa_23-2149436182.jpg?w=2000',
+              }}
+            />
+          )}
         </View>
         <Text
           style={{
@@ -69,7 +78,7 @@ const Completed = ({navigation}) => {
             fontSize: 25,
             paddingTop: 30,
           }}>
-          Good Job
+          {value !== 'driver' ? 'Completed' : 'Good Job'}
         </Text>
         <View
           style={{
@@ -81,7 +90,11 @@ const Completed = ({navigation}) => {
           }}>
           <Button
             size="medium"
-            onPress={() => navigation.navigate('DriverBottomTabs')}
+            onPress={() => {
+              value !== 'driver'
+                ? navigation.navigate('BottomTabs')
+                : navigation.navigate('DriverBottomTabs');
+            }}
             lable="Leave"
           />
         </View>

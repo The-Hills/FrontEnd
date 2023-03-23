@@ -74,7 +74,10 @@ const Header = ({avatar, name, active}) => {
         />
         <View>
           <Text style={styles.text}>VND</Text>
-          <Text style={styles.text}>450.000</Text>
+          <Text style={styles.text}>{DriverData.inCome.toLocaleString('it-IT', {
+              // style: 'currency',
+              currency: 'VND',
+            })}</Text>
         </View>
       </View>
     </View>

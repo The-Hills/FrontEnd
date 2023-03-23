@@ -17,7 +17,7 @@ import {Height, Width} from '../../../assets/ScreenDimensions';
 import {Modalize} from 'react-native-modalize';
 import {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {PLACES_API_KEY} from '../../../assets/APIKey';
+import {GOOGLE_API_KEY, PLACES_API_KEY} from '../../../assets/APIKey';
 import Avatar from '../../components/general/Avatar';
 import {Colors} from '../../../assets/theme/colors';
 import LocationBox from '../../components/general/LocationBox';
@@ -176,7 +176,7 @@ const MapScreenDriver = ({navigation, route, navigation: {goBack}}) => {
             destination={
               BookingData?.status === 'onWayPickUp' ? origin : destination
             }
-            apikey={PLACES_API_KEY}
+            apikey={GOOGLE_API_KEY}
             strokeWidth={5}
             strokeColor="hotpink"
             onReady={result => {

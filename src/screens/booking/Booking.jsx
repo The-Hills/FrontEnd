@@ -116,6 +116,8 @@ const Booking = ({navigation}) => {
   });
 
   socket.on('completed', ({message}) => {
+    navigation.navigate('Completed');
+    console.log('completed: ))');
     setDriverData(prev => ({...prev, message}));
   });
 
