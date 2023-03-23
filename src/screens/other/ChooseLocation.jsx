@@ -25,7 +25,12 @@ import Button from '../../components/general/Button';
 import Back from '../../components/general/Back';
 import {Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import {GOOGLE_API_KEY_2, PLACES_API_KEY} from '../../../assets/APIKey';
+import {
+  GOOGLE_API_KEY,
+  GOOGLE_API_KEY_2,
+  PLACES_API_KEY,
+  EM_CO_CHAC_KHONG,
+} from '../../../assets/APIKey';
 // import Vehicle from '../../components/userScreen/Vehicle';
 import Avatar from '../../components/general/Avatar';
 import {FontFamily} from '../../../assets/theme/fontFamily';
@@ -45,6 +50,7 @@ import Vehicles from '../../components/DriverScreen/Vehicles';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 import {LogBox} from 'react-native';
 import ContentModal from '../../components/booking/ContentModal';
+import {setBookingIDAsync} from '../../utils/StorageUtils';
 
 const ChooseLocation = ({navigation, navigation: {goBack}}) => {
   // react Query
@@ -78,6 +84,7 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
   useEffect(() => {
+    console.log('paymentID');
     if (usePaymentMutation.status === 'success') {
       setPayment(paymentData.data);
     }
@@ -127,9 +134,7 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
       latitude: details?.geometry.location.lat,
       longitude: details?.geometry.location.lng,
     };
-    // const address = {
-    //   addressName: details?.address_components
-    // }
+
     if (flag === 'origin') {
       setOrigin(position);
       setPickDetail(details);
@@ -154,6 +159,7 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
   }, [distance]);
 
   const sendRequets = () => {
+    console.log('hi');
     useBookingMutation.mutate({
       distance: distance,
       startLocation: pickDetail.formatted_address,
@@ -165,19 +171,24 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
       kidId: selectedChild,
       typeVehicle: type !== 0 ? 'Car' : 'Motobike',
     });
+
+    console.log('useBookingMutation => ', useBookingMutation.data);
   };
 
   if (useBookingMutation.isSuccess) {
-    setBookingID(useBookingMutation.data.data.data.id);
+    console.log('nothing', useBookingMutation);
+    setBookingIDAsync(useBookingMutation?.data?.data?.data?.id);
   }
 
-  if (useBookingMutation.status === 'error') {
+  if (useBookingMutation.isError) {
+    console.log('loiiiiii');
     return (
       <View>
         <Text style={{color: 'red'}}>error</Text>
       </View>
     );
   }
+
   return (
     <View style={styles.container}>
       <View style={styles.map}>
@@ -199,32 +210,11 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
               coordinate={destination}
             />
           )}
-          {/* {carsAround.map((car, index) => (
-            <Marker coordinate={car.location} key={index}>
-              {car.vehicleType == 'Car' ? (
-                <Image
-                  source={require('../../../assets/images/car.png')}
-                  style={{
-                    height: 80,
-                    width: 40,
-                    resizeMode: 'contain',
-                  }}></Image>
-              ) : (
-                <Image
-                  source={require('../../../assets/images/moto.png')}
-                  style={{
-                    height: 80,
-                    width: 40,
-                    resizeMode: 'contain',
-                  }}></Image>
-              )}
-            </Marker>
-          ))} */}
           {showDirections && origin && destination && (
             <MapViewDirections
               origin={origin}
               destination={destination}
-              apikey={PLACES_API_KEY}
+              apikey={GOOGLE_API_KEY}
               strokeWidth={5}
               strokeColor="hotpink"
               onReady={result => {
@@ -458,9 +448,9 @@ const ChooseLocation = ({navigation, navigation: {goBack}}) => {
               dropOff={dropDetail.formatted_address}
               findDriver={() => {
                 sendRequets();
-                setModalVisible(!isModalVisible);
-                // navigation.navigate('Booking');
-                // Linking.openURL(payment?.url);
+                // setModalVisible(!isModalVisible);
+                Linking.openURL(payment?.url);
+                navigation.navigate('Booking');
               }}
             />
           </View>

@@ -132,7 +132,7 @@ const Scan = ({navigation: {goBack}}) => {
                       fontSize: 22,
                       fontFamily: FontFamily.SemiBold,
                     }}>
-                    Success!
+                    Successfully!
                   </Text>
                 </>
               ) : (

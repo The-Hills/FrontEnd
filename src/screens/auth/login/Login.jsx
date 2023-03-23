@@ -87,7 +87,7 @@ const Login = ({navigation}) => {
             <Text
               onPress={() => navigation.navigate('Register')}
               style={[styles.text]}>
-              Don't have account? Register
+              Don't have an account? Register
             </Text>
           </View>
         </View>

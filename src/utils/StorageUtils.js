@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const TOKEN_KEY = 'token';
 const UID_KEY = 'uid';
 const ROLE_KEY = 'role';
+const BOOKING_ID = 'bookingId';
 
 export const getAccessTokenAsync = async () => {
   return await AsyncStorage.getItem(TOKEN_KEY);
@@ -46,4 +47,16 @@ export const setTypeAsync = async type => {
 
 export const getTypeAsync = async () => {
   return await AsyncStorage.getItem('type');
+};
+
+export const setBookingIDAsync = async id => {
+  return await AsyncStorage.setItem(BOOKING_ID, id);
+};
+
+export const getBookingIDAsync = async () => {
+  return await AsyncStorage.getItem(BOOKING_ID);
+};
+
+export const removeBookingIDAsync = async () => {
+  return await AsyncStorage.removeItem(BOOKING_ID);
 };

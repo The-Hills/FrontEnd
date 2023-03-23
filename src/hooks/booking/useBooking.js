@@ -96,11 +96,12 @@ export const usecompletedBooking = () => {
       queryClient.invalidateQueries(['booking']);
       queryClient.invalidateQueries(['bookingDetail']);
     },
-  });
+  });   
 };
 
 //
 export const useBookingDetail = id => {
+  console.log('get booking detail', id);
   return useQuery({
     queryKey: ['bookingDetail', id],
     queryFn: getBooking(id),

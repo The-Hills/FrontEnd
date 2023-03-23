@@ -104,7 +104,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
             onChangeText={text => handleOnchange(text, 'age')}
           />
           <Input
-            lable="gender"
+            lable="Gender"
             onChangeText={text => handleOnchange(text, 'gender')}
           />
           <Button onPress={Submit} lable="Submit" />
@@ -158,7 +158,7 @@ const ProfileRegister = ({navigation: {goBack}}) => {
                     fontSize: 22,
                     fontFamily: FontFamily.SemiBold,
                   }}>
-                  Success!
+                  Succesfully!
                 </Text>
               </View>
             </View>

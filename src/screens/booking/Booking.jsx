@@ -31,35 +31,41 @@ import {
   useAcceptBooking,
   useBookingDetail,
 } from '../../hooks/booking/useBooking';
-import {getUIdAsync} from '../../utils/StorageUtils';
+import {getBookingIDAsync, getUIdAsync} from '../../utils/StorageUtils';
 import Loader from '../../components/loader/Loader';
 import useRQGlobalState from '../../States/useRQGlobalStates';
 import ModalContentStartPick from '../../components/DriverScreen/ModalContentStartPick';
 import ContentModal from '../../components/booking/ContentModal';
 import {getBooking} from '../../API/booking.api';
 import {useQuery} from '@tanstack/react-query';
-
+import socket from '../../services/socketio';
 const Booking = ({navigation}) => {
-  const [origin, setOrigin] = useState(null);
-  const [destination, setDestination] = useState(null);
+  const [origin, setOrigin] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+  const [destination, setDestination] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
   const [distance, setDistance] = useState(0);
   const [shouldShow, setShouldShow] = useState(2);
-  const [bookiingID] = useRQGlobalState('id', null);
-
+  // const [bookiingID] = useRQGlobalState('id', null);
+  const [driverData, setDriverData] = useState(null);
   const {data, isLoading, isError} = useQuery({
     queryKey: ['bookingDetail'],
-    queryFn: () => getBooking(bookiingID),
+    queryFn: async () => getBooking(await getBookingIDAsync()),
   });
   const BookingData = data?.data?.data;
   const mapRef = useRef(null);
-
+  console.log('bookingdata', BookingData);
   const modalizeRef = useRef(null);
   const onOpen = async () => {
     modalizeRef.current?.open('top');
   };
 
   const extractLatLng = str => {
-    const match = str.match(/\((.*?)\)/);
+    const match = str?.match(/\((.*?)\)/);
     if (match) {
       const numbers = match[1].split(' ');
       const lat = parseFloat(numbers[0]);
@@ -70,45 +76,69 @@ const Booking = ({navigation}) => {
     }
   };
 
-  // useEffect(() => {
-  //   const startPosition = extractLatLng(BookingData.startPosition);
-  //   const endPosition = extractLatLng(BookingData.endPosition);
-  //   if (startPosition) {
-  //     setOrigin({
-  //       latitude: startPosition.lat,
-  //       longitude: startPosition.lng,
-  //     });
-  //   }
-  //   if (endPosition) {
-  //     setDestination({
-  //       latitude: endPosition.lat,
-  //       longitude: endPosition.lng,
-  //     });
-  //   }
-  // }, []);
   useEffect(() => {
-    mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
-      edgePadding: {
-        top: 50,
-        right: 30,
-        bottom: 1000,
-        left: 30,
-      },
-      animated: true,
-    });
-  }, [distance]);
+    const startPosition = extractLatLng(BookingData?.startPosition);
+    const endPosition = extractLatLng(BookingData?.endPosition);
+    if (startPosition) {
+      setOrigin({
+        latitude: startPosition?.lat,
+        longitude: startPosition?.lng,
+      });
+    }
+    if (endPosition) {
+      setDestination({
+        latitude: endPosition?.lat,
+        longitude: endPosition?.lng,
+      });
+    }
+  }, []);
+  // useEffect(() => {
+  //   mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+  //     edgePadding: {
+  //       top: 50,
+  //       right: 30,
+  //       bottom: 1000,
+  //       left: 30,
+  //     },
+  //     animated: true,
+  //   });
+  // }, [distance]);
+
+  socket.on('accept_booking', ({message, data}) => {
+    console.log('message =>', message);
+    console.log('data =>', data);
+    setShouldShow(1);
+    setDriverData(prev => ({...prev, message, data}));
+  });
+
+  socket.on('picked_up', ({message}) => {
+    setDriverData(prev => ({...prev, message}));
+  });
+
+  socket.on('completed', ({message}) => {
+    setDriverData(prev => ({...prev, message}));
+  });
+
+  console.log('driverData => ', driverData);
+
+  if (isError) {
+    return console.log('error roi ');
+  }
+  if (isLoading) {
+    return console.log('loaddding');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.map}>
         <MapComponent ref={mapRef}>
-          {/* <Marker identifier="origin" coordinate={origin}>
+          <Marker identifier="origin" coordinate={origin}>
             <Image
               source={require('../../../assets/images/piker.png')}
               style={{height: 80, width: 40, resizeMode: 'contain'}}></Image>
           </Marker>
           <Marker identifier="destination" coordinate={destination} />
           <MapViewDirections
-          
             origin={origin}
             destination={destination}
             apikey={PLACES_API_KEY}
@@ -117,7 +147,7 @@ const Booking = ({navigation}) => {
             onReady={result => {
               setDistance(result.distance);
             }}
-          /> */}
+          />
         </MapComponent>
         <Back
           style={styles.back}
@@ -140,7 +170,7 @@ const Booking = ({navigation}) => {
                 fontFamily: FontFamily.SemiBold,
                 fontSize: 20,
               }}>
-              Your Driver on the way
+              {driverData?.message}
             </Text>
             <View
               style={{
@@ -165,7 +195,7 @@ const Booking = ({navigation}) => {
               <Avatar
                 style={{width: 100, height: 100, borderWidth: 1}}
                 source={{
-                  uri: 'https://www.getillustrations.com/photos/pack/3d-avatar-male_lg.png',
+                  uri: `${driverData?.data?.avatar}`,
                 }}
               />
               <View
@@ -188,7 +218,7 @@ const Booking = ({navigation}) => {
                   fontFamily: FontFamily.SemiBold,
                   fontSize: 15,
                 }}>
-                Ho Quoc Tri
+                {driverData?.data?.name}
               </Text>
               <Text
                 style={{
